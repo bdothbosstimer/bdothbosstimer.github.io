@@ -412,6 +412,7 @@
 						document.getElementById(`currentBoss${n}`).src= bossdata[weekDay][listTime[i]][b]["img"];
 						document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[weekDay][listTime[i]][b]["name"]}`;
 						alertType = bossdata[weekDay][listTime[i]][b]["type"];
+						//key for table highlight "weekDay listTime[i]" ex table id = 4-20:00:00
 						//bossdata[weekDay][listTime[i]][b]["img"]
 						//bossdata[weekDay][listTime[i]][b]["name"]
 						//bossdata[weekDay][listTime[i]][b]["type"]
@@ -459,6 +460,7 @@
 					document.getElementById(`currentBoss${n}`).src= bossdata[a][listTime[listSize-3]][b]["img"];
 					document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[a][listTime[listSize-3]][b]["name"]}`;
 					alertType = bossdata[a][listTime[listSize-3]][b]["type"];
+					//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
 					//bossdata[a][listTime[listSize-3]][b]["img"]
 					//bossdata[a][listTime[listSize-3]][b]["name"]
 					//bossdata[a][listTime[listSize-3]][b]["type"]
