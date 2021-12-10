@@ -316,7 +316,7 @@
 	}
 
 	function playAlert(dateDiff, alertType) {
-		switch(Math.round(dateDiff)) {
+		switch(dateDiff) {
 			case 1800:
 				switch(alertType) {
 					case "world-boss": playSound('audio/30minboss.mp3'); break;
@@ -405,7 +405,7 @@
 		n = 0;
 		for(let i = bossPosition; i <= (listSize-4); i++) {
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
-			dateDiff = (dateDiff.getTime() - date.getTime()) / 1000;
+			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
 				for(let b in bossdata[weekDay][listTime[i]]) {
 					document.getElementById(`currentBoss${n}`).src= bossdata[weekDay][listTime[i]][b]["img"];
@@ -454,7 +454,7 @@
 			if (a > 6) {a = 0;}  //if week day is (6)Sat next day is (0)Sun
 			n = 0;
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-3]}`);
-			dateDiff = (dateDiff.getTime() - date.getTime()) / 1000;
+			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			for(let b in bossdata[a][listTime[listSize-3]]) {
 				document.getElementById(`currentBoss${n}`).src= bossdata[a][listTime[listSize-3]][b]["img"];
 				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[a][listTime[listSize-3]][b]["name"]}`;
@@ -483,7 +483,7 @@
 		//next boss or followed boss
 		n = 0;
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
-		dateDiff = (dateDiff.getTime() - date.getTime()) / 1000;
+		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		for(let b in nextBoss[1]) {
 			document.getElementById(`nextBoss${n}`).src= nextBoss[1][b]["img"];
 			document.getElementById(`nextBossName${n}`).innerHTML= `<h4>${nextBoss[1][b]["name"]}`;
@@ -503,7 +503,7 @@
 		//previous boss
 		n = 0;
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
-		dateDiff = (date.getTime() - dateDiff.getTime()) / 1000;
+		dateDiff = Math.round((date.getTime() - dateDiff.getTime()) / 1000);
 		for(let b in previousBoss[1]) {
 			document.getElementById(`previousBoss${n}`).src= previousBoss[1][b]["img"];
 			document.getElementById(`previousBossName${n}`).innerHTML= `<h4>${previousBoss[1][b]["name"]}`;
