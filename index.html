@@ -355,9 +355,9 @@
 		}
 	}
 
-	var listTime = [], listSize, weekDay_tmp, bossPosition, previousBoss = [], nextBoss = [], isUpdate;
+	var listTime = [], listSize, weekDay_tmp, bossPosition, previousBoss = [], nextBoss = [], isUpdate, alertType;
 	setInterval(function() {
-		let date = new Date(), weekDay = date.getDay(), dateDiff, alertType, n = 0;
+		let date = new Date(), weekDay = date.getDay(), dateDiff, n = 0;
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
 
 		//setup
