@@ -355,10 +355,11 @@
 		}
 	}
 
-	var listTime = [], listSize, weekDay_tmp, bossPosition, previousBoss = [], nextBoss = [], isUpdate, alertType;
+	var listTime = [], listSize, weekDay_tmp, bossPosition;
 	setInterval(function() {
-		let date = new Date(), weekDay = date.getDay(), dateDiff, n = 0;
+		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
+		let previousBoss = [], nextBoss = [], alertType, dateDiff, n = 0
 
 		//setup
 		if (weekDay !== weekDay_tmp) {
@@ -392,7 +393,6 @@
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
-			isUpdate = [[],[],[],[]]; //2d array 0-3
 		}
 		
 		//console.log(listTime)
@@ -407,37 +407,35 @@
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
 			dateDiff = (dateDiff.getTime() - date.getTime()) / 1000;
 			if (dateDiff >= 0) {
-				if (!isUpdate[0][listTime[i]]) {
-					for(let b in bossdata[weekDay][listTime[i]]) {
-						document.getElementById(`currentBoss${n}`).src= bossdata[weekDay][listTime[i]][b]["img"];
-						document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[weekDay][listTime[i]][b]["name"]}`;
-						alertType = bossdata[weekDay][listTime[i]][b]["type"];
-						//key for table highlight "weekDay listTime[i]" ex table id = 4-20:00:00
-						//bossdata[weekDay][listTime[i]][b]["img"]
-						//bossdata[weekDay][listTime[i]][b]["name"]
-						//bossdata[weekDay][listTime[i]][b]["type"]
-						n++;
-					}
-					if (n == 1) {
-						document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
-						document.getElementById(`currentBossName${n}`).innerHTML= "";
-					}
-					if (i == 0) {
-						previousBoss[0] = listTime[listSize-1];
-						previousBoss[1] = bossdata[weekDay-1][listTime[listSize-1]];
-					} else {
-						previousBoss[0] = listTime[i-1];
-						previousBoss[1] = bossdata[weekDay][listTime[i-1]];
-					}
-					if (i == (listSize-4)) {
-						nextBoss[0] = listTime[listSize-3];
-						nextBoss[1] = bossdata[weekDay+1][listTime[listSize-3]];
-					} else {
-						nextBoss[0] = listTime[i+1];
-						nextBoss[1] = bossdata[weekDay][listTime[i+1]];
-					}
-					isUpdate[0][listTime[i]] = 1; //skip loop if updated
+				for(let b in bossdata[weekDay][listTime[i]]) {
+					document.getElementById(`currentBoss${n}`).src= bossdata[weekDay][listTime[i]][b]["img"];
+					document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[weekDay][listTime[i]][b]["name"]}`;
+					alertType = bossdata[weekDay][listTime[i]][b]["type"];
+					//key for table highlight "weekDay listTime[i]" ex table id = 4-20:00:00
+					//bossdata[weekDay][listTime[i]][b]["img"]
+					//bossdata[weekDay][listTime[i]][b]["name"]
+					//bossdata[weekDay][listTime[i]][b]["type"]
+					n++;
 				}
+				if (n == 1) {
+					document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
+					document.getElementById(`currentBossName${n}`).innerHTML= "";
+				}
+				if (i == 0) {
+					previousBoss[0] = listTime[listSize-1];
+					previousBoss[1] = bossdata[weekDay-1][listTime[listSize-1]];
+				} else {
+					previousBoss[0] = listTime[i-1];
+					previousBoss[1] = bossdata[weekDay][listTime[i-1]];
+				}
+				if (i == (listSize-4)) {
+					nextBoss[0] = listTime[listSize-3];
+					nextBoss[1] = bossdata[weekDay+1][listTime[listSize-3]];
+				} else {
+					nextBoss[0] = listTime[i+1];
+					nextBoss[1] = bossdata[weekDay][listTime[i+1]];
+				}
+
 				//countdown update
 				document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
 				playAlert(dateDiff, alertType);
@@ -455,27 +453,25 @@
 			n = 0;
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-3]}`);
 			dateDiff = (dateDiff.getTime() - date.getTime()) / 1000;
-			if (!isUpdate[1][listTime[listSize-3]]) {
-				for(let b in bossdata[a][listTime[listSize-3]]) {
-					document.getElementById(`currentBoss${n}`).src= bossdata[a][listTime[listSize-3]][b]["img"];
-					document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[a][listTime[listSize-3]][b]["name"]}`;
-					alertType = bossdata[a][listTime[listSize-3]][b]["type"];
-					//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
-					//bossdata[a][listTime[listSize-3]][b]["img"]
-					//bossdata[a][listTime[listSize-3]][b]["name"]
-					//bossdata[a][listTime[listSize-3]][b]["type"]
-					n++;
-				}
-				if (n == 1) {
-					document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
-					document.getElementById(`currentBossName${n}`).innerHTML= "";
-				}
-				previousBoss[0] = listTime[listSize-1];
-				previousBoss[1] = bossdata[a-1][listTime[listSize-1]];
-				nextBoss[0] = listTime[listSize-2];
-				nextBoss[1] = bossdata[a][listTime[listSize-2]];
-				isUpdate[1][listTime[listSize-3]] = 1; //skip loop if updated
+			for(let b in bossdata[a][listTime[listSize-3]]) {
+				document.getElementById(`currentBoss${n}`).src= bossdata[a][listTime[listSize-3]][b]["img"];
+				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[a][listTime[listSize-3]][b]["name"]}`;
+				alertType = bossdata[a][listTime[listSize-3]][b]["type"];
+				//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
+				//bossdata[a][listTime[listSize-3]][b]["img"]
+				//bossdata[a][listTime[listSize-3]][b]["name"]
+				//bossdata[a][listTime[listSize-3]][b]["type"]
+				n++;
 			}
+			if (n == 1) {
+				document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
+				document.getElementById(`currentBossName${n}`).innerHTML= "";
+			}
+			previousBoss[0] = listTime[listSize-1];
+			previousBoss[1] = bossdata[a-1][listTime[listSize-1]];
+			nextBoss[0] = listTime[listSize-2];
+			nextBoss[1] = bossdata[a][listTime[listSize-2]];
+
 			//countdown update
 			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
 			playAlert(dateDiff, alertType);
@@ -485,21 +481,19 @@
 		n = 0;
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
 		dateDiff = (dateDiff.getTime() - date.getTime()) / 1000;
-		if (!isUpdate[2][nextBoss[1]]) {
-			for(let b in nextBoss[1]) {
-				document.getElementById(`nextBoss${n}`).src= nextBoss[1][b]["img"];
-				document.getElementById(`nextBossName${n}`).innerHTML= `<h4>${nextBoss[1][b]["name"]}`;
-				//nextBoss[1][b]["img"]
-				//nextBoss[1][b]["name"]
-				//nextBoss[1][b]["type"]
-				n++;
-			}
-			if (n == 1) {
-				document.getElementById(`nextBoss${n}`).src= `imgs/blank.png`;
-				document.getElementById(`nextBossName${n}`).innerHTML= "";
-			}
-			isUpdate[2][nextBoss[1]] = 1; //skip loop if updated
+		for(let b in nextBoss[1]) {
+			document.getElementById(`nextBoss${n}`).src= nextBoss[1][b]["img"];
+			document.getElementById(`nextBossName${n}`).innerHTML= `<h4>${nextBoss[1][b]["name"]}`;
+			//nextBoss[1][b]["img"]
+			//nextBoss[1][b]["name"]
+			//nextBoss[1][b]["type"]
+			n++;
 		}
+		if (n == 1) {
+			document.getElementById(`nextBoss${n}`).src= `imgs/blank.png`;
+			document.getElementById(`nextBossName${n}`).innerHTML= "";
+		}
+			
 		//countdown update
 		document.getElementById(`nextTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
 		
@@ -507,21 +501,19 @@
 		n = 0;
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
 		dateDiff = (date.getTime() - dateDiff.getTime()) / 1000;
-		if (!isUpdate[3][previousBoss[1]]) {
-			for(let b in previousBoss[1]) {
-				document.getElementById(`previousBoss${n}`).src= previousBoss[1][b]["img"];
-				document.getElementById(`previousBossName${n}`).innerHTML= `<h4>${previousBoss[1][b]["name"]}`;
-				//previousBoss[1][b]["img"]
-				//previousBoss[1][b]["name"]
-				//previousBoss[1][b]["type"]
-				n++;
-			}
-			if (n == 1) {
-				document.getElementById(`previousBoss${n}`).src= `imgs/blank.png`;
-				document.getElementById(`previousBossName${n}`).innerHTML= "";
-			}
-			isUpdate[3][previousBoss[1]] = 1; //skip loop if updated
+		for(let b in previousBoss[1]) {
+			document.getElementById(`previousBoss${n}`).src= previousBoss[1][b]["img"];
+			document.getElementById(`previousBossName${n}`).innerHTML= `<h4>${previousBoss[1][b]["name"]}`;
+			//previousBoss[1][b]["img"]
+			//previousBoss[1][b]["name"]
+			//previousBoss[1][b]["type"]
+			n++;
 		}
+		if (n == 1) {
+			document.getElementById(`previousBoss${n}`).src= `imgs/blank.png`;
+			document.getElementById(`previousBossName${n}`).innerHTML= "";
+		}
+		
 		//countup update *previous
 		document.getElementById(`previousTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
 	}, 1000);
