@@ -396,8 +396,8 @@ var bossdata = {
 			"00:30:00": [
 				{
 					"type": "world-boss",
-					"name": "เทพแห่งการทุจริต คจาคาร์",
-					"img": "imgs/kzarka.png"
+					"name": "คารานด้า",
+					"img": "imgs/karanda.png"
 				}
 			],
 			"06:00:00": [
@@ -405,13 +405,13 @@ var bossdata = {
 			"10:00:00": [
 				{
 					"type": "world-boss",
-					"name": "นูเวอร์",
-					"img": "imgs/nouver.png"
+					"name": "คูทุม",
+					"img": "imgs/kutum.png"
 				},
 				{
 					"type": "world-boss",
-					"name": "คารานด้า",
-					"img": "imgs/karanda.png"
+					"name": "เทพแห่งการทุจริต คจาคาร์",
+					"img": "imgs/kzarka.png"
 				}
 			],
 			"14:00:00": [
@@ -422,8 +422,8 @@ var bossdata = {
 				},
 				{
 					"type": "world-boss",
-					"name": "เทพแห่งการทุจริต คจาคาร์",
-					"img": "imgs/kzarka.png"
+					"name": "นูเวอร์",
+					"img": "imgs/nouver.png"
 				}
 			],
 			"15:00:00": [
