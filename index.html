@@ -359,7 +359,7 @@
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m;
+		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, tmp;
 
 		//setup
 		if (weekDay !== weekDay_tmp) {
@@ -371,7 +371,7 @@
 			}
 			
 			n = 0;
-			let w = weekDay+1;
+			w = weekDay+1;
 			if (w > 6) {w = 0;} //if week day is (6)Sat next day is (0)Sun
 			for(let b in bossdata[w]) {
 				if (bossdata[w][b].length > 0) {
@@ -383,7 +383,7 @@
 
 			w = weekDay-1;
 			if (w < 0) {w = 6;} //if week day is (0)Sun previous day is (6)Sat
-			let tmp = Object.keys(bossdata[w]);
+			tmp = Object.keys(bossdata[w]);
 			for (let k = (tmp.length-1); k >= 0; k--) {
 				if (bossdata[w][tmp[k]].length > 0) {
 					listTime.push(tmp[k]);
@@ -421,6 +421,7 @@
 					document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
 					document.getElementById(`currentBossName${n}`).innerHTML= "";
 				}
+
 				if (i == 0) {
 					m = weekDay-1; //fix (0)Sat and (6) Sun
 					if (m < 0) {m = 6;}
@@ -456,29 +457,39 @@
 		//Fix next day boss (current boss spawn)
 		if (bossPosition > (listSize-4)) {
 			n = 0;
-			let a = weekDay+1; 
-			if (a > 6) {a = 0;}  //if week day is (6)Sat next day is (0)Sun
+			w = weekDay+1; 
+			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-3]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
-			for(let b in bossdata[a][listTime[listSize-3]]) {
-				document.getElementById(`currentBoss${n}`).src= bossdata[a][listTime[listSize-3]][b]["img"];
-				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[a][listTime[listSize-3]][b]["name"]}`;
-				alertType = bossdata[a][listTime[listSize-3]][b]["type"];
-				//bossdata[a][listTime[listSize-3]][b]["img"]
-				//bossdata[a][listTime[listSize-3]][b]["name"]
-				//bossdata[a][listTime[listSize-3]][b]["type"]
+			for(let b in bossdata[w][listTime[listSize-3]]) {
+				document.getElementById(`currentBoss${n}`).src= bossdata[w][listTime[listSize-3]][b]["img"];
+				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[w][listTime[listSize-3]][b]["name"]}`;
+				alertType = bossdata[w][listTime[listSize-3]][b]["type"];
+				//bossdata[w][listTime[listSize-3]][b]["img"]
+				//bossdata[w][listTime[listSize-3]][b]["name"]
+				//bossdata[w][listTime[listSize-3]][b]["type"]
 				n++;
 			}
 			if (n == 1) {
 				document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
 				document.getElementById(`currentBossName${n}`).innerHTML= "";
 			}
-			m = a-1; //fix (0)Sat and (6) Sun
+			m = w-1; //fix (0)Sat and (6) Sun
 			if (m < 0) {m = 6;}
-			previousBoss[0] = listTime[listSize-1];
-			previousBoss[1] = bossdata[m][listTime[listSize-1]];
+			tmp = Object.keys(bossdata[m]);
+			for (let k = (tmp.length-1); k >= 0; k--) {
+				if (bossdata[m][tmp[k]].length > 0) {
+					previousBoss[0] = tmp[k];
+					previousBoss[1] = bossdata[m][tmp[k]];
+					break;
+				}
+			}
+
+			//previousBoss[0] = listTime[listSize-1];
+			//previousBoss[1] = bossdata[m][listTime[listSize-1]];
+			
 			nextBoss[0] = listTime[listSize-2];
-			nextBoss[1] = bossdata[a][listTime[listSize-2]];
+			nextBoss[1] = bossdata[w][listTime[listSize-2]];
 
 			//countdown update
 			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
