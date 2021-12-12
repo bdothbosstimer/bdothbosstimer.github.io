@@ -355,7 +355,7 @@
 		}
 	}
 
-	var listTime = [], listSize, weekDay_tmp, bossPosition;
+	var listTime, listSize, weekDay_tmp, bossPosition;
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
@@ -364,12 +364,17 @@
 		//setup
 		if (weekDay !== weekDay_tmp) {
 			//list build *need to know boss position for previous and next
+			//listSize -5 (start at 0 to (listSize-5))
+			
+			listTime = [];
+			
 			for(let b in bossdata[weekDay]) {
 				if (bossdata[weekDay][b].length > 0) {
 					listTime.push(b);
 				}
 			}
 			
+			//listSize -3 -4
 			n = 0;
 			w = weekDay+1;
 			if (w > 6) {w = 0;} //if week day is (6)Sat next day is (0)Sun
@@ -380,7 +385,17 @@
 					n++;
 				}
 			}
+			
+			//position listSize -2
+			tmp = Object.keys(bossdata[weekDay]);
+			for (let k = (tmp.length-1); k >= 0; k--) {
+				if (bossdata[weekDay][tmp[k]].length > 0) {
+					listTime.push(tmp[k]);
+					break;
+				}
+			}
 
+			//position listSize -1
 			w = weekDay-1;
 			if (w < 0) {w = 6;} //if week day is (0)Sun previous day is (6)Sat
 			tmp = Object.keys(bossdata[w]);
@@ -390,21 +405,16 @@
 					break;
 				}
 			}
+			//console.log(listTime)
 			
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
 		}
 		
-		//console.log(listTime)
-		//listTime position from length
-		//-4 = max boss number in day
-		//-2 -3 = next day boss timer
-		//-1 = previous day boss timer
-		
-		//current boss
+		//current boss will spawn
 		n = 0;
-		for(let i = bossPosition; i <= (listSize-4); i++) {
+		for(let i = bossPosition; i <= (listSize-5); i++) {
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
@@ -431,7 +441,7 @@
 					previousBoss[0] = listTime[i-1];
 					previousBoss[1] = bossdata[weekDay][listTime[i-1]];
 				}
-				if (i == (listSize-4)) {
+				if (i == (listSize-5)) {
 					m = weekDay+1; //fix (0)Sat and (6) Sun
 					if (m > 6) {m = 0;}
 					nextBoss[0] = listTime[listSize-3];
@@ -439,6 +449,7 @@
 				} else {
 					nextBoss[0] = listTime[i+1];
 					nextBoss[1] = bossdata[weekDay][listTime[i+1]];
+					//i = bossPosition
 				}
 
 				//countdown update
@@ -455,16 +466,16 @@
 		}
 		
 		//Fix next day boss (current boss spawn)
-		if (bossPosition > (listSize-4)) {
+		if (bossPosition > (listSize-5)) {
 			n = 0;
 			w = weekDay+1; 
 			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
-			dateDiff = new Date(`${dateStr} ${listTime[listSize-3]}`);
+			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
-			for(let b in bossdata[w][listTime[listSize-3]]) {
-				document.getElementById(`currentBoss${n}`).src= bossdata[w][listTime[listSize-3]][b]["img"];
-				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[w][listTime[listSize-3]][b]["name"]}`;
-				alertType = bossdata[w][listTime[listSize-3]][b]["type"];
+			for(let b in bossdata[w][listTime[listSize-4]]) {
+				document.getElementById(`currentBoss${n}`).src= bossdata[w][listTime[listSize-4]][b]["img"];
+				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[w][listTime[listSize-4]][b]["name"]}`;
+				alertType = bossdata[w][listTime[listSize-4]][b]["type"];
 				//bossdata[w][listTime[listSize-3]][b]["img"]
 				//bossdata[w][listTime[listSize-3]][b]["name"]
 				//bossdata[w][listTime[listSize-3]][b]["type"]
@@ -476,20 +487,10 @@
 			}
 			m = w-1; //fix (0)Sat and (6) Sun
 			if (m < 0) {m = 6;}
-			tmp = Object.keys(bossdata[m]);
-			for (let k = (tmp.length-1); k >= 0; k--) {
-				if (bossdata[m][tmp[k]].length > 0) {
-					previousBoss[0] = tmp[k];
-					previousBoss[1] = bossdata[m][tmp[k]];
-					break;
-				}
-			}
-
-			//previousBoss[0] = listTime[listSize-1];
-			//previousBoss[1] = bossdata[m][listTime[listSize-1]];
-			
-			nextBoss[0] = listTime[listSize-2];
-			nextBoss[1] = bossdata[w][listTime[listSize-2]];
+			previousBoss[0] = listTime[listSize-2];
+			previousBoss[1] = bossdata[m][listTime[listSize-2]];
+			nextBoss[0] = listTime[listSize-3];
+			nextBoss[1] = bossdata[w][listTime[listSize-3]];
 
 			//countdown update
 			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
