@@ -96,6 +96,18 @@
 <td colspan="2" id="currentTimer" valign="top" align="center"></td>
 <td colspan="2" id="nextTimer" valign="top" align="center"></td>
 </tr>
+<tr>
+<td colspan="3" id="ingame" valign="top" align="left" style="color: #ffffff;"></td>
+<td colspan="3" id="trade" valign="top" align="right" style="color: #ffffff;"></td>
+</tr>
+<tr>
+<td colspan="3" id="daynight" valign="top" align="left" style="color: #ffffff;"></td>
+<td colspan="3" id="imperial" valign="top" align="right" style="color: #ffffff;"></td>
+</tr>
+<tr>
+<td colspan="3" id="blackspirit" valign="top" align="left" style="color: #ffffff;"></td>
+<td colspan="3" id="bartering" valign="top" align="right" style="color: #ffffff;"></td>
+</tr>
 </tbody>
 </table>
 </body>
@@ -297,20 +309,21 @@
 </tr>
 </tbody>
 </table>
+<span style="color: #ffffff;" id="TEST"></span>
 <p><center><strong><a href="https://github.com/bdothbosstimer/" target="_blank"><font color="#ffffff">By Fam丶Fan丶Fan</color></strong><br><img src="imgs/github.png"/></a></center></p>
 
 
 <script src="js/boss.js"></script>
 <script>
-	function formatSeconds(seconds) {
-		var date = new Date(1970,0,1);
-		date.setSeconds(seconds);
+	function formatSeconds(n) {
+		var date = new Date(1970, 0, 1);
+		date.setSeconds(n);
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
 	function playSound(p) {
 		audio = new Audio(p);
-		//audio.volume = customVolume/100;
+		//audio.volume = 50/100 >> 0;
 		audio.volume = 1;
 		audio.play();
 	}
@@ -454,7 +467,7 @@
 
 				//countdown update
 				document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
-				playAlert(dateDiff, alertType);
+				//playAlert(dateDiff, alertType);
 				
 				//key for table highlight "weekDay listTime[i]" ex table id = 4-20:00:00
 				
@@ -494,7 +507,7 @@
 
 			//countdown update
 			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
-			playAlert(dateDiff, alertType);
+			//playAlert(dateDiff, alertType);
 			
 			//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
 		}
@@ -538,6 +551,65 @@
 		
 		//countup update *previous
 		document.getElementById(`previousTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
+		
+		//code from http://bdocalc.com/
+		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
+		var rlDayElapsedS = (Date.now() - startHour) / 1000, dayNight = false, tradeReset;
+		var secsIntoGameDay = (rlDayElapsedS + 200 * 60 + 20 * 60) % (240 * 60);
+
+		//1 day = 14400 sec
+		if (secsIntoGameDay >= 12000) {
+			var secsIntoGameNight = secsIntoGameDay - 12000;
+			var pctOfNightDone = secsIntoGameNight / (40 * 60);
+			var secsUntilNightEnd = 40 * 60 - secsIntoGameNight;
+			var gameHour = 9 * pctOfNightDone;
+			gameHour = gameHour < 2 ? 22 + gameHour : gameHour - 2;
+			tradeReset = 16800 - secsIntoGameDay; //14400+2400
+			dayNight = true;
+		} else {
+			var secsIntoGameDaytime = secsIntoGameDay;
+			var pctOfDayDone = secsIntoGameDay / (200 * 60);
+			var secsUntilNightStart = 12000 - secsIntoGameDaytime;
+			var gameHour = 7 + (22 - 7) * pctOfDayDone;
+			tradeReset = 2400 - secsIntoGameDay; //40 min
+			if (tradeReset <= 0) tradeReset = 13200 - secsIntoGameDaytime; //16800-3600
+			dayNight = false;
+		}
+		
+		var finalGameHour = gameHour / 1 >> 0;
+		var finalGameMinute = gameHour % 1 * 60 >> 0;
+		var finalGameSec = secsIntoGameDay % 60 >> 0;
+		var afternoon = (finalGameHour >= 12);
+
+		if (afternoon && finalGameHour > 12) {
+			finalGameHour -= 12;
+		} else if (finalGameHour === 0) {
+			finalGameHour = 12;
+		}
+
+		var timeString = `Ingame Time: ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
+		var dayNighString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNight ? secsUntilNightEnd : secsUntilNightStart)}`;
+		var tradeString = `♞ Trade in: ${formatSeconds(tradeReset)}`;
+		
+		dateDiff = new Date(`${dateStr} 00:00:00`);
+		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		var imperialString = `♕ Imperial in: ${formatSeconds(dateDiff)}`;
+		
+		dateDiff = new Date(`${dateStr} 06:00:00`);
+		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		var barteringString = `⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
+
+		dateDiff = new Date(`${dateStr} 05:00:00`);
+		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
+
+		document.getElementById(`ingame`).innerHTML= timeString;
+		document.getElementById(`daynight`).innerHTML= dayNighString;
+		document.getElementById(`trade`).innerHTML= tradeString;
+		document.getElementById(`imperial`).innerHTML= imperialString;
+		document.getElementById(`bartering`).innerHTML= barteringString;
+		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
+		
 	}, 1000);
 
 	/*TEST Data
