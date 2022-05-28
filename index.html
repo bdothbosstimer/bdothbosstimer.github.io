@@ -588,6 +588,8 @@
 			dayNight = false;
 		}
 		
+		var imperial = (secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)) >> 0;
+
 		var finalGameHour = gameHour / 1 >> 0;
 		var finalGameMinute = gameHour % 1 * 60 >> 0;
 		var finalGameSec = secsIntoGameDay % 60 >> 0;
@@ -616,7 +618,7 @@
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		var barteringString = `⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
 
-		var imperialString;
+		/*var imperialString;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
@@ -631,8 +633,9 @@
 			dateDiff = new Date(`${dateStr} ${imperialTable[0]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			imperialString = `♕ Imperial in: ${formatSeconds(dateDiff)}`;
-		}
+		}*/
 
+		imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 		document.getElementById(`ingame`).innerHTML= timeString;
 		document.getElementById(`daynight`).innerHTML= dayNightString;
 		document.getElementById(`daily`).innerHTML= dailyString;
