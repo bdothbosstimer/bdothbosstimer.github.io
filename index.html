@@ -98,11 +98,11 @@
 </tr>
 <tr>
 <td colspan="3" id="ingame" valign="top" align="left" style="color: #ffffff;"></td>
-<td colspan="3" id="trade" valign="top" align="right" style="color: #ffffff;"></td>
+<td colspan="3" id="imperial" valign="top" align="right" style="color: #ffffff;"></td>
 </tr>
 <tr>
 <td colspan="3" id="daynight" valign="top" align="left" style="color: #ffffff;"></td>
-<td colspan="3" id="imperial" valign="top" align="right" style="color: #ffffff;"></td>
+<td colspan="3" id="daily" valign="top" align="right" style="color: #ffffff;"></td>
 </tr>
 <tr>
 <td colspan="3" id="blackspirit" valign="top" align="left" style="color: #ffffff;"></td>
@@ -381,7 +381,8 @@
 			return hours + ":" + minutes + " " + amPm;
 		}
 
-	var listTime, listSize, weekDay_tmp, bossPosition;
+	var listTime, listSize, imperialSize, weekDay_tmp, bossPosition, imperialPosition;
+	var imperialReset = ['01:00:00', '03:00:00', '07:00:00', '10:00:00', '13:00:00', '16:00:00', '19:00:00', '22:00:00', '01:00:00'];
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
@@ -433,9 +434,11 @@
 			}
 			//console.log(listTime)
 			
+			imperialSize = imperialReset.length;
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
+			imperialPosition = 0;
 		}
 		
 		//current boss will spawn
@@ -567,7 +570,7 @@
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
-		var rlDayElapsedS = (Date.now() - startHour) / 1000, dayNight = false, tradeReset;
+		var rlDayElapsedS = (Date.now() - startHour) / 1000, dayNight = false;
 		var secsIntoGameDay = (rlDayElapsedS + 200 * 60 + 20 * 60) % (240 * 60);
 
 		//1 day = 14400 sec
@@ -577,15 +580,12 @@
 			var secsUntilNightEnd = 40 * 60 - secsIntoGameNight;
 			var gameHour = 9 * pctOfNightDone;
 			gameHour = gameHour < 2 ? 22 + gameHour : gameHour - 2;
-			tradeReset = 16800 - secsIntoGameDay; //14400+2400
 			dayNight = true;
 		} else {
 			var secsIntoGameDaytime = secsIntoGameDay;
 			var pctOfDayDone = secsIntoGameDay / (200 * 60);
 			var secsUntilNightStart = 12000 - secsIntoGameDaytime;
 			var gameHour = 7 + (22 - 7) * pctOfDayDone;
-			tradeReset = 2400 - secsIntoGameDay; //40 min
-			if (tradeReset <= 0) tradeReset = 13200 - secsIntoGameDaytime; //16800-3600
 			dayNight = false;
 		}
 		
@@ -603,11 +603,10 @@
 		var timeString = `Ingame Time: ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		var dayNighttime = dayNight ? secsUntilNightEnd >> 0 : secsUntilNightStart >> 0;
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)}`;
-		var tradeString = `♞ Trade in: ${formatSeconds(tradeReset)}`;
 		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
-		var imperialString = `♕ Imperial in: ${formatSeconds(dateDiff)}`;
+		var dailyString = `❀ Daily in: ${formatSeconds(dateDiff)}`;
 		
 		dateDiff = new Date(`${dateStr} 06:00:00`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
@@ -617,10 +616,19 @@
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
 
+		for(let i = imperialPosition; i <= imperialSize; i++) {
+			dateDiff = new Date(`${dateStr} ${imperialReset[i]}`);
+			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			if (dateDiff >= 0) {
+				document.getElementById(`imperial`).innerHTML= `♕ Imperial in: ${formatSeconds(dateDiff)}`;
+				break;
+			} else {
+				imperialPosition++;
+			}
+		}
 		document.getElementById(`ingame`).innerHTML= timeString;
 		document.getElementById(`daynight`).innerHTML= `${dayNightString} (${getNightTime(dayNighttime)})`;
-		document.getElementById(`trade`).innerHTML= tradeString;
-		document.getElementById(`imperial`).innerHTML= imperialString;
+		document.getElementById(`daily`).innerHTML= dailyString;
 		document.getElementById(`bartering`).innerHTML= barteringString;
 		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
 		
