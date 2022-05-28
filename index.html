@@ -615,7 +615,6 @@
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
 
-		if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
@@ -625,6 +624,11 @@
 			} else {
 				imperialPosition++;
 			}
+		}
+		if (imperialPosition > imperialSize) {
+			dateDiff = new Date(`${dateStr} ${imperialTable[0]}`);
+			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			document.getElementById(`imperial`).innerHTML= `♕ Imperial in: ${formatSeconds(dateDiff)}`;
 		}
 
 		document.getElementById(`ingame`).innerHTML= timeString;
