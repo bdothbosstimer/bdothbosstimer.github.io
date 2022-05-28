@@ -382,7 +382,6 @@
 		}
 
 	var listTime, listSize, imperialSize, weekDay_tmp, bossPosition, imperialPosition;
-	var imperialReset = ['01:00:00', '03:00:00', '07:00:00', '10:00:00', '13:00:00', '16:00:00', '19:00:00', '22:00:00', '01:00:00'];
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
@@ -395,8 +394,8 @@
 			
 			listTime = [];
 			
-			for(let b in bossdata[weekDay]) {
-				if (bossdata[weekDay][b].length > 0) {
+			for(let b in bossTable[weekDay]) {
+				if (bossTable[weekDay][b].length > 0) {
 					listTime.push(b);
 				}
 			}
@@ -405,8 +404,8 @@
 			n = 0;
 			w = weekDay+1;
 			if (w > 6) {w = 0;} //if week day is (6)Sat next day is (0)Sun
-			for(let b in bossdata[w]) {
-				if (bossdata[w][b].length > 0) {
+			for(let b in bossTable[w]) {
+				if (bossTable[w][b].length > 0) {
 					listTime.push(b);
 					if (n >= 1) { break; }
 					n++;
@@ -414,9 +413,9 @@
 			}
 			
 			//position listSize -2
-			tmp = Object.keys(bossdata[weekDay]);
+			tmp = Object.keys(bossTable[weekDay]);
 			for (let k = (tmp.length-1); k >= 0; k--) {
-				if (bossdata[weekDay][tmp[k]].length > 0) {
+				if (bossTable[weekDay][tmp[k]].length > 0) {
 					listTime.push(tmp[k]);
 					break;
 				}
@@ -425,16 +424,16 @@
 			//position listSize -1
 			w = weekDay-1;
 			if (w < 0) {w = 6;} //if week day is (0)Sun previous day is (6)Sat
-			tmp = Object.keys(bossdata[w]);
+			tmp = Object.keys(bossTable[w]);
 			for (let k = (tmp.length-1); k >= 0; k--) {
-				if (bossdata[w][tmp[k]].length > 0) {
+				if (bossTable[w][tmp[k]].length > 0) {
 					listTime.push(tmp[k]);
 					break;
 				}
 			}
 			//console.log(listTime)
 			
-			imperialSize = imperialReset.length;
+			imperialSize = imperialTable.length;
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
@@ -447,13 +446,13 @@
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
-				for(let b in bossdata[weekDay][listTime[i]]) {
-					document.getElementById(`currentBoss${n}`).src= bossdata[weekDay][listTime[i]][b]["img"];
-					document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[weekDay][listTime[i]][b]["name"]}`;
-					alertType = bossdata[weekDay][listTime[i]][b]["type"];
-					//bossdata[weekDay][listTime[i]][b]["img"]
-					//bossdata[weekDay][listTime[i]][b]["name"]
-					//bossdata[weekDay][listTime[i]][b]["type"]
+				for(let b in bossTable[weekDay][listTime[i]]) {
+					document.getElementById(`currentBoss${n}`).src= bossTable[weekDay][listTime[i]][b]["img"];
+					document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossTable[weekDay][listTime[i]][b]["name"]}`;
+					alertType = bossTable[weekDay][listTime[i]][b]["type"];
+					//bossTable[weekDay][listTime[i]][b]["img"]
+					//bossTable[weekDay][listTime[i]][b]["name"]
+					//bossTable[weekDay][listTime[i]][b]["type"]
 					n++;
 				}
 				if (n == 1) {
@@ -465,19 +464,19 @@
 					m = weekDay-1; //fix (0)Sat and (6) Sun
 					if (m < 0) {m = 6;}
 					previousBoss[0] = listTime[listSize-1];
-					previousBoss[1] = bossdata[m][listTime[listSize-1]];
+					previousBoss[1] = bossTable[m][listTime[listSize-1]];
 				} else {
 					previousBoss[0] = listTime[i-1];
-					previousBoss[1] = bossdata[weekDay][listTime[i-1]];
+					previousBoss[1] = bossTable[weekDay][listTime[i-1]];
 				}
 				if (i == (listSize-5)) {
 					m = weekDay+1; //fix (0)Sat and (6) Sun
 					if (m > 6) {m = 0;}
 					nextBoss[0] = listTime[listSize-4];
-					nextBoss[1] = bossdata[m][listTime[listSize-4]];
+					nextBoss[1] = bossTable[m][listTime[listSize-4]];
 				} else {
 					nextBoss[0] = listTime[i+1];
-					nextBoss[1] = bossdata[weekDay][listTime[i+1]];
+					nextBoss[1] = bossTable[weekDay][listTime[i+1]];
 					//i = bossPosition
 				}
 
@@ -501,13 +500,13 @@
 			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
-			for(let b in bossdata[w][listTime[listSize-4]]) {
-				document.getElementById(`currentBoss${n}`).src= bossdata[w][listTime[listSize-4]][b]["img"];
-				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossdata[w][listTime[listSize-4]][b]["name"]}`;
-				alertType = bossdata[w][listTime[listSize-4]][b]["type"];
-				//bossdata[w][listTime[listSize-3]][b]["img"]
-				//bossdata[w][listTime[listSize-3]][b]["name"]
-				//bossdata[w][listTime[listSize-3]][b]["type"]
+			for(let b in bossTable[w][listTime[listSize-4]]) {
+				document.getElementById(`currentBoss${n}`).src= bossTable[w][listTime[listSize-4]][b]["img"];
+				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossTable[w][listTime[listSize-4]][b]["name"]}`;
+				alertType = bossTable[w][listTime[listSize-4]][b]["type"];
+				//bossTable[w][listTime[listSize-3]][b]["img"]
+				//bossTable[w][listTime[listSize-3]][b]["name"]
+				//bossTable[w][listTime[listSize-3]][b]["type"]
 				n++;
 			}
 			if (n == 1) {
@@ -517,9 +516,9 @@
 			m = w-1; //fix (0)Sat and (6) Sun
 			if (m < 0) {m = 6;}
 			previousBoss[0] = listTime[listSize-2];
-			previousBoss[1] = bossdata[m][listTime[listSize-2]];
+			previousBoss[1] = bossTable[m][listTime[listSize-2]];
 			nextBoss[0] = listTime[listSize-3];
-			nextBoss[1] = bossdata[w][listTime[listSize-3]];
+			nextBoss[1] = bossTable[w][listTime[listSize-3]];
 
 			//countdown update
 			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
@@ -616,8 +615,9 @@
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
 
+		if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
-			dateDiff = new Date(`${dateStr} ${imperialReset[i]}`);
+			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
 				document.getElementById(`imperial`).innerHTML= `♕ Imperial in: ${formatSeconds(dateDiff)}`;
@@ -626,6 +626,7 @@
 				imperialPosition++;
 			}
 		}
+
 		document.getElementById(`ingame`).innerHTML= timeString;
 		document.getElementById(`daynight`).innerHTML= `${dayNightString} (${getNightTime(dayNighttime)})`;
 		document.getElementById(`daily`).innerHTML= dailyString;
@@ -637,14 +638,14 @@
 	/*TEST Data
 	data position note
 	object	object		array		object
-	weekDay	spawnTime	bossArray	bossData
-	for(var d in bossdata) {
-		for(var t in bossdata[d]) {
-			for(var b in bossdata[d][t]) {
-				for(var p in bossdata[d][t][b]) {
-					console.log(`${d} ${t} ${bossdata[d][t][b]["img"]}`)
-					console.log(`${d} ${t} ${bossdata[d][t][b]["name"]}`)
-					console.log(`${d} ${t} ${bossdata[d][t][b]["type"]}`)
+	weekDay	spawnTime	bossArray	bossTable
+	for(var d in bossTable) {
+		for(var t in bossTable[d]) {
+			for(var b in bossTable[d][t]) {
+				for(var p in bossTable[d][t][b]) {
+					console.log(`${d} ${t} ${bossTable[d][t][b]["img"]}`)
+					console.log(`${d} ${t} ${bossTable[d][t][b]["name"]}`)
+					console.log(`${d} ${t} ${bossTable[d][t][b]["type"]}`)
 				}
 			}
 		}

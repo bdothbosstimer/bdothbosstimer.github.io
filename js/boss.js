@@ -1,4 +1,5 @@
-var bossdata = {
+var imperialTable = ['01:00:00', '03:00:00', '07:00:00', '10:00:00', '13:00:00', '16:00:00', '19:00:00', '22:00:00', '01:00:00'];
+var bossTable = {
 		0:	{//Su
 			"00:30:00": [
 				{
@@ -431,6 +432,13 @@ var bossdata = {
 					"type": "world-boss",
 					"name": "กามอส",
 					"img": "imgs/garmoth.png"
+				}
+			],
+			"16:00:00": [
+				{
+					"type": "field-boss",
+					"name": "เงาดำ",
+					"img": "imgs/shadow.png"
 				}
 			],
 			"19:00:00": [
