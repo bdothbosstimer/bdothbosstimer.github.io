@@ -587,8 +587,6 @@
 			var gameHour = 7 + (22 - 7) * pctOfDayDone;
 			dayNight = false;
 		}
-		
-		var imperial = (secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)) >> 0;
 
 		var finalGameHour = gameHour / 1 >> 0;
 		var finalGameMinute = gameHour % 1 * 60 >> 0;
@@ -600,6 +598,9 @@
 		} else if (finalGameHour === 0) {
 			finalGameHour = 12;
 		}
+		
+		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
+		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 
 		var timeString = `⌨ Ingame Time: ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		
@@ -635,7 +636,6 @@
 			imperialString = `♕ Imperial in: ${formatSeconds(dateDiff)}`;
 		}*/
 
-		imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 		document.getElementById(`ingame`).innerHTML= timeString;
 		document.getElementById(`daynight`).innerHTML= dayNightString;
 		document.getElementById(`daily`).innerHTML= dailyString;
