@@ -327,7 +327,7 @@
 		audio.volume = 1;
 		audio.play();
 	}
-
+	
 	function playAlert(dateDiff, alertType) {
 		switch(dateDiff) {
 			case 1800:
@@ -367,6 +367,18 @@
 				break;
 		}
 	}
+	
+	function getNightTime(secondsToAdd) {
+		var t = new Date();
+			t.setSeconds(t.getSeconds() + secondsToAdd);
+		var hours   = t.getHours();
+		var amPm    = (hours >= 12) ? "PM" : "AM";
+			hours       = (hours > 12) ? hours - 12 : hours;
+			hours       = (hours === 0) ? 12 : hours;
+		var minutes = t.getMinutes();
+			minutes     = (minutes < 10) ? "0" + minutes : minutes;
+			return hours + ":" + minutes + " " + amPm;
+		}
 
 	var listTime, listSize, weekDay_tmp, bossPosition;
 	setInterval(function() {
@@ -588,7 +600,8 @@
 		}
 
 		var timeString = `Ingame Time: ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
-		var dayNighString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNight ? secsUntilNightEnd : secsUntilNightStart)}`;
+		var dayNighttime = dayNight ? secsUntilNightEnd >> 0 : secsUntilNightStart >> 0;
+		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)}`;
 		var tradeString = `♞ Trade in: ${formatSeconds(tradeReset)}`;
 		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
@@ -604,7 +617,7 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
 
 		document.getElementById(`ingame`).innerHTML= timeString;
-		document.getElementById(`daynight`).innerHTML= dayNighString;
+		document.getElementById(`daynight`).innerHTML= `${dayNightString} (${getNightTime(dayNighttime)})`;
 		document.getElementById(`trade`).innerHTML= tradeString;
 		document.getElementById(`imperial`).innerHTML= imperialString;
 		document.getElementById(`bartering`).innerHTML= barteringString;
