@@ -567,23 +567,22 @@
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
-		var rlDayElapsedS = (Date.now() - startHour) / 1000, dayNight = false;
+		var rlDayElapsedS = (Date.now() - startHour) / 1000;
 		var secsIntoGameDay = (rlDayElapsedS + 200 * 60 + 20 * 60) % (240 * 60);
 
 		//1 day = 14400 sec
-		if (secsIntoGameDay >= 12000) {
+		var dayNight = secsIntoGameDay >= 12000; // 0 = day 1 = night
+		if (dayNight) {
 			var secsIntoGameNight = secsIntoGameDay - 12000;
 			var pctOfNightDone = secsIntoGameNight / (40 * 60);
 			var secsUntilNightEnd = 40 * 60 - secsIntoGameNight;
 			var gameHour = 9 * pctOfNightDone;
 			gameHour = gameHour < 2 ? 22 + gameHour : gameHour - 2;
-			dayNight = true;
 		} else {
 			var secsIntoGameDaytime = secsIntoGameDay;
 			var pctOfDayDone = secsIntoGameDay / (200 * 60);
 			var secsUntilNightStart = 12000 - secsIntoGameDaytime;
 			var gameHour = 7 + (22 - 7) * pctOfDayDone;
-			dayNight = false;
 		}
 
 		var finalGameHour = gameHour / 1 >> 0;
@@ -599,7 +598,7 @@
 		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
 		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 
-		var timeString = `⌨ Ingame Time: ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
+		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
