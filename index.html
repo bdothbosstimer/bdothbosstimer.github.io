@@ -337,7 +337,7 @@ tr.bl{color: white;}
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, tmp, tmp1, tmp2;
+		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, k, tmp, tmp1, tmp2;
 
 		//setup
 		if (weekDay !== weekDay_tmp) {
@@ -391,25 +391,19 @@ tr.bl{color: white;}
 		}
 		
 		//current boss will spawn
-		n = 0; tmp1 = ''; tmp2 = '';
+		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0"><tbody>';
 		for(let i = bossPosition; i <= (listSize-5); i++) {
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
+				n = bossTable[weekDay][listTime[i]].length;
 				for(let b in bossTable[weekDay][listTime[i]]) {
 
 					alertType = bossTable[weekDay][listTime[i]][b]["type"];
 					tmp1 += '<td class="td bt"><img src="'+bossTable[weekDay][listTime[i]][b]["img"]+'" width="360" height="360"/></td>';
 					tmp2 += '<td class="td bt"><h3>'+bossTable[weekDay][listTime[i]][b]["name"]+'</td>';
 					
-					//tmp += `<img src="${bossTable[weekDay][listTime[i]][b]["img"]}" width="360" height="360"/>`;
-
-					
-					//bossTable[weekDay][listTime[i]][b]["img"]
-					//bossTable[weekDay][listTime[i]][b]["name"]
-					//bossTable[weekDay][listTime[i]][b]["type"]
-					n++;
 				}
 
 				if (i == 0) {
@@ -455,9 +449,9 @@ tr.bl{color: white;}
 		
 		//Fix next day boss (current boss spawn)
 		if (bossPosition > (listSize-5)) {
-			n = 0;
 			w = weekDay+1;
 			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
+			n = bossTable[w][listTime[listSize-4]].length;
 			tmp1 = ''; tmp2 = '';
 			tmp = '<table border="0"><tbody>';
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
@@ -468,10 +462,6 @@ tr.bl{color: white;}
 				tmp1 += '<td class="td bt"><img src="'+bossTable[w][listTime[listSize-4]][b]["img"]+'" width="360" height="360"/></td>';
 				tmp2 += '<td class="td bt"><h3>'+bossTable[w][listTime[listSize-4]][b]["name"]+'</td>';
 				
-				//bossTable[w][listTime[listSize-3]][b]["img"]
-				//bossTable[w][listTime[listSize-3]][b]["name"]
-				//bossTable[w][listTime[listSize-3]][b]["type"]
-				n++;
 			}
 			
 			m = w-1; //fix (0)Sat and (6) Sun
@@ -495,7 +485,7 @@ tr.bl{color: white;}
 		}
 		
 		//next boss or followed boss
-		n = 0;
+		n = nextBoss[1].length;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0"><tbody>';
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
@@ -505,10 +495,6 @@ tr.bl{color: white;}
 			alertType = nextBoss[1][b]["type"];
 			tmp1 += '<td class="td bt"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+nextBoss[1][b]["name"]+'</td>';
-			//nextBoss[1][b]["img"]
-			//nextBoss[1][b]["name"]
-			//nextBoss[1][b]["type"]
-			n++;
 		}
 		
 		//countdown update
@@ -516,7 +502,7 @@ tr.bl{color: white;}
 		setHTMLInner("nextboss", tmp);
 		
 		//previous boss
-		n = 0;
+		n = previousBoss[1].length;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0"><tbody>';
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
@@ -524,14 +510,10 @@ tr.bl{color: white;}
 		for(let b in previousBoss[1]) {
 
 			alertType = previousBoss[1][b]["type"];
-			tmp1 += '<td class="td bt"><img src="'+previousBoss[1][b]["img"]+'" width="64" height="64"/></td>';
+			tmp1 += '<td class="td bt" width="'+k+'"><img src="'+previousBoss[1][b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+previousBoss[1][b]["name"]+'</td>';
-			//previousBoss[1][b]["img"]
-			//previousBoss[1][b]["name"]
-			//previousBoss[1][b]["type"]
-			n++;
+
 		}
-		//console.log(previousBoss[1])
 		
 		//countup update *previous
 		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
