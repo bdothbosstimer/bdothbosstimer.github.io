@@ -335,7 +335,7 @@ tr.bl{color: white;}
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, tmp, tmp1, tmp2;
+		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2;
 
 		//setup
 		if (weekDay !== weekDay_tmp) {
@@ -396,10 +396,11 @@ tr.bl{color: white;}
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
 				n = bossTable[weekDay][listTime[i]].length;
+				j = 100 / n >> 0;
 				for(let b in bossTable[weekDay][listTime[i]]) {
 
 					alertType = bossTable[weekDay][listTime[i]][b]["type"];
-					tmp1 += '<td class="td bt"><img src="'+bossTable[weekDay][listTime[i]][b]["img"]+'" width="360" height="360"/></td>';
+					tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+bossTable[weekDay][listTime[i]][b]["img"]+'" width="360" height="360"/></td>';
 					tmp2 += '<td class="td bt"><h3>'+bossTable[weekDay][listTime[i]][b]["name"]+'</td>';
 					
 				}
@@ -450,6 +451,7 @@ tr.bl{color: white;}
 			w = weekDay+1;
 			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
 			n = bossTable[w][listTime[listSize-4]].length;
+			j = 100 / n >> 0;
 			tmp1 = ''; tmp2 = '';
 			tmp = '<table border="0"><tbody>';
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
@@ -457,7 +459,7 @@ tr.bl{color: white;}
 			for(let b in bossTable[w][listTime[listSize-4]]) {
 		
 				alertType = bossTable[w][listTime[listSize-4]][b]["type"];
-				tmp1 += '<td class="td bt"><img src="'+bossTable[w][listTime[listSize-4]][b]["img"]+'" width="360" height="360"/></td>';
+				tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+bossTable[w][listTime[listSize-4]][b]["img"]+'" width="360" height="360"/></td>';
 				tmp2 += '<td class="td bt"><h3>'+bossTable[w][listTime[listSize-4]][b]["name"]+'</td>';
 				
 			}
@@ -483,6 +485,7 @@ tr.bl{color: white;}
 		
 		//next boss or followed boss
 		n = nextBoss[1].length;
+		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0"><tbody>';
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
@@ -490,7 +493,7 @@ tr.bl{color: white;}
 		for(let b in nextBoss[1]) {
 
 			alertType = nextBoss[1][b]["type"];
-			tmp1 += '<td class="td bt"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
+			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+nextBoss[1][b]["name"]+'</td>';
 		}
 		
@@ -500,6 +503,7 @@ tr.bl{color: white;}
 		
 		//previous boss
 		n = previousBoss[1].length;
+		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0"><tbody>';
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
@@ -507,7 +511,7 @@ tr.bl{color: white;}
 		for(let b in previousBoss[1]) {
 
 			alertType = previousBoss[1][b]["type"];
-			tmp1 += '<td class="td bt"><img src="'+previousBoss[1][b]["img"]+'" width="64" height="64"/></td>';
+			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+previousBoss[1][b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+previousBoss[1][b]["name"]+'</td>';
 
 		}
