@@ -390,7 +390,7 @@ tr.bl{color: white;}
 		
 		//current boss will spawn
 		tmp1 = ''; tmp2 = '';
-		tmp = '<table border="0"><tbody>';
+		tmp = '<table border="0" width="100%"><tbody>';
 		for(let i = bossPosition; i <= (listSize-5); i++) {
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
@@ -453,7 +453,7 @@ tr.bl{color: white;}
 			n = bossTable[w][listTime[listSize-4]].length;
 			j = 100 / n >> 0;
 			tmp1 = ''; tmp2 = '';
-			tmp = '<table border="0"><tbody>';
+			tmp = '<table border="0" width="100%"><tbody>';
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			for(let b in bossTable[w][listTime[listSize-4]]) {
@@ -487,7 +487,7 @@ tr.bl{color: white;}
 		n = nextBoss[1].length;
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
-		tmp = '<table border="0"><tbody>';
+		tmp = '<table border="0" width="100%"><tbody>';
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		for(let b in nextBoss[1]) {
@@ -505,7 +505,7 @@ tr.bl{color: white;}
 		n = previousBoss[1].length;
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
-		tmp = '<table border="0"><tbody>';
+		tmp = '<table border="0" width="100%"><tbody>';
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
 		dateDiff = Math.round((date.getTime() - dateDiff.getTime()) / 1000);
 		for(let b in previousBoss[1]) {
