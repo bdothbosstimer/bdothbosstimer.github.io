@@ -104,6 +104,8 @@ tr.bl{color: white;}
 
 	body {
 		background-color: #1a1c2a;
+		width: 100%;
+		height: 100%;
 	}
 </style>
 </head>
@@ -243,7 +245,6 @@ tr.bl{color: white;}
 <br><center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong><br><img src="imgs/github.png"/></a></center><br>
 
 <script src="js/boss.js"></script>
-<script src="notify.min.js"></script>
 <script>
 	function formatSeconds(n) {
 		var date = new Date(1970, 0, 1);
@@ -251,48 +252,47 @@ tr.bl{color: white;}
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
-	function playSound(p) {
-		audio = new Audio(p);
-		//audio.volume = 50/100 >> 0;
-		audio.volume = 1;
-		audio.play();
-	}
-	
 	function playAlert(dateDiff, alertType) {
+		const play = (p) => {
+			audio = new Audio(p);
+			//audio.volume = 50/100 >> 0;
+			audio.volume = 1;
+			audio.play();
+		}
 		switch(dateDiff) {
 			case 1800:
 				switch(alertType) {
-					case "world-boss": playSound('audio/30minboss.mp3'); break;
-					case "war-node": playSound('audio/30minnode.mp3'); break;
-					case "war-castle": playSound('audio/30mincastle.mp3'); break;
+					case "world-boss": play('audio/30minboss.mp3'); break;
+					case "war-node": play('audio/30minnode.mp3'); break;
+					case "war-castle": play('audio/30mincastle.mp3'); break;
 				}
 				break;
 			case 900:
 				switch(alertType) {
-					case "world-boss": playSound('audio/15minboss.mp3'); break;
-					case "war-node": playSound('audio/15minnode.mp3'); break;
-					case "war-castle": playSound('audio/15mincastle.mp3'); break;
+					case "world-boss": play('audio/15minboss.mp3'); break;
+					case "war-node": play('audio/15minnode.mp3'); break;
+					case "war-castle": play('audio/15mincastle.mp3'); break;
 				}
 				break;
 			case 600:
 				switch(alertType) {
-					case "world-boss": playSound('audio/10minboss.mp3'); break;
-					case "war-node": playSound('audio/10minnode.mp3'); break;
-					case "war-castle": playSound('audio/10mincastle.mp3'); break;
+					case "world-boss": play('audio/10minboss.mp3'); break;
+					case "war-node": play('audio/10minnode.mp3'); break;
+					case "war-castle": play('audio/10mincastle.mp3'); break;
 				}
 				break;
 			case 300:
 				switch(alertType) {
-					case "world-boss": playSound('audio/5minboss.mp3'); break;
-					case "war-node": playSound('audio/5minnode.mp3'); break;
-					case "war-castle": playSound('audio/5mincastle.mp3'); break;
+					case "world-boss": play('audio/5minboss.mp3'); break;
+					case "war-node": play('audio/5minnode.mp3'); break;
+					case "war-castle": play('audio/5mincastle.mp3'); break;
 				}
 				break;
 			case 0:
 				switch(alertType) {
-					case "world-boss": playSound('audio/bossappear.mp3'); break;
-					case "war-node": playSound('audio/nodewar.mp3'); break;
-					case "war-castle": playSound('audio/castlewar.mp3'); break;
+					case "world-boss": play('audio/bossappear.mp3'); break;
+					case "war-node": play('audio/nodewar.mp3'); break;
+					case "war-castle": play('audio/castlewar.mp3'); break;
 				}
 				break;
 		}
@@ -309,26 +309,24 @@ tr.bl{color: white;}
 		var minutes = t.getMinutes();
 			minutes     = (minutes < 10) ? "0" + minutes : minutes;
 			return hours + ":" + minutes + " " + amPm;
-		}
+	}
+	
 	function setHTMLInner(id, str) {
 		document.getElementById(id).innerHTML = str;
 	}
 	
-	function setCSSClass(id, cn) {
-		document.getElementById(id).className = cn;
-	}
-	
 	function setHighlight(id, alertType, bool) {
+		const css = (id, cn) => {document.getElementById(id).className = cn;}
 		switch(alertType) {
 			case "world-boss":
 			case "field-boss":
-				setCSSClass(id, bool ? `tr bl hl` : `tr bl`);
+				css(id, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-node":
-				setCSSClass(`war-node`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-node`, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-castle":
-				setCSSClass(`war-castle`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
 				break;
 		}
 	}
@@ -473,9 +471,8 @@ tr.bl{color: white;}
 			nextBoss[1] = bossTable[w][listTime[listSize-3]];
 			nextBoss[2] = w;
 			
-			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h1>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
-
 			//countdown update
+			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h1>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
 			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
 
