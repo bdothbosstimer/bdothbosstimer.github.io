@@ -478,8 +478,10 @@ tr.bl{color: white;}
 			if (m < 0) {m = 6;}
 			previousBoss[0] = listTime[listSize-2];
 			previousBoss[1] = bossTable[m][listTime[listSize-2]];
+			previousBoss[2] = w;
 			nextBoss[0] = listTime[listSize-3];
 			nextBoss[1] = bossTable[w][listTime[listSize-3]];
+			nextBoss[2] = m;
 			
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h1>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
 
@@ -529,9 +531,12 @@ tr.bl{color: white;}
 			//previousBoss[1][b]["type"]
 			n++;
 		}
+		//console.log(previousBoss[1])
 		
 		//countup update *previous
 		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
+		
+		console.log(`${previousBoss[2]}-${previousBoss[0]}`)
 		setHighlight(`${previousBoss[2]}-${previousBoss[0]}`, alertType, false);
 		setHTMLInner("preboss", tmp);
 		
