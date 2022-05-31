@@ -112,7 +112,7 @@ tr.bl{color: white;}
 <table width="1250" border="0" align="center" cellpadding="0" cellspacing="0" class="table bt">
   <tbody>
     <tr>
-      <td width="25%" id="preboss" valign="bottom" align="center">&nbsp;</td>
+      <td width="25%" id="prevboss" valign="bottom" align="center">&nbsp;</td>
       <td width="50%" id="currboss" valign="bottom" align="center">&nbsp;</td>
       <td width="25%" id="nextboss" valign="bottom" align="center">&nbsp;</td>
     </tr>
@@ -478,22 +478,22 @@ tr.bl{color: white;}
 			if (m < 0) {m = 6;}
 			previousBoss[0] = listTime[listSize-2];
 			previousBoss[1] = bossTable[m][listTime[listSize-2]];
-			previousBoss[2] = w;
+			previousBoss[2] = m;
 			nextBoss[0] = listTime[listSize-3];
 			nextBoss[1] = bossTable[w][listTime[listSize-3]];
-			nextBoss[2] = m;
+			nextBoss[2] = w;
 			
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h1>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
 
 			//countdown update
-			setHighlight(`${weekDay}-${listTime[listSize-4]}`, alertType, true);
+			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
 
 			//playAlert(dateDiff, alertType);
 			
 			//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
 		}
-
+		
 		//next boss or followed boss
 		n = 0;
 		tmp1 = ''; tmp2 = '';
@@ -535,10 +535,8 @@ tr.bl{color: white;}
 		
 		//countup update *previous
 		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
-		
-		console.log(`${previousBoss[2]}-${previousBoss[0]}`)
 		setHighlight(`${previousBoss[2]}-${previousBoss[0]}`, alertType, false);
-		setHTMLInner("preboss", tmp);
+		setHTMLInner("prevboss", tmp);
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
