@@ -318,6 +318,25 @@ tr.bl{color: white;}
 	function setInner(id, str) {
 		document.getElementById(id).innerHTML = str;
 	}
+	
+	function setCSSClass(id, cn) {
+		document.getElementById(id).className = cn;
+	}
+	
+	function setHighlight(id, alertType, bool) {
+		switch(alertType) {
+			case "world-boss":
+			case "field-boss":
+				setCSSClass(id, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-node":
+				setCSSClass(`war-node`, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-castle":
+				setCSSClass(`war-castle`, bool ? `tr bl hl` : `tr bl`);
+				break;
+		}
+	}
 
 	var listTime, listSize, weekDay_tmp, bossPosition;
 	setInterval(function() {
@@ -401,31 +420,29 @@ tr.bl{color: white;}
 					if (m < 0) {m = 6;}
 					previousBoss[0] = listTime[listSize-1];
 					previousBoss[1] = bossTable[m][listTime[listSize-1]];
+					previousBoss[2] = m;
 				} else {
 					previousBoss[0] = listTime[i-1];
 					previousBoss[1] = bossTable[weekDay][listTime[i-1]];
+					previousBoss[2] = weekDay;
 				}
 				if (i == (listSize-5)) {
 					m = weekDay+1; //fix (0)Sat and (6) Sun
 					if (m > 6) {m = 0;}
 					nextBoss[0] = listTime[listSize-4];
 					nextBoss[1] = bossTable[m][listTime[listSize-4]];
+					nextBoss[2] = m;
 				} else {
 					nextBoss[0] = listTime[i+1];
 					nextBoss[1] = bossTable[weekDay][listTime[i+1]];
+					nextBoss[2] = weekDay;
 					//i = bossPosition
 				}
 
 				//countdown update
 				document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
-				switch(alertType) {
-						case "world-boss":
-						case "field-boss":
-							document. getElementById(`${weekDay}-${listTime[i]}`).className = "tr bl hl";
-						break;
-						case "war-node": document. getElementById(`war-node`).className = "tr bl hl"; break;
-						case "war-castle": document. getElementById(`war-castle`).className = "tr bl hl"; break;
-				}
+				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
+
 				//document.getElementById(`${weekDay}-${listTime[i]}`).style = ;
 				//playAlert(dateDiff, alertType);
 				
@@ -467,14 +484,8 @@ tr.bl{color: white;}
 
 			//countdown update
 			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
-			switch(alertType) {
-					case "world-boss":
-					case "field-boss":
-						document. getElementById(`${weekDay}-${listTime[listSize-4]}`).className = "tr bl hl";
-					break;
-					case "war-node": document. getElementById(`war-node`).className = "tr bl hl"; break;
-					case "war-castle": document. getElementById(`war-castle`).className = "tr bl hl"; break;
-			}
+			setHighlight(`${weekDay}-${listTime[listSize-4]}`, alertType, true);
+
 			//playAlert(dateDiff, alertType);
 			
 			//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
@@ -500,14 +511,6 @@ tr.bl{color: white;}
 			
 		//countdown update
 		document.getElementById(`nextTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
-		switch(alertType) {
-			case "world-boss":
-			case "field-boss":
-				document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
-			break;
-			case "war-node": document. getElementById(`war-node`).className = "tr bl"; break;
-			case "war-castle": document. getElementById(`war-castle`).className = "tr bl"; break;
-		}
 		
 		//previous boss
 		n = 0;
@@ -529,14 +532,7 @@ tr.bl{color: white;}
 		
 		//countup update *previous
 		document.getElementById(`previousTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
-		switch(alertType) {
-			case "world-boss":
-			case "field-boss":
-				document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
-			break;
-			case "war-node": document. getElementById(`war-node`).className = "tr bl"; break;
-			case "war-castle": document. getElementById(`war-castle`).className = "tr bl"; break;
-		}
+		setHighlight(`${previousBoss[2]}-${previousBoss[0]}`, alertType, false);
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
