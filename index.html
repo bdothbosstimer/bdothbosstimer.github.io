@@ -77,6 +77,13 @@ table.bl {
   //width: 100%;
 }
 
+table.bt {
+  border-collapse: collapse;
+  //width: 100%;
+}
+
+td.bt {text-align: center;}
+td.bc {color: #ffffff;}
 th.bl, td.bl {
   //text-align: left;
   //padding: 5px;
@@ -101,43 +108,41 @@ tr.bl{color: white;}
 </style>
 </head>
 <body>
-	
-<table style="margin-left: auto; margin-right: auto;" width="1250">
-<tbody>
-<tr>
-<td valign="bottom" align="center"><img src="imgs/blank.png" id="previousBoss0" width="64" height="64" /></td>
-<td valign="bottom" align="center"><img src="imgs/blank.png" id="previousBoss1" width="64" height="64" /></td>
-<td valign="bottom" align="center"><img src="imgs/blank.png" id="currentBoss0" width="360" height="360"/></td>
-<td valign="bottom" align="center"><img src="imgs/blank.png" id="currentBoss1" width="360" height="360"/></td>
-<td valign="bottom" align="center"><img src="imgs/blank.png" id="nextBoss0" width="64" height="64" /></td>
-<td valign="bottom" align="center"><img src="imgs/blank.png" id="nextBoss1" width="64" height="64" /></td>
-</tr>
-<tr>
-<td id="previousBossName0" width="12.5%" valign="middle" align="center">&nbsp;</td>
-<td id="previousBossName1" width="12.5%" valign="middle" align="center">&nbsp;</td>
-<td id="currentBossName0" width="25%" valign="middle" align="center">&nbsp;</td>
-<td id="currentBossName1" width="25%" valign="middle" align="center">&nbsp;</td>
-<td id="nextBossName0" width="12.5%" valign="middle" align="center">&nbsp;</td>
-<td id="nextBossName1" width="12.5%" valign="middle" align="center">&nbsp;</td>
-</tr>
-<tr>
-<td colspan="2" id="previousTimer" valign="top" align="center"></td>
-<td colspan="2" id="currentTimer" valign="top" align="center"></td>
-<td colspan="2" id="nextTimer" valign="top" align="center"></td>
-</tr>
-<tr>
-<td colspan="3" id="ingame" valign="top" align="left" style="color: #ffffff;"></td>
-<td colspan="3" id="imperial" valign="top" align="right" style="color: #ffffff;"></td>
-</tr>
-<tr>
-<td colspan="3" id="daynight" valign="top" align="left" style="color: #ffffff;"></td>
-<td colspan="3" id="daily" valign="top" align="right" style="color: #ffffff;"></td>
-</tr>
-<tr>
-<td colspan="3" id="blackspirit" valign="top" align="left" style="color: #ffffff;"></td>
-<td colspan="3" id="bartering" valign="top" align="right" style="color: #ffffff;"></td>
-</tr>
-</tbody>
+
+<table width="1250" border="0" align="center" cellpadding="0" cellspacing="0" class="table bt">
+  <tbody>
+    <tr>
+      <td width="25%" id="preboss" valign="bottom" align="center">&nbsp;</td>
+      <td width="50%" id="currboss" valign="bottom" align="center">&nbsp;</td>
+      <td width="25%" id="nextboss" valign="bottom" align="center">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="ingame">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="imperial">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="daynight">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="bartering">&nbsp;</td>
+    </tr>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
 </table>
 
 <table width="1250" border="0" align="center" cellpadding="15" cellspacing="0" class="table bl">
@@ -234,21 +239,10 @@ tr.bl{color: white;}
     </tr>
   </tbody>
 </table>
-<table border="0" align="center">
-  <tbody>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-  </tbody>
-</table>
-<p>
-  <script src="js/boss.js"></script>
-</p>
+
+<br><center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong><br><img src="imgs/github.png"/></a></center><br>
+
+<script src="js/boss.js"></script>
 <script>
 	function formatSeconds(n) {
 		var date = new Date(1970, 0, 1);
@@ -315,7 +309,7 @@ tr.bl{color: white;}
 			minutes     = (minutes < 10) ? "0" + minutes : minutes;
 			return hours + ":" + minutes + " " + amPm;
 		}
-	function setInner(id, str) {
+	function setHTMLInner(id, str) {
 		document.getElementById(id).innerHTML = str;
 	}
 	
@@ -342,7 +336,7 @@ tr.bl{color: white;}
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, tmp;
+		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, tmp, tmp1, tmp2;
 
 		//setup
 		if (weekDay !== weekDay_tmp) {
@@ -396,23 +390,25 @@ tr.bl{color: white;}
 		}
 		
 		//current boss will spawn
-		n = 0;
+		n = 0; tmp1 = ''; tmp2 = '';
+		tmp = '<table border="0" align="center" cellpadding="0" cellspacing="0"><tbody>';
 		for(let i = bossPosition; i <= (listSize-5); i++) {
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
 				for(let b in bossTable[weekDay][listTime[i]]) {
-					document.getElementById(`currentBoss${n}`).src= bossTable[weekDay][listTime[i]][b]["img"];
-					document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossTable[weekDay][listTime[i]][b]["name"]}`;
+
 					alertType = bossTable[weekDay][listTime[i]][b]["type"];
+					tmp1 += '<td class="td bt"><img src="'+bossTable[weekDay][listTime[i]][b]["img"]+'" width="360" height="360"/></td>';
+					tmp2 += '<td class="td bt"><h3>'+bossTable[weekDay][listTime[i]][b]["name"]+'</td>';
+					
+					//tmp += `<img src="${bossTable[weekDay][listTime[i]][b]["img"]}" width="360" height="360"/>`;
+
+					
 					//bossTable[weekDay][listTime[i]][b]["img"]
 					//bossTable[weekDay][listTime[i]][b]["name"]
 					//bossTable[weekDay][listTime[i]][b]["type"]
 					n++;
-				}
-				if (n == 1) {
-					document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
-					document.getElementById(`currentBossName${n}`).innerHTML= "";
 				}
 
 				if (i == 0) {
@@ -438,10 +434,12 @@ tr.bl{color: white;}
 					nextBoss[2] = weekDay;
 					//i = bossPosition
 				}
-
+				
 				//countdown update
-				document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
+				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h1>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
 				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
+				
+				setHTMLInner("currboss", tmp);
 
 				//document.getElementById(`${weekDay}-${listTime[i]}`).style = ;
 				//playAlert(dateDiff, alertType);
@@ -458,33 +456,36 @@ tr.bl{color: white;}
 		//Fix next day boss (current boss spawn)
 		if (bossPosition > (listSize-5)) {
 			n = 0;
-			w = weekDay+1; 
+			w = weekDay+1;
 			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
+			tmp1 = ''; tmp2 = '';
+			tmp = '<table border="0"><tbody>';
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			for(let b in bossTable[w][listTime[listSize-4]]) {
-				document.getElementById(`currentBoss${n}`).src= bossTable[w][listTime[listSize-4]][b]["img"];
-				document.getElementById(`currentBossName${n}`).innerHTML= `<h3>${bossTable[w][listTime[listSize-4]][b]["name"]}`;
+		
 				alertType = bossTable[w][listTime[listSize-4]][b]["type"];
+				tmp1 += '<td class="td bt"><img src="'+bossTable[w][listTime[listSize-4]][b]["img"]+'" width="360" height="360"/></td>';
+				tmp2 += '<td class="td bt"><h3>'+bossTable[w][listTime[listSize-4]][b]["name"]+'</td>';
+				
 				//bossTable[w][listTime[listSize-3]][b]["img"]
 				//bossTable[w][listTime[listSize-3]][b]["name"]
 				//bossTable[w][listTime[listSize-3]][b]["type"]
 				n++;
 			}
-			if (n == 1) {
-				document.getElementById(`currentBoss${n}`).src= `imgs/blank.png`;
-				document.getElementById(`currentBossName${n}`).innerHTML= "";
-			}
+			
 			m = w-1; //fix (0)Sat and (6) Sun
 			if (m < 0) {m = 6;}
 			previousBoss[0] = listTime[listSize-2];
 			previousBoss[1] = bossTable[m][listTime[listSize-2]];
 			nextBoss[0] = listTime[listSize-3];
 			nextBoss[1] = bossTable[w][listTime[listSize-3]];
+			
+			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h1>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
 
 			//countdown update
-			document.getElementById(`currentTimer`).innerHTML = `<h1>${formatSeconds(dateDiff)}`;
 			setHighlight(`${weekDay}-${listTime[listSize-4]}`, alertType, true);
+			setHTMLInner("currboss", tmp);
 
 			//playAlert(dateDiff, alertType);
 			
@@ -493,46 +494,46 @@ tr.bl{color: white;}
 
 		//next boss or followed boss
 		n = 0;
+		tmp1 = ''; tmp2 = '';
+		tmp = '<table border="0"><tbody>';
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		for(let b in nextBoss[1]) {
-			document.getElementById(`nextBoss${n}`).src= nextBoss[1][b]["img"];
-			document.getElementById(`nextBossName${n}`).innerHTML= `<h4>${nextBoss[1][b]["name"]}`;
+
 			alertType = nextBoss[1][b]["type"];
+			tmp1 += '<td class="td bt"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
+			tmp2 += '<td class="td bt"><h4>'+nextBoss[1][b]["name"]+'</td>';
 			//nextBoss[1][b]["img"]
 			//nextBoss[1][b]["name"]
 			//nextBoss[1][b]["type"]
 			n++;
 		}
-		if (n == 1) {
-			document.getElementById(`nextBoss${n}`).src= `imgs/blank.png`;
-			document.getElementById(`nextBossName${n}`).innerHTML= "";
-		}
-			
+		
 		//countdown update
-		document.getElementById(`nextTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
+		setHTMLInner("nextboss", tmp);
 		
 		//previous boss
 		n = 0;
+		tmp1 = ''; tmp2 = '';
+		tmp = '<table border="0"><tbody>';
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
 		dateDiff = Math.round((date.getTime() - dateDiff.getTime()) / 1000);
 		for(let b in previousBoss[1]) {
-			document.getElementById(`previousBoss${n}`).src= previousBoss[1][b]["img"];
-			document.getElementById(`previousBossName${n}`).innerHTML= `<h4>${previousBoss[1][b]["name"]}`;
+
 			alertType = previousBoss[1][b]["type"];
+			tmp1 += '<td class="td bt"><img src="'+previousBoss[1][b]["img"]+'" width="64" height="64"/></td>';
+			tmp2 += '<td class="td bt"><h4>'+previousBoss[1][b]["name"]+'</td>';
 			//previousBoss[1][b]["img"]
 			//previousBoss[1][b]["name"]
 			//previousBoss[1][b]["type"]
 			n++;
 		}
-		if (n == 1) {
-			document.getElementById(`previousBoss${n}`).src= `imgs/blank.png`;
-			document.getElementById(`previousBossName${n}`).innerHTML= "";
-		}
 		
 		//countup update *previous
-		document.getElementById(`previousTimer`).innerHTML = `<h2>${formatSeconds(dateDiff)}`;
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
 		setHighlight(`${previousBoss[2]}-${previousBoss[0]}`, alertType, false);
+		setHTMLInner("preboss", tmp);
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
