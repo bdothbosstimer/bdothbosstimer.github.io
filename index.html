@@ -245,7 +245,11 @@ tr.bl{color: white;}
 <br><center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong><br><img src="imgs/github.png"/></a></center><br>
 
 <script src="js/boss.js"></script>
+<script src="js/NoSleep.min.js"></script>
 <script>
+	var noSleep = new NoSleep();
+	noSleep.enable();
+
 	function formatSeconds(n) {
 		var date = new Date(1970, 0, 1);
 		date.setSeconds(n);
