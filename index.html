@@ -135,18 +135,12 @@ tr.bl{color: white;}
     <tr>
       <td class="td bc" valign="bottom" align="left" id="daynight">&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="td bc" valign="bottom" align="right" id="traderun">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
       <td class="td bc" valign="bottom" align="right" id="bartering">&nbsp;</td>
-    </tr>
     </tr>
   </tbody>
 </table>
@@ -340,8 +334,8 @@ tr.bl{color: white;}
 		}
 	}
 
-	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition, tradePosition;
-	const imperialSize = imperialTable.length - 1, tradeSize = tradeTable.length - 1;
+	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition;
+	const imperialSize = imperialTable.length - 1;
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
@@ -396,7 +390,6 @@ tr.bl{color: white;}
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
 			imperialPosition = 0;
-			tradePosition = 0;
 			bossPosition = 0;
 			IsUpdate = [0];
 		}
@@ -585,19 +578,6 @@ tr.bl{color: white;}
 			}
 		}
 		
-		var tradeString;
-		if (tradePosition > tradeSize) tradePosition = 0;
-		for(let i = tradePosition; i <= tradeSize; i++) {
-			dateDiff = new Date(`${dateStr} ${tradeTable[i]}`);
-			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
-			if (dateDiff >= 0) {
-				tradeString = `◈ Trade in: ${formatSeconds(dateDiff)}`;
-				break;
-			} else {
-				tradePosition++;
-			}
-		}
-		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 		var dailyString = `❀ Daily in: ${formatSeconds(dateDiff)}`;
@@ -615,7 +595,6 @@ tr.bl{color: white;}
 		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
 		document.getElementById(`daily`).innerHTML= dailyString;
 		document.getElementById(`bartering`).innerHTML= barteringString;
-		document.getElementById(`traderun`).innerHTML= tradeString;
 		document.getElementById(`imperial`).innerHTML= imperialString;
 		
 	}, 1000);
