@@ -135,10 +135,15 @@ tr.bl{color: white;}
     <tr>
       <td class="td bc" valign="bottom" align="left" id="daynight">&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="traderun">&nbsp;</td>
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td class="td bc" valign="bottom" align="right" id="bartering">&nbsp;</td>
     </tr>
@@ -335,7 +340,8 @@ tr.bl{color: white;}
 		}
 	}
 
-	var listTime, listSize, weekDay_tmp, bossPosition;
+	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition, tradePosition;
+	const imperialSize = imperialTable.length - 1, tradeSize = tradeTable.length - 1;
 	setInterval(function() {
 		let date = new Date(), weekDay = date.getDay();
 		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
@@ -389,7 +395,10 @@ tr.bl{color: white;}
 			
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
+			imperialPosition = 0;
+			tradePosition = 0;
 			bossPosition = 0;
+			IsUpdate = [0];
 		}
 		
 		//current boss will spawn
@@ -555,13 +564,39 @@ tr.bl{color: white;}
 			finalGameHour = 12;
 		}
 		
-		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
-		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
+		/*var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
+		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;*/
 
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
+		
+		var imperialString;
+		if (imperialPosition > imperialSize) imperialPosition = 0;
+		for(let i = imperialPosition; i <= imperialSize; i++) {
+			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
+			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			if (dateDiff >= 0) {
+				imperialString = `♕ Imperial in: ${formatSeconds(dateDiff)}`;
+				break;
+			} else {
+				imperialPosition++;
+			}
+		}
+		
+		var tradeString;
+		if (tradePosition > tradeSize) tradePosition = 0;
+		for(let i = tradePosition; i <= tradeSize; i++) {
+			dateDiff = new Date(`${dateStr} ${tradeTable[i]}`);
+			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			if (dateDiff >= 0) {
+				tradeString = `◈ Trade in: ${formatSeconds(dateDiff)}`;
+				break;
+			} else {
+				tradePosition++;
+			}
+		}
 		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
@@ -577,9 +612,10 @@ tr.bl{color: white;}
 
 		document.getElementById(`ingame`).innerHTML= timeString;
 		document.getElementById(`daynight`).innerHTML= dayNightString;
+		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
 		document.getElementById(`daily`).innerHTML= dailyString;
 		document.getElementById(`bartering`).innerHTML= barteringString;
-		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
+		document.getElementById(`traderun`).innerHTML= tradeString;
 		document.getElementById(`imperial`).innerHTML= imperialString;
 		
 	}, 1000);
