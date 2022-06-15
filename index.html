@@ -566,7 +566,7 @@ tr.bl{color: white;}
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 		
 		var imperialString;
-		if (imperialPosition > imperialSize) imperialPosition = 0;
+		//if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
