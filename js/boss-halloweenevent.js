@@ -25,6 +25,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -48,6 +53,11 @@ const bossTable = {
 			"16:00:00": [
 			],
 			"17:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			],
 			"19:00:00": [
 				{
@@ -110,6 +120,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -156,6 +171,11 @@ const bossTable = {
 				}
 			],
 			"23:30:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			],
 			"23:45:00": [
 			]
@@ -185,6 +205,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -233,6 +258,11 @@ const bossTable = {
 			"23:30:00": [
 			],
 			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			]
 		},
 		3:	{//We
@@ -265,6 +295,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -340,6 +375,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -388,6 +428,11 @@ const bossTable = {
 			"23:30:00": [
 			],
 			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			]
 		},
 		5:	{//Fr
@@ -415,6 +460,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -463,10 +513,20 @@ const bossTable = {
 			"23:30:00": [
 			],
 			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			]
 		},
 		6:	{//Sa
 			"00:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			],
 			"00:30:00": [
 				{
@@ -490,6 +550,11 @@ const bossTable = {
 				}
 			],
 			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			],
 			"14:00:00": [
 				{
@@ -518,6 +583,11 @@ const bossTable = {
 				}
 			],
 			"17:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			],
 			"19:00:00": [
 				{
