@@ -1,6 +1,8 @@
 const imperialTable = ["03:00:00", "06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00", "24:00:00"];
 const bossTable = {
 		0:	{//Su
+			"00:00:00": [
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -22,6 +24,13 @@ const bossTable = {
 					"img": "imgs/karanda.png"
 				}
 			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -39,6 +48,15 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "เบลล์",
 					"img": "imgs/vell.png"
+				}
+			],
+			"16:00:00": [
+			],
+			"17:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
 				}
 			],
 			"19:00:00": [
@@ -71,9 +89,15 @@ const bossTable = {
 					"name": "นูเวอร์",
 					"img": "imgs/nouver.png"
 				}
+			],
+			"23:30:00": [
+			],
+			"23:45:00": [
 			]
 		},
 		1:	{//Mo
+			"00:00:00": [
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -95,6 +119,13 @@ const bossTable = {
 					"img": "imgs/nouver.png"
 				}
 			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -108,6 +139,10 @@ const bossTable = {
 				}
 			],
 			"15:00:00": [
+			],
+			"16:00:00": [
+			],
+			"17:00:00": [
 			],
 			"19:00:00": [
 				{
@@ -134,9 +169,20 @@ const bossTable = {
 					"name": "ผู้ทำลายแห่งมีลม็อก โอฟิน",
 					"img": "imgs/offin.png"
 				}
+			],
+			"23:30:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
+			],
+			"23:45:00": [
 			]
 		},
 		2:	{//Tu
+			"00:00:00": [
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -158,6 +204,13 @@ const bossTable = {
 					"img": "imgs/karanda.png"
 				}
 			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -171,6 +224,10 @@ const bossTable = {
 				}
 			],
 			"15:00:00": [
+			],
+			"16:00:00": [
+			],
+			"17:00:00": [
 			],
 			"19:00:00": [
 				{
@@ -197,9 +254,20 @@ const bossTable = {
 					"name": "กามอส",
 					"img": "imgs/garmoth.png"
 				}
+			],
+			"23:30:00": [
+			],
+			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			]
 		},
 		3:	{//We
+			"00:00:00": [
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -226,6 +294,13 @@ const bossTable = {
 					"img": "imgs/nouver.png"
 				}
 			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -239,6 +314,10 @@ const bossTable = {
 				}
 			],
 			"15:00:00": [
+			],
+			"16:00:00": [
+			],
+			"17:00:00": [
 			],
 			"19:00:00": [
 				{
@@ -265,9 +344,20 @@ const bossTable = {
 					"name": "เบลล์",
 					"img": "imgs/vell.png"
 				}
+			],
+			"23:30:00": [
+			],
+			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			]
 		},
 		4:	{//Th
+			"00:00:00": [
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -289,6 +379,13 @@ const bossTable = {
 					"img": "imgs/kzarka.png"
 				}
 			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -302,6 +399,10 @@ const bossTable = {
 				}
 			],
 			"15:00:00": [
+			],
+			"16:00:00": [
+			],
+			"17:00:00": [
 			],
 			"19:00:00": [
 				{
@@ -328,9 +429,15 @@ const bossTable = {
 					"name": "กามอส",
 					"img": "imgs/garmoth.png"
 				}
+			],
+			"23:30:00": [
+			],
+			"23:45:00": [
 			]
 		},
 		5:	{//Fr
+			"00:00:00": [
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -352,6 +459,13 @@ const bossTable = {
 					"img": "imgs/kzarka.png"
 				}
 			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -365,6 +479,10 @@ const bossTable = {
 				}
 			],
 			"15:00:00": [
+			],
+			"16:00:00": [
+			],
+			"17:00:00": [
 			],
 			"19:00:00": [
 				{
@@ -391,9 +509,25 @@ const bossTable = {
 					"name": "ผู้ทำลายแห่งมีลม็อก โอฟิน",
 					"img": "imgs/offin.png"
 				}
+			],
+			"23:30:00": [
+			],
+			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
 			]
 		},
 		6:	{//Sa
+			"00:00:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
+			],
 			"00:30:00": [
 				{
 					"type": "world-boss",
@@ -413,6 +547,13 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "เทพแห่งการทุจริต คจาคาร์",
 					"img": "imgs/kzarka.png"
+				}
+			],
+			"12:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
 				}
 			],
 			"14:00:00": [
@@ -441,6 +582,13 @@ const bossTable = {
 					"img": "imgs/shadow.png"
 				}
 			],
+			"17:00:00": [
+				{
+					"type": "event-boss",
+					"name": "อิลซาเบลล่า",
+					"img": "imgs/Isabella.png"
+				}
+			],
 			"19:00:00": [
 				{
 					"type": "world-boss",
@@ -461,6 +609,10 @@ const bossTable = {
 				}
 			],
 			"23:00:00": [
+			],
+			"23:30:00": [
+			],
+			"23:45:00": [
 			]
 		}
 			
