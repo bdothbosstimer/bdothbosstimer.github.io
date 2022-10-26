@@ -348,11 +348,6 @@ const bossTable = {
 			"23:30:00": [
 			],
 			"23:45:00": [
-				{
-					"type": "event-boss",
-					"name": "จิตใจเด็กน้อย No.12",
-					"img": "imgs/no12.png"
-				}
 			]
 		},
 		4:	{//Th
@@ -433,6 +428,11 @@ const bossTable = {
 			"23:30:00": [
 			],
 			"23:45:00": [
+				{
+					"type": "event-boss",
+					"name": "จิตใจเด็กน้อย No.12",
+					"img": "imgs/no12.png"
+				}
 			]
 		},
 		5:	{//Fr
