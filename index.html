@@ -562,7 +562,7 @@ tr.bl{color: white;}
 		}
 		
 		var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
-		document.getElementById(`dayprogress`).value= 100 - dayProgress;
+		document.getElementById(`dayprogress`).value= dayProgress;
 		
 		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
 		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
