@@ -142,6 +142,9 @@ tr.bl{color: white;}
       <td>&nbsp;</td>
       <td class="td bc" valign="bottom" align="right" id="bartering">&nbsp;</td>
     </tr>
+	<tr>
+      <td colspan="3"><br><progress id="dayprogress" value="0" max="100" style="height:24px;width:100%;"></progress></td>
+	</tr>
   </tbody>
 </table>
 
@@ -558,15 +561,18 @@ tr.bl{color: white;}
 			finalGameHour = 12;
 		}
 		
-		/*var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
-		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;*/
+		var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
+		document.getElementById(`dayprogress`).value= 100 - dayProgress;
+		
+		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay));
+		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 		
-		var imperialString;
+		/*var imperialString;
 		//if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
@@ -577,7 +583,7 @@ tr.bl{color: white;}
 			} else {
 				imperialPosition++;
 			}
-		}
+		}*/
 		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
