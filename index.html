@@ -259,6 +259,12 @@ tr.bl{color: white;}
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
+	function convertSeconds(n) {
+		var date = new Date(1970, 0, 1);
+		date.setSeconds(n);
+		return date.getTime()/1000;
+	}
+	
 	function perc2color(perc) {
 		var r, g, b = 0;
 		if(perc < 50) {
@@ -481,6 +487,9 @@ tr.bl{color: white;}
 			tmp = '<table border="0" width="100%"><tbody>';
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			if (dateDiff <= 0) {
+				dateDiff = Math.abs(Math.abs(dateDiff) - 86000); //86000sec = 24hour
+			}
 			for(let b in bossTable[w][listTime[listSize-4]]) {
 		
 				alertType = bossTable[w][listTime[listSize-4]][b]["type"];
@@ -499,7 +508,7 @@ tr.bl{color: white;}
 			nextBoss[2] = w;
 			
 			//countdown update
-			let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : "#FFFFFF";
+			fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : "#FFFFFF";
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
