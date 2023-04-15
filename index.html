@@ -454,10 +454,7 @@ tr.bl{color: white;}
 				}
 				
 				//countdown update
-				let fadecolor = "#FFFFFF";
-				if (dateDiff <= 1800) {
-					perc2color((dateDiff/1800)*100)
-				}
+				let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : "#FFFFFF";
 				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
 				setHTMLInner("currboss", tmp);
@@ -502,10 +499,7 @@ tr.bl{color: white;}
 			nextBoss[2] = w;
 			
 			//countdown update
-			let fadecolor = "#FFFFFF";
-			if (dateDiff <= 1800) {
-				perc2color((dateDiff/1800)*100)
-			}
+			let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : "#FFFFFF";
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
@@ -595,7 +589,7 @@ tr.bl{color: white;}
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 		
 		
-		var trading = Math.ceil(secsIntoGameDay <= 7200 ? (7200 - secsIntoGameDay) : (21600 - secsIntoGameDay)); //+120min
+		var trading = Math.ceil(secsIntoGameDay <= 6000 ? (6000 - secsIntoGameDay) : (20400 - secsIntoGameDay));
 		/*var imperialString;
 		//if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
