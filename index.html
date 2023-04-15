@@ -259,12 +259,6 @@ tr.bl{color: white;}
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
-	function convertSeconds(n) {
-		var date = new Date(1970, 0, 1);
-		date.setSeconds(n);
-		return date.getTime()/1000;
-	}
-	
 	function perc2color(perc) {
 		var r, g, b = 0;
 		if(perc < 50) {
