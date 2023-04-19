@@ -482,7 +482,7 @@ tr.bl{color: white;}
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff <= 0) {
-				dateDiff = Math.abs(Math.abs(dateDiff) - 86000); //86000sec = 24hour
+				dateDiff = 86400 - Math.abs(dateDiff); //86400 = 24hour
 			}
 			for(let b in bossTable[w][listTime[listSize-4]]) {
 		
