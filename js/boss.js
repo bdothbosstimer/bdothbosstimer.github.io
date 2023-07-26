@@ -26,6 +26,13 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -66,6 +73,13 @@ const bossTable = {
 					"type": "war-node",
 					"name": "สงครามฐาน",
 					"img": "imgs/warnode.png"
+				}
+			],
+			"22:15:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
 				}
 			],
 			"23:00:00": [
@@ -111,6 +125,13 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -146,6 +167,13 @@ const bossTable = {
 					"type": "war-node",
 					"name": "สงครามฐาน",
 					"img": "imgs/warnode.png"
+				}
+			],
+			"22:15:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
 				}
 			],
 			"23:00:00": [
@@ -186,6 +214,13 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -223,12 +258,14 @@ const bossTable = {
 					"img": "imgs/warnode.png"
 				}
 			],
-			"23:00:00": [
+			"22:15:00": [
 				{
 					"type": "world-boss",
 					"name": "กามอส",
 					"img": "imgs/garmoth.png"
 				}
+			],
+			"23:00:00": [
 			],
 			"23:30:00": [
 			],
@@ -266,6 +303,13 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -301,6 +345,13 @@ const bossTable = {
 					"type": "war-node",
 					"name": "สงครามฐาน",
 					"img": "imgs/warnode.png"
+				}
+			],
+			"22:15:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
 				}
 			],
 			"23:00:00": [
@@ -341,6 +392,13 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -378,12 +436,14 @@ const bossTable = {
 					"img": "imgs/warnode.png"
 				}
 			],
-			"23:00:00": [
+			"22:15:00": [
 				{
 					"type": "world-boss",
 					"name": "กามอส",
 					"img": "imgs/garmoth.png"
 				}
+			],
+			"23:00:00": [
 			],
 			"23:30:00": [
 			],
@@ -416,6 +476,13 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -451,6 +518,13 @@ const bossTable = {
 					"type": "war-node",
 					"name": "สงครามฐาน",
 					"img": "imgs/warnode.png"
+				}
+			],
+			"22:15:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
 				}
 			],
 			"23:00:00": [
@@ -491,6 +565,20 @@ const bossTable = {
 			],
 			"12:00:00": [
 			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
+			"13:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
+			],
 			"14:00:00": [
 				{
 					"type": "world-boss",
@@ -504,11 +592,6 @@ const bossTable = {
 				}
 			],
 			"15:00:00": [
-				{
-					"type": "world-boss",
-					"name": "กามอส",
-					"img": "imgs/garmoth.png"
-				}
 			],
 			"16:00:00": [
 				{
@@ -518,6 +601,11 @@ const bossTable = {
 				}
 			],
 			"17:00:00": [
+				{
+					"type": "world-boss",
+					"name": "กามอส",
+					"img": "imgs/garmoth.png"
+				}
 			],
 			"19:00:00": [
 				{
@@ -537,6 +625,8 @@ const bossTable = {
 					"name": "สงครามปราสาท",
 					"img": "imgs/warcastle.png"
 				}
+			],
+			"22:15:00": [
 			],
 			"23:00:00": [
 			],
