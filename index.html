@@ -605,8 +605,8 @@ tr.bl{color: white;}
 		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
 		document.getElementById(`dayprogress`).value= secsIntoGameDay;
 		
-		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)); //+40min
-		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
+		//var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)); //+40min
+		//var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		
@@ -614,9 +614,10 @@ tr.bl{color: white;}
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 		
 		
-		var trading = Math.ceil(secsIntoGameDay <= 6000 ? (6000 - secsIntoGameDay) : (20400 - secsIntoGameDay));
-		/*var imperialString;
-		//if (imperialPosition > imperialSize) imperialPosition = 0;
+		//var trading = Math.ceil(secsIntoGameDay <= 6000 ? (6000 - secsIntoGameDay) : (20400 - secsIntoGameDay));
+		
+		var imperialString;
+		if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
 			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
@@ -626,7 +627,7 @@ tr.bl{color: white;}
 			} else {
 				imperialPosition++;
 			}
-		}*/
+		}
 		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
