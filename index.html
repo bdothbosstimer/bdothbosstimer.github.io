@@ -288,6 +288,16 @@ tr.bl{color: white;}
 		return '#' + ('000000' + h.toString(16)).slice(-6);
 	}
 	
+	function perc2color2(perc) {
+		const startColor = [255, 255, 255]; // White
+		const endColor = [0, 255, 0];       // Green
+		const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * (perc / 100));
+		const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * (perc / 100));
+		const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * (perc / 100));
+		var h = r * 0x10000 + g * 0x100 + b * 0x1;
+		return '#' + ('000000' + h.toString(16)).slice(-6);
+	}
+	
 	function playAlert(dateDiff, alertType) {
 		const play = (p) => {
 			audio = new Audio(p);
@@ -367,18 +377,17 @@ tr.bl{color: white;}
 		}
 	}
 	
-	function getTime() {
-		var local = new Date();
-		var utc = Date.UTC(local.getFullYear(), local.getMonth(), local.getDate(), local.getHours(), local.getMinutes(), local.getSeconds(), local.getMilliseconds());
-		var tz = (utc - local.getTime()) / (60 * 60 * 1000);
-		return tz;
+	function THTime(originalDate) {
+		const utcTime = new Date(originalDate.getTime() + originalDate.getTimezoneOffset() * 60000);
+		const thailandTime = new Date(utcTime.getTime() + 7 * 3600000);
+		return thailandTime;
 	}
 
 	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition;
 	const imperialSize = imperialTable.length - 1;
 	setInterval(function() {
-		let date = new Date(), weekDay = date.getDay();
-		let dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
+		const date = new Date(THTime(new Date)), weekDay = date.getDay();
+		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
 		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2;
 
 		//setup
@@ -431,7 +440,6 @@ tr.bl{color: white;}
 			weekDay_tmp = weekDay;
 			imperialPosition = 0;
 			bossPosition = 0;
-			IsUpdate = [0];
 		}
 		
 		//current boss will spawn
@@ -476,7 +484,7 @@ tr.bl{color: white;}
 				}
 				
 				//countdown update
-				let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : "#FFFFFF";
+				let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 2700 ? perc2color2(100-(((dateDiff-1800)/900)*100)) : "#FFFFFF";
 				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
 				setHTMLInner("currboss", tmp);
@@ -524,7 +532,7 @@ tr.bl{color: white;}
 			nextBoss[2] = w;
 			
 			//countdown update
-			fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : "#FFFFFF";
+			let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 2700 ? perc2color2(100-(((dateDiff-1800)/900)*100)) : "#FFFFFF";
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
