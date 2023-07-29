@@ -484,7 +484,7 @@ tr.bl{color: white;}
 				}
 				
 				//countdown update
-				let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 2700 ? perc2color2(100-(((dateDiff-1800)/900)*100)) : "#FFFFFF";
+				let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
 				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
 				setHTMLInner("currboss", tmp);
@@ -532,7 +532,7 @@ tr.bl{color: white;}
 			nextBoss[2] = w;
 			
 			//countdown update
-			let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 2700 ? perc2color2(100-(((dateDiff-1800)/900)*100)) : "#FFFFFF";
+			let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
