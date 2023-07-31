@@ -418,7 +418,7 @@ tr.bl{color: white;}
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
 		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2, fadecolor, fadedate;
 		//setHTMLInner("nowtime", '<h3>'+date.toLocaleDateString('th-TH', {year: 'numeric',month: 'long',day: 'numeric',weekday: 'long'}));
-		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date));
+		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
 		//setup
 		if (weekDay !== weekDay_tmp) {
