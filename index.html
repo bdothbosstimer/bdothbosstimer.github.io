@@ -117,6 +117,9 @@ tr.bl{color: white;}
 
 <table width="1250" border="0" align="center" cellpadding="0" cellspacing="0" class="table bt">
   <tbody>
+	<tr>
+      <td colspan="3" class="td bc" id ="nowtime" valign="middle" align="center">&nbsp;</td>
+	</tr>
     <tr>
       <td width="25%" id="prevboss" valign="bottom" align="center">&nbsp;</td>
       <td width="50%" id="currboss" valign="bottom" align="center">&nbsp;</td>
@@ -382,6 +385,31 @@ tr.bl{color: white;}
 		const thailandTime = new Date(utcTime.getTime() + 7 * 3600000);
 		return thailandTime;
 	}
+	
+	function toThaiDateString(date) {
+		let monthNames = [
+			"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
+			"พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม.",
+			"กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+		];
+		
+		let dayNames = [
+			"อาทิตย์", "จันทร์", "อังคาร", "พุธ",
+			"พฤหัสบดี", "ศุกร์", "เสาร์"
+		];
+
+		let day = dayNames[date.getDay()];
+		let year = date.getFullYear() + 543;
+		let month = monthNames[date.getMonth()];
+		let numOfDay = date.getDate();
+
+		let hour = date.getHours().toString().padStart(2, "0");
+		let minutes = date.getMinutes().toString().padStart(2, "0");
+		let second = date.getSeconds().toString().padStart(2, "0");
+
+		return `วัน${day}ที่ ${numOfDay} ${month} ${year} ` +
+			`เวลา ${hour}:${minutes}:${second} น.`;
+	}
 
 	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition;
 	const imperialSize = imperialTable.length - 1;
@@ -389,7 +417,9 @@ tr.bl{color: white;}
 		const date = new Date(THTime(new Date)), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
 		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2;
-
+		//setHTMLInner("nowtime", '<h3>'+date.toLocaleDateString('th-TH', {year: 'numeric',month: 'long',day: 'numeric',weekday: 'long'}));
+		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date));
+		
 		//setup
 		if (weekDay !== weekDay_tmp) {
 			//list build *need to know boss position for previous and next
@@ -447,7 +477,7 @@ tr.bl{color: white;}
 		tmp = '<table border="0" width="100%"><tbody>';
 		for(let i = bossPosition; i <= (listSize-5); i++) {
 			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
-			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
 				n = bossTable[weekDay][listTime[i]].length;
 				j = 100 / n >> 0;
@@ -510,7 +540,7 @@ tr.bl{color: white;}
 			tmp1 = ''; tmp2 = '';
 			tmp = '<table border="0" width="100%"><tbody>';
 			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
-			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff <= 0) {
 				dateDiff = 86400 - Math.abs(dateDiff); //86400 = 24hour
 			}
@@ -548,7 +578,7 @@ tr.bl{color: white;}
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
-		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		for(let b in nextBoss[1]) {
 
 			alertType = nextBoss[1][b]["type"];
@@ -566,7 +596,7 @@ tr.bl{color: white;}
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
 		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
-		dateDiff = Math.round((date.getTime() - dateDiff.getTime()) / 1000);
+		dateDiff = Math.ceil((date.getTime() - dateDiff.getTime()) / 1000);
 		for(let b in previousBoss[1]) {
 
 			alertType = previousBoss[1][b]["type"];
@@ -628,7 +658,7 @@ tr.bl{color: white;}
 		if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
-			dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
 				imperialString = `♕ Imperial in: ${formatSeconds(dateDiff)}`;
 				break;
@@ -638,15 +668,15 @@ tr.bl{color: white;}
 		}
 		
 		dateDiff = new Date(`${dateStr} 00:00:00`);
-		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var dailyString = `❀ Daily in: ${formatSeconds(dateDiff)}`;
 		
 		dateDiff = new Date(`${dateStr} 05:00:00`);
-		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
 		
 		dateDiff = new Date(`${dateStr} 06:00:00`);
-		dateDiff = Math.round((dateDiff.getTime() - date.getTime()) / 1000);
+		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var barteringString = `⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
 
 		document.getElementById(`ingame`).innerHTML= timeString;
