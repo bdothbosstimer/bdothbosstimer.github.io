@@ -416,7 +416,7 @@ tr.bl{color: white;}
 	setInterval(function() {
 		const date = new Date(THTime(new Date)), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2;
+		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2, fadecolor;
 		//setHTMLInner("nowtime", '<h3>'+date.toLocaleDateString('th-TH', {year: 'numeric',month: 'long',day: 'numeric',weekday: 'long'}));
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date));
 		
@@ -514,7 +514,7 @@ tr.bl{color: white;}
 				}
 				
 				//countdown update
-				let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
+				fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
 				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
 				setHTMLInner("currboss", tmp);
@@ -562,7 +562,7 @@ tr.bl{color: white;}
 			nextBoss[2] = w;
 			
 			//countdown update
-			let fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
+			fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
 			setHTMLInner("currboss", tmp);
@@ -579,11 +579,12 @@ tr.bl{color: white;}
 		tmp = '<table border="0" width="100%"><tbody>';
 		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
+		fadecolor = dateDiff <= 1800 ? perc2color((dateDiff/1800)*100) : dateDiff <= 3600 ? perc2color2(100-(((dateDiff-1800)/1800)*100)) : "#FFFFFF";
 		for(let b in nextBoss[1]) {
 
 			alertType = nextBoss[1][b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
-			tmp2 += '<td class="td bt"><h4>'+nextBoss[1][b]["name"]+'</td>';
+			tmp2 += '<td class="td bt"><font color="'+fadecolor+'"><h4>'+nextBoss[1][b]["name"]+'</font></td>';
 		}
 		
 		//countdown update
