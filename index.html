@@ -607,7 +607,7 @@ tr.bl{color: white;}
 		}
 		
 		//countup update *previous
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHighlight(`${previousBoss[2]}-${previousBoss[0]}`, alertType, false);
 		setHTMLInner("prevboss", tmp);
 		
