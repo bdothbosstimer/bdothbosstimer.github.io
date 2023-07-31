@@ -584,11 +584,11 @@ tr.bl{color: white;}
 
 			alertType = nextBoss[1][b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
-			tmp2 += '<td class="td bt"><font color="'+fadecolor+'"><h4>'+nextBoss[1][b]["name"]+'</font></td>';
+			tmp2 += '<td class="td bt"><h4>'+nextBoss[1][b]["name"]+'</td>';
 		}
 		
 		//countdown update
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><h2>'+formatSeconds(dateDiff)+'</td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHTMLInner("nextboss", tmp);
 		
 		//previous boss
