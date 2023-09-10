@@ -1,3 +1,4 @@
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -380,10 +381,10 @@ tr.bl{color: white;}
 		}
 	}
 	
-	function THTime(originalDate) {
-		const utcTime = new Date(originalDate.getTime() + originalDate.getTimezoneOffset() * 60000);
-		const thailandTime = new Date(utcTime.getTime() + 7 * 3600000);
-		return thailandTime;
+	function getTimebyOffset(tzOffset) {
+		const nowTime = new Date();
+		const utcTime = new Date(nowTime.getTime() + (nowTime.getTimezoneOffset() * 60000));
+		return new Date(utcTime.getTime() + tzOffset * 3600000);
 	}
 	
 	function toThaiDateString(date) {
@@ -414,13 +415,13 @@ tr.bl{color: white;}
 	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition;
 	const imperialSize = imperialTable.length - 1;
 	setInterval(function() {
-		const date = new Date(THTime(new Date)), weekDay = date.getDay();
+		const date = getTimebyOffset(7), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
 		let previousBoss = [], nextBoss = [], alertType, dateDiff, n, m, w, j, tmp, tmp1, tmp2, fadecolor, fadedate;
 		//setHTMLInner("nowtime", '<h3>'+date.toLocaleDateString('th-TH', {year: 'numeric',month: 'long',day: 'numeric',weekday: 'long'}));
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
-		//setup
+		//day setup
 		if (weekDay !== weekDay_tmp) {
 			//list build *need to know boss position for previous and next
 			//listSize -5 (start at 0 to (listSize-5))
@@ -671,15 +672,18 @@ tr.bl{color: white;}
 			}
 		}
 		
-		dateDiff = new Date(`${dateStr} 00:00:00`);
+		//dateDiff = new Date(`${dateStr} 00:00:00`);
+		dateDiff = new Date(`${dateStr} 23:00:00`);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var dailyString = `❀ Daily in: ${formatSeconds(dateDiff)}`;
 		
-		dateDiff = new Date(`${dateStr} 05:00:00`);
+		//dateDiff = new Date(`${dateStr} 05:00:00`);
+		dateDiff = new Date(`${dateStr} 04:00:00`);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
 		
-		dateDiff = new Date(`${dateStr} 06:00:00`);
+		//dateDiff = new Date(`${dateStr} 06:00:00`);
+		dateDiff = new Date(`${dateStr} 05:00:00`);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var barteringString = `⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
 
