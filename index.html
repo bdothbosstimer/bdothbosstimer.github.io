@@ -694,9 +694,8 @@ tr.bl{color: white;}
 		}*/
 		
 		//console.log(weeklyReset)
-		w = 7 - (weekDay % 3);
 		var weeklyReset = new Date(date);
-		weeklyReset.setDate(weeklyReset.getDate() + (w == 0 ? 7 : w));  
+		weeklyReset.setDate(weeklyReset.getDate() + (7 - (weekDay % 3)));  
 		weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
 		weeklyReset = new Date(`${weeklyReset} 23:00:00`);
 		weeklyReset = weeklyReset.getTime();
