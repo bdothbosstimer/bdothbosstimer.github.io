@@ -433,7 +433,7 @@ tr.bl{color: white;}
 			`<br>เวลา ${hour}:${minutes}:${second} น.`;
 	}
 
-	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition, weeklyReset;
+	var listTime, listSize, weekDay_tmp, bossPosition;
 	const imperialSize = imperialTable.length - 1;
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
@@ -487,18 +487,6 @@ tr.bl{color: white;}
 				}
 			}
 			//console.log(listTime)
-			
-			for(let i = 0; i < 7; i++) {
-				if ((weekDay + i) == 3) {
-					if (i == 0) i = 7;
-					weeklyReset = new Date(date);
-					weeklyReset.setDate(weeklyReset.getDate()+i);  
-					weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
-					weeklyReset = new Date(`${weeklyReset} 23:00:00`);
-					weeklyReset = weeklyReset.getTime();
-					break;
-				}
-			}
 			
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
@@ -706,6 +694,13 @@ tr.bl{color: white;}
 		}*/
 		
 		//console.log(weeklyReset)
+		w = 7 - (weekDay%3);
+		if (w == 0) w = 7;
+		var weeklyReset = new Date(date);
+		weeklyReset.setDate(weeklyReset.getDate()+w);  
+		weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
+		weeklyReset = new Date(`${weeklyReset} 23:00:00`);
+		weeklyReset = weeklyReset.getTime();
 		dateDiff = Math.ceil((weeklyReset - date.getTime()) / 1000);
 		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(dateDiff)}`;
 		
