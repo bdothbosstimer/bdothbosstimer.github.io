@@ -134,7 +134,7 @@ tr.bl{color: white;}
     <tr>
       <td class="td bc" valign="bottom" align="left" id="ingame">&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="td bc" valign="bottom" align="right" id="imperial">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="weekly">&nbsp;</td>
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="daynight">&nbsp;</td>
@@ -278,6 +278,27 @@ tr.bl{color: white;}
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
+	function formatSecondsFull(n) {
+		var date = new Date(1970, 0, 1);
+		date.setSeconds(n);
+		
+		var result = '';
+		var year = date.getFullYear() - 1970;
+		var month = date.getMonth();
+		var day = date.getDate() - 1;
+		var hours = date.getHours();
+		var minutes = date.getMinutes();
+		var seconds = date.getSeconds();
+		
+		if (year > 0) result += year + ' Y ';
+		if (month > 0) result += month + ' M ';
+		if (day > 0) result += day + ' D ';
+		result += hours.toString().padStart(2, '0') + ':' +
+					minutes.toString().padStart(2, '0') + ':' +
+					seconds.toString().padStart(2, '0');
+		return result;
+	}
+
 	function perc2color(perc) {
 		var r, g, b = 0;
 		if(perc < 50) {
@@ -412,7 +433,7 @@ tr.bl{color: white;}
 			`<br>เวลา ${hour}:${minutes}:${second} น.`;
 	}
 
-	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition;
+	var listTime, listSize, weekDay_tmp, bossPosition, imperialPosition, weeklyReset;
 	const imperialSize = imperialTable.length - 1;
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
@@ -466,6 +487,15 @@ tr.bl{color: white;}
 				}
 			}
 			//console.log(listTime)
+			
+			for(let i = 0; i < 7; i++) {
+				if ((weekDay + i) == 3) {
+					weeklyReset = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()+i}`;
+					weeklyReset = new Date(`${weeklyReset} 23:00:00`);
+					weeklyReset = weeklyReset.getTime();
+					break;
+				}
+			}
 			
 			listSize = listTime.length;
 			weekDay_tmp = weekDay;
@@ -659,7 +689,7 @@ tr.bl{color: white;}
 		
 		//var trading = Math.ceil(secsIntoGameDay <= 6000 ? (6000 - secsIntoGameDay) : (20400 - secsIntoGameDay));
 		
-		var imperialString;
+		/*var imperialString;
 		if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
 			dateDiff = new Date(`${dateStr} ${imperialTable[i]}`);
@@ -670,7 +700,11 @@ tr.bl{color: white;}
 			} else {
 				imperialPosition++;
 			}
-		}
+		}*/
+		
+		//console.log(weeklyReset)
+		dateDiff = Math.ceil((weeklyReset - date.getTime()) / 1000);
+		var weeklyString = `♕ Weekly in: ${formatSecondsFull(dateDiff)}`;
 		
 		//dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = new Date(`${dateStr} 23:00:00`);
@@ -692,7 +726,7 @@ tr.bl{color: white;}
 		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
 		document.getElementById(`daily`).innerHTML= dailyString;
 		document.getElementById(`bartering`).innerHTML= barteringString;
-		document.getElementById(`imperial`).innerHTML= imperialString;
+		document.getElementById(`weekly`).innerHTML= weeklyString;
 		
 	}, 1000);
 
