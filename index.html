@@ -134,15 +134,20 @@ tr.bl{color: white;}
     <tr>
       <td class="td bc" valign="bottom" align="left" id="ingame">&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="td bc" valign="bottom" align="right" id="weekly">&nbsp;</td>
+	  <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="daynight">&nbsp;</td>
       <td>&nbsp;</td>
-      <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
+	   <td class="td bc" valign="bottom" align="right" id="weekly">&nbsp;</td>
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
+      <td>&nbsp;</td>
+	  <td class="td bc" valign="bottom" align="right" id="blackshrine">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="inperial">&nbsp;</td>
       <td>&nbsp;</td>
       <td class="td bc" valign="bottom" align="right" id="bartering">&nbsp;</td>
     </tr>
@@ -669,8 +674,8 @@ tr.bl{color: white;}
 		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
 		document.getElementById(`dayprogress`).value= secsIntoGameDay;
 		
-		//var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)); //+40min
-		//var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
+		var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)); //+40min
+		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;
 
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
 		
@@ -693,14 +698,19 @@ tr.bl{color: white;}
 			}
 		}*/
 		
-		//console.log(weeklyReset)
 		var weeklyReset = new Date(date);
-		weeklyReset.setDate(weeklyReset.getDate() + (7 - (weekDay % 3)));  
+		weeklyReset.setDate(weeklyReset.getDate() + (6 - (weekDay % 4)));  
 		weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
 		weeklyReset = new Date(`${weeklyReset} 23:00:00`);
-		weeklyReset = weeklyReset.getTime();
-		dateDiff = Math.ceil((weeklyReset - date.getTime()) / 1000);
+		dateDiff = Math.ceil((weeklyReset.getTime() - date.getTime()) / 1000);
 		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(dateDiff)}`;
+		
+		var blackShrine = new Date(date);
+		blackShrine.setDate(blackShrine.getDate() + (6 - (weekDay % 6)));  
+		blackShrine = `${blackShrine.getFullYear()}/${(blackShrine.getMonth()+1)}/${blackShrine.getDate()}`;
+		blackShrine = new Date(`${blackShrine} 23:00:00`);
+		dateDiff = Math.ceil((blackShrine.getTime() - date.getTime()) / 1000);
+		var blackShrineString = `𓉱 Black Shrine in: ${formatSecondsFull(dateDiff)}`;
 		
 		//dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = new Date(`${dateStr} 23:00:00`);
@@ -717,12 +727,14 @@ tr.bl{color: white;}
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		var barteringString = `⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
 
-		document.getElementById(`ingame`).innerHTML= timeString;
-		document.getElementById(`daynight`).innerHTML= dayNightString;
-		document.getElementById(`blackspirit`).innerHTML= blackspiritString;
-		document.getElementById(`daily`).innerHTML= dailyString;
-		document.getElementById(`bartering`).innerHTML= barteringString;
-		document.getElementById(`weekly`).innerHTML= weeklyString;
+		setHTMLInner("ingame", timeString);
+		setHTMLInner("daynight", dayNightString);
+		setHTMLInner("inperial", imperialString);
+		setHTMLInner("blackspirit", blackspiritString);
+		setHTMLInner("daily", dailyString);
+		setHTMLInner("bartering", barteringString);
+		setHTMLInner("weekly", weeklyString);
+		setHTMLInner("blackshrine", blackShrineString);
 		
 	}, 1000);
 
