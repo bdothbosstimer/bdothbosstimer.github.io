@@ -490,7 +490,10 @@ tr.bl{color: white;}
 			
 			for(let i = 0; i < 7; i++) {
 				if ((weekDay + i) == 3) {
-					weeklyReset = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()+i}`;
+					if (i == 0) i = 7;
+					weeklyReset = new Date(date);
+					weeklyReset.setDate(weeklyReset.getDate()+i);  
+					weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
 					weeklyReset = new Date(`${weeklyReset} 23:00:00`);
 					weeklyReset = weeklyReset.getTime();
 					break;
