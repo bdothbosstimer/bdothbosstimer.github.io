@@ -643,7 +643,7 @@ tr.bl{color: white;}
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
-		var rlDayElapsedS = (Date.now() - startHour) / 1000;
+		var rlDayElapsedS = (date - startHour) / 1000;
 		var secsIntoGameDay = (rlDayElapsedS + 200 * 60 + 20 * 60) % (240 * 60);
 
 		//1 day = 14400 sec
@@ -663,7 +663,7 @@ tr.bl{color: white;}
 
 		var finalGameHour = gameHour / 1 >> 0;
 		var finalGameMinute = gameHour % 1 * 60 >> 0;
-		var finalGameSec = gameHour % 1 * 3600 % 60 >> 0;
+		var finalGameSecond = gameHour % 1 * 3600 % 60 >> 0;
 		var afternoon = (finalGameHour >= 12);
 		if (afternoon && finalGameHour > 12) {
 			finalGameHour -= 12;
@@ -677,14 +677,13 @@ tr.bl{color: white;}
 		/*var imperial = Math.ceil(secsIntoGameDay <= 2400 ? (2400 - secsIntoGameDay) : (16800 - secsIntoGameDay)); //+40min
 		var imperialString = `♕ Imperial in: ${formatSeconds(imperial)}`;*/
 
-		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${(finalGameHour < 10) ? `0${finalGameHour}` : finalGameHour}:${(finalGameMinute < 10) ? `0${finalGameMinute}` : finalGameMinute}:${(finalGameSec < 10) ? `0${finalGameSec}` : finalGameSec} ${afternoon ? "PM" : "AM"}`;
+		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
 		
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 		
 		
 		//var trading = Math.ceil(secsIntoGameDay <= 6000 ? (6000 - secsIntoGameDay) : (20400 - secsIntoGameDay));
-		
 		/*var imperialString;
 		if (imperialPosition > imperialSize) imperialPosition = 0;
 		for(let i = imperialPosition; i <= imperialSize; i++) {
