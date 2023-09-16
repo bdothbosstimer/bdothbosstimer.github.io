@@ -727,12 +727,12 @@ tr.bl{color: white;}
 		//dateDiff = new Date(`${dateStr} 05:00:00`);
 		dateDiff = new Date(`${dateStr} 04:00:00`);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure: ${formatSeconds(dateDiff)}`;
+		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(dateDiff)}`;
 		
 		//dateDiff = new Date(`${dateStr} 06:00:00`);
 		dateDiff = new Date(`${dateStr} 05:00:00`);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-		var barteringString = `⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
+		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
