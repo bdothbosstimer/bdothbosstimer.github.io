@@ -698,39 +698,44 @@ tr.bl{color: white;}
 			}
 		}*/
 		
-		var weeklyReset = new Date(date);
-		weeklyReset.setDate(weeklyReset.getDate() + (((3 - weeklyReset.getDay()) + 7) % 7));  
+		var weeklyReset = new Date(date), weeklyString;
+		weeklyReset.setDate(weeklyReset.getDate() + (((3 - weeklyReset.getDay()) + 7) % 7));
 		weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
 		weeklyReset = new Date(`${weeklyReset} 23:00:00`);
 		dateDiff = Math.ceil((weeklyReset.getTime() - date.getTime()) / 1000);
-		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(dateDiff)}`;
+		if (dateDiff < 0) {
+			weeklyReset.setDate(weeklyReset.getDate() + 7);
+			weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
+			weeklyReset = new Date(`${weeklyReset} 23:00:00`);
+			dateDiff = Math.ceil((weeklyReset.getTime() - date.getTime()) / 1000);
+		}
+		weeklyString = `🗓 Weekly in: ${formatSecondsFull(dateDiff)}`;
 		
-		var blackShrine = new Date(date);
-		blackShrine.setDate(blackShrine.getDate() + (((6 - blackShrine.getDay()) + 7) % 7));  
+		var blackShrine = new Date(date), blackShrineString;
+		blackShrine.setDate(blackShrine.getDate() + (((6 - blackShrine.getDay()) + 7) % 7));
 		blackShrine = `${blackShrine.getFullYear()}/${(blackShrine.getMonth()+1)}/${blackShrine.getDate()}`;
 		blackShrine = new Date(`${blackShrine} 23:00:00`);
 		dateDiff = Math.ceil((blackShrine.getTime() - date.getTime()) / 1000);
-		var blackShrineString = `𓉱 Black Shrine in: ${formatSecondsFull(dateDiff)}`;
-		
-		tmp = false;
-		var maintenanceString;
-		if (weekDay === 3) {
-			dateDiff = new Date(`${dateStr} 09:00:00`);
-			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-			if (dateDiff <= 14400) {
-				maintenanceString = `⚒ Server-Up in: ${formatSeconds(dateDiff)}`;
-				tmp = true;
-			}
+		if (dateDiff < 0) {
+			blackShrine.setDate(blackShrine.getDate() + 7);
+			blackShrine = `${blackShrine.getFullYear()}/${(blackShrine.getMonth()+1)}/${blackShrine.getDate()}`;
+			blackShrine = new Date(`${blackShrine} 23:00:00`);
+			dateDiff = Math.ceil((blackShrine.getTime() - date.getTime()) / 1000);
 		}
+		blackShrineString = `𓉱 Black Shrine in: ${formatSecondsFull(dateDiff)}`;
 		
-		if (!tmp) {
-			var serverMaintenance = new Date(date);
-			serverMaintenance.setDate(serverMaintenance.getDate() + (((3 - serverMaintenance.getDay()) + 7) % 7));  
+		var serverMaintenance = new Date(date), maintenanceString;
+		serverMaintenance.setDate(serverMaintenance.getDate() + (((3 - serverMaintenance.getDay()) + 7) % 7));
+		serverMaintenance = `${serverMaintenance.getFullYear()}/${(serverMaintenance.getMonth()+1)}/${serverMaintenance.getDate()}`;
+		serverMaintenance = new Date(`${serverMaintenance} 05:00:00`);
+		dateDiff = Math.ceil((serverMaintenance.getTime() - date.getTime()) / 1000);
+		if (dateDiff < 0) {
+			serverMaintenance.setDate(serverMaintenance.getDate() + 7);
 			serverMaintenance = `${serverMaintenance.getFullYear()}/${(serverMaintenance.getMonth()+1)}/${serverMaintenance.getDate()}`;
 			serverMaintenance = new Date(`${serverMaintenance} 05:00:00`);
 			dateDiff = Math.ceil((serverMaintenance.getTime() - date.getTime()) / 1000);
-			maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(dateDiff)}`;
 		}
+		maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(dateDiff)}`;
 		
 		//dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = new Date(`${dateStr} 23:00:00`);
