@@ -272,7 +272,7 @@ tr.bl{color: white;}
 <center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong></br><img src="imgs/github.png"/></a></center></br>
 
 <!-- <script src="js/boss.js"></script> -->
-<script src="js/boss-halloweenevent.js"></script>
+<script src="js/boss.js"></script>
 <script src="js/NoSleep.min.js"></script>
 <script>
 	var noSleep = new NoSleep();
@@ -392,18 +392,22 @@ tr.bl{color: white;}
 		document.getElementById(id).innerHTML = str;
 	}
 	
+	function setCSSHighlight(id, cn) {
+		//document.getElementById(id).className = cn;
+	}
+	
 	function setHighlight(id, alertType, bool) {
-		const css = (id, cn) => {document.getElementById(id).className = cn;}
+		//const css = (id, cn) => {document.getElementById(id).className = cn;}
 		switch(alertType) {
 			case "world-boss":
 			case "field-boss":
-				css(id, bool ? `tr bl hl` : `tr bl`);
+				setCSSHighlight(id, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-node":
-				css(`war-node`, bool ? `tr bl hl` : `tr bl`);
+				setCSSHighlight(`war-node`, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-castle":
-				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
+				setCSSHighlight(`war-castle`, bool ? `tr bl hl` : `tr bl`);
 				break;
 		}
 	}
