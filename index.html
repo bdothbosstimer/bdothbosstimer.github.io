@@ -387,27 +387,22 @@ tr.bl{color: white;}
 			minutes     = (minutes < 10) ? "0" + minutes : minutes;
 			return hours + ":" + minutes + " " + amPm;
 	}
-	
 	function setHTMLInner(id, str) {
 		document.getElementById(id).innerHTML = str;
 	}
 	
-	function setCSSHighlight(id, cn) {
-		//document.getElementById(id).className = cn;
-	}
-	
 	function setHighlight(id, alertType, bool) {
-		//const css = (id, cn) => {document.getElementById(id).className = cn;}
+		const css = (id, cn) => {document.getElementById(id).className = cn;}
 		switch(alertType) {
 			case "world-boss":
 			case "field-boss":
-				setCSSHighlight(id, bool ? `tr bl hl` : `tr bl`);
+				css(id, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-node":
-				setCSSHighlight(`war-node`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-node`, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-castle":
-				setCSSHighlight(`war-castle`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
 				break;
 		}
 	}
