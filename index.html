@@ -438,8 +438,8 @@ tr.bl{color: white;}
 			`<br>เวลา ${hour}:${minutes}:${second} น.`;
 	}
 
-	var listTime, listSize, weekDay_tmp, bossPosition;
-	const imperialSize = imperialTable.length - 1;
+
+	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
@@ -452,48 +452,40 @@ tr.bl{color: white;}
 			//list build *need to know boss position for previous and next
 			//listSize -5 (start at 0 to (listSize-5))
 			
-			listTime = [];
-			
-			for(let b in bossTable[weekDay]) {
-				if (bossTable[weekDay][b].length > 0) {
-					listTime.push(b);
+			listTime_inDay = [];
+			for(let k in bossTable[weekDay]) {
+				if (bossTable[weekDay][k].length > 0) {
+					listTime_inDay.push({spawnTime: k, bossTable: bossTable[weekDay][k], highLight: `${weekDay}-${k}`, dateFormat: `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()} ${k}`});
 				}
 			}
 			
-			//listSize -3 -4
 			n = 0;
-			w = weekDay+1;
-			if (w > 6) {w = 0;} //if week day is (6)Sat next day is (0)Sun
-			for(let b in bossTable[w]) {
-				if (bossTable[w][b].length > 0) {
-					listTime.push(b);
+			listTime_nextDay = [];
+			var d = new Date(date);
+			d.setDate(d.getDate() + 1);
+			w = d.getDay();
+			for(let k in bossTable[w]) {
+				if (bossTable[w][k].length > 0) {
+					listTime_nextDay.push({spawnTime: k, bossTable: bossTable[w][k], highLight: `${w}-${k}`, dateFormat: `${d.getFullYear()}/${(d.getMonth()+1)}/${d.getDate()} ${k}`});
 					if (n >= 1) { break; }
 					n++;
 				}
 			}
 			
-			//position listSize -2
-			tmp = Object.keys(bossTable[weekDay]);
-			for (let k = (tmp.length-1); k >= 0; k--) {
-				if (bossTable[weekDay][tmp[k]].length > 0) {
-					listTime.push(tmp[k]);
-					break;
-				}
-			}
-
-			//position listSize -1
-			w = weekDay-1;
-			if (w < 0) {w = 6;} //if week day is (0)Sun previous day is (6)Sat
+			n = 0;
+			listTime_previousDay = [];
+			var d = new Date(date);
+			d.setDate(d.getDate() - 1);
+			w = d.getDay();
 			tmp = Object.keys(bossTable[w]);
 			for (let k = (tmp.length-1); k >= 0; k--) {
 				if (bossTable[w][tmp[k]].length > 0) {
-					listTime.push(tmp[k]);
-					break;
+					listTime_previousDay.push({spawnTime: tmp[k], bossTable: bossTable[w][tmp[k]], highLight: `${w}-${tmp[k]}`, dateFormat: `${d.getFullYear()}/${(d.getMonth()+1)}/${d.getDate()} ${tmp[k]}`});
+					if (n >= 1) { break; }
+					n++;
 				}
 			}
-			//console.log(listTime)
 			
-			listSize = listTime.length;
 			weekDay_tmp = weekDay;
 			imperialPosition = 0;
 			bossPosition = 0;
@@ -502,98 +494,82 @@ tr.bl{color: white;}
 		//current boss will spawn
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		for(let i = bossPosition; i <= (listSize-5); i++) {
-			dateDiff = new Date(`${dateStr} ${listTime[i]}`);
+		
+		for(let i = bossPosition; i <= listTime_inDay.length-1; i++) {
+			dateDiff = new Date(listTime_inDay[i].dateFormat);
 			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff >= 0) {
-				n = bossTable[weekDay][listTime[i]].length;
+				n = listTime_inDay[i].bossTable.length;
 				j = 100 / n >> 0;
-				for(let b in bossTable[weekDay][listTime[i]]) {
-
-					alertType = bossTable[weekDay][listTime[i]][b]["type"];
-					tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+bossTable[weekDay][listTime[i]][b]["img"]+'" width="360" height="360"/></td>';
-					tmp2 += '<td class="td bt"><h3>'+bossTable[weekDay][listTime[i]][b]["name"]+'</td>';
-					
-				}
-
-				if (i == 0) {
-					m = weekDay-1; //fix (0)Sat and (6) Sun
-					if (m < 0) {m = 6;}
-					previousBoss[0] = listTime[listSize-1];
-					previousBoss[1] = bossTable[m][listTime[listSize-1]];
-					previousBoss[2] = m;
-				} else {
-					previousBoss[0] = listTime[i-1];
-					previousBoss[1] = bossTable[weekDay][listTime[i-1]];
-					previousBoss[2] = weekDay;
-				}
-				if (i == (listSize-5)) {
-					m = weekDay+1; //fix (0)Sat and (6) Sun
-					if (m > 6) {m = 0;}
-					nextBoss[0] = listTime[listSize-4];
-					nextBoss[1] = bossTable[m][listTime[listSize-4]];
-					nextBoss[2] = m;
-				} else {
-					nextBoss[0] = listTime[i+1];
-					nextBoss[1] = bossTable[weekDay][listTime[i+1]];
-					nextBoss[2] = weekDay;
-					//i = bossPosition
+				for(let b in listTime_inDay[i].bossTable) {
+					alertType = listTime_inDay[i].bossTable[b]["type"];
+					tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+listTime_inDay[i].bossTable[b]["img"]+'" width="360" height="360"/></td>';
+					tmp2 += '<td class="td bt"><h3>'+listTime_inDay[i].bossTable[b]["name"]+'</td>';
 				}
 				
+				if (i == 0) {
+					previousBoss[0] = listTime_previousDay[0].dateFormat;
+					previousBoss[1] = listTime_previousDay[0].bossTable;
+					previousBoss[2] = listTime_previousDay[0].highLight;
+				} else {
+					previousBoss[0] = listTime_inDay[i-1].highLight;
+					previousBoss[1] = listTime_inDay[i-1].bossTable;
+					previousBoss[2] = listTime_inDay[i-1].highLight;
+				}
+				
+				if (i == listTime_inDay.length-1) {
+					nextBoss[0] = listTime_nextDay[0].dateFormat;
+					nextBoss[1] = listTime_nextDay[0].bossTable;
+					nextBoss[2] = listTime_nextDay[0].highLight;
+				} else {
+					nextBoss[0] = listTime_inDay[i+1].dateFormat;
+					nextBoss[1] = listTime_inDay[i+1].bossTable;
+					nextBoss[2] = listTime_inDay[i+1].highLight;
+				}
+
 				//countdown update
 				fadedate = Math.abs(dateDiff);
 				fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
 				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
-				setHighlight(`${weekDay}-${listTime[i]}`, alertType, true);
+				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 				setHTMLInner("currboss", tmp);
-
-				//document.getElementById(`${weekDay}-${listTime[i]}`).style = ;
-				//playAlert(dateDiff, alertType);
-				
-				//key for table highlight "weekDay listTime[i]" ex table id = 4-20:00:00
-				
 				break;
 			} else {
-				//update to next position *no need full loop
 				bossPosition++;
 			}
 		}
 		
+		//console.log(listTime_nextDay[0].dateFormat)
 		//Fix next day boss (current boss spawn)
-		if (bossPosition > (listSize-5)) {
-			w = weekDay+1;
-			if (w > 6) {w = 0;}  //if week day is (6)Sat next day is (0)Sun
-			n = bossTable[w][listTime[listSize-4]].length;
+		if (bossPosition > (listTime_inDay.length-1)) {
+			n = listTime_nextDay[0].bossTable.length;
 			j = 100 / n >> 0;
 			tmp1 = ''; tmp2 = '';
 			tmp = '<table border="0" width="100%"><tbody>';
-			dateDiff = new Date(`${dateStr} ${listTime[listSize-4]}`);
+			dateDiff = new Date(listTime_nextDay[0].dateFormat);
 			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 			if (dateDiff <= 0) {
 				dateDiff = 86400 - Math.abs(dateDiff); //86400 = 24hour
 			}
-			for(let b in bossTable[w][listTime[listSize-4]]) {
-		
-				alertType = bossTable[w][listTime[listSize-4]][b]["type"];
-				tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+bossTable[w][listTime[listSize-4]][b]["img"]+'" width="360" height="360"/></td>';
-				tmp2 += '<td class="td bt"><h3>'+bossTable[w][listTime[listSize-4]][b]["name"]+'</td>';
-				
+			for(let b in listTime_nextDay[0].bossTable) {
+				alertType = listTime_nextDay[0].bossTable[b]["type"];
+				tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+listTime_nextDay[0].bossTable[b]["img"]+'" width="360" height="360"/></td>';
+				tmp2 += '<td class="td bt"><h3>'+listTime_nextDay[0].bossTable[b]["name"]+'</td>';
 			}
 			
-			m = w-1; //fix (0)Sat and (6) Sun
-			if (m < 0) {m = 6;}
-			previousBoss[0] = listTime[listSize-2];
-			previousBoss[1] = bossTable[m][listTime[listSize-2]];
-			previousBoss[2] = m;
-			nextBoss[0] = listTime[listSize-3];
-			nextBoss[1] = bossTable[w][listTime[listSize-3]];
-			nextBoss[2] = w;
+			m = listTime_inDay.length-1;
+			previousBoss[0] = listTime_inDay[m].highLight;
+			previousBoss[1] = listTime_inDay[m].bossTable;
+			previousBoss[2] = listTime_inDay[m].highLight;
+			nextBoss[0] = listTime_nextDay[1].dateFormat;
+			nextBoss[1] = listTime_nextDay[1].bossTable;
+			nextBoss[2] = listTime_nextDay[1].highLight;
 			
 			//countdown update
 			fadedate = Math.abs(dateDiff);
 			fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
 			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
-			setHighlight(`${w}-${listTime[listSize-4]}`, alertType, true);
+			setHighlight(listTime_nextDay[0].highLight, alertType, true);
 			setHTMLInner("currboss", tmp);
 
 			//playAlert(dateDiff, alertType);
@@ -606,12 +582,11 @@ tr.bl{color: white;}
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		dateDiff = new Date(`${dateStr} ${nextBoss[0]}`);
+		dateDiff = new Date(nextBoss[0]);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		fadedate = Math.abs(dateDiff);
 		fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
 		for(let b in nextBoss[1]) {
-
 			alertType = nextBoss[1][b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+nextBoss[1][b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+nextBoss[1][b]["name"]+'</td>';
@@ -626,19 +601,17 @@ tr.bl{color: white;}
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		dateDiff = new Date(`${dateStr} ${previousBoss[0]}`);
+		dateDiff = new Date(previousBoss[0]);
 		dateDiff = Math.ceil((date.getTime() - dateDiff.getTime()) / 1000);
 		for(let b in previousBoss[1]) {
-
 			alertType = previousBoss[1][b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+previousBoss[1][b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+previousBoss[1][b]["name"]+'</td>';
-
 		}
 		
 		//countup update *previous
 		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
-		setHighlight(`${previousBoss[2]}-${previousBoss[0]}`, alertType, false);
+		setHighlight(previousBoss[2], alertType, false);
 		setHTMLInner("prevboss", tmp);
 		
 		//code from http://bdocalc.com/
