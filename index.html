@@ -531,7 +531,7 @@ tr.bl{color: white;}
 				//countdown update
 				fadedate = Math.abs(dateDiff);
 				fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
-				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h3>[ '+spawnTime+' ]</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 				setHTMLInner("currboss", tmp);
 				break;
@@ -572,7 +572,7 @@ tr.bl{color: white;}
 			//countdown update
 			fadedate = Math.abs(dateDiff);
 			fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
-			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h3>[ '+spawnTime+' ]</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(listTime_nextDay[0].highLight, alertType, true);
 			setHTMLInner("currboss", tmp);
 
@@ -598,7 +598,7 @@ tr.bl{color: white;}
 		}
 		
 		//countdown update
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h4>[ '+spawnTime+' ]</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h4>- [ '+spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHTMLInner("nextboss", tmp);
 		
 		//previous boss
@@ -616,7 +616,7 @@ tr.bl{color: white;}
 		}
 		
 		//countup update *previous
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>[ '+spawnTime+' ]</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>- [ '+spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHighlight(previousBoss[2], alertType, false);
 		setHTMLInner("prevboss", tmp);
 		
