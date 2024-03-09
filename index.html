@@ -597,7 +597,7 @@ tr.bl{color: white;}
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		dateDiff = new Date(nextBoss[0]);
+		dateDiff = new Date(nextBoss.dateFormat);
 		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
 		fadedate = Math.abs(dateDiff);
 		fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
