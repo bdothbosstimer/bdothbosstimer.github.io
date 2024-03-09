@@ -257,7 +257,7 @@ tr.bl{color: white;}
       <th class="td bl">เสาร์</th>
       <td class="td bl" id="6-00:30:00">คารานด้า</td>
       <td class="td bl" id="6-10:00:00">คูทุม</br>คจาคาร์</td>
-      <td class="td bl" id="0-13:00:00">กามอส</td>
+      <td class="td bl" id="6-13:00:00">กามอส</td>
       <td class="td bl" id="6-14:00:00">คารานด้า</br>นูเวอร์</td>
       <td class="td bl" id="6-15:00:00">&nbsp;</td>
       <td class="td bl" id="6-16:00:00">เงาดำ</td>
@@ -392,7 +392,11 @@ tr.bl{color: white;}
 	}
 	
 	function setHighlight(id, alertType, bool) {
-		const css = (id, cn) => {document.getElementById(id).className = cn;}
+		const css = (id, cn) => {
+			if (document.getElementById(id)) {
+				document.getElementById(id).className = cn;
+				}
+			}
 		switch(alertType) {
 			case "world-boss":
 			case "field-boss":
