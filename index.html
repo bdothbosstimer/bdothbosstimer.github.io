@@ -674,11 +674,17 @@ tr.bl{color: white;}
 		if (secsUntilTradingReset > (60*60*4) ) {
 			secsUntilTradingReset -= Math.ceil(60*60*4);
 		}
-		var tradingString = `𖥞 Trading in: ${formatSeconds(secsUntilTradingReset)}`;
-	
+		//var secsSinceTradingReset = rlDayElapsedS - (rlDayElapsedS % (60 * 60 * 3));
+		//var lastTradingReset = new Date(startHour + secsSinceTradingReset * 1000);
+		var nextTradingResetTime = new Date(Date.now() + secsUntilTradingReset * 1000);
+		var tradingString = `𖥞 Trading in: ${formatSeconds(secsUntilTradingReset)} (${nextTradingResetTime.getHours() > 12 ? (nextTradingResetTime.getHours() - 12).toString().padStart(2, '0') : nextTradingResetTime.getHours().toString().padStart(2, '0')}:${nextTradingResetTime.getMinutes().toString().padStart(2, '0')} ${nextTradingResetTime.getHours() > 12 ? "PM" : "AM"})`;
+		
 		// Imperial delievery reset
 		var secsUntilImperialReset = Math.ceil(3 * 60 * 60 - rlDayElapsedS % (60 * 60 * 3));
-		var imperialString = `♕ Imperial in: ${formatSeconds(secsUntilImperialReset)}`;
+		//var secsSinceImperialReset = rlDayElapsedS - (rlDayElapsedS % (60 * 60 * 3));
+		//var lastImperialReset = new Date(startHour + secsSinceImperialReset * 1000);
+		var nextImperialResetTime = new Date(Date.now() + secsUntilImperialReset * 1000);
+		var imperialString = `♕ Imperial in: ${formatSeconds(secsUntilImperialReset)} (${nextImperialResetTime.getHours() > 12 ? (nextImperialResetTime.getHours() - 12).toString().padStart(2, '0') : nextImperialResetTime.getHours().toString().padStart(2, '0')}:${nextImperialResetTime.getMinutes().toString().padStart(2, '0')} ${nextImperialResetTime.getHours() > 12 ? "PM" : "AM"})`;
 
 		//Ingame Time (1 day = 14400 sec)
 		var dayNight = secsIntoGameDay >= 12000; // 0 = day 1 = night
