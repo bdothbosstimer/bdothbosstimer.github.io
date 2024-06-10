@@ -443,10 +443,10 @@ tr.bl{color: white;}
 	
 	function getTimebyOffset(tzOffset) {
 		const nowTime = new Date();
-		const utcTime = new Date(nowTime.getTime() + (nowTime.getTimezoneOffset() * 60000));
-		return new Date(utcTime.getTime() + tzOffset * 3600000);
+		const utcTime = nowTime.getTime() + (nowTime.getTimezoneOffset() * 60000);
+		return new Date(utcTime + (tzOffset * 3600000));
 	}
-	
+
 	function toThaiDateString(date) {
 		let monthNames = [
 			"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
