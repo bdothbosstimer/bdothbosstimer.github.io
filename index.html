@@ -417,6 +417,7 @@ tr.bl{color: white;}
 			minutes     = (minutes < 10) ? "0" + minutes : minutes;
 			return hours + ":" + minutes + " " + amPm;
 	}
+	
 	function setHTMLInner(id, str) {
 		document.getElementById(id).innerHTML = str;
 	}
@@ -626,7 +627,6 @@ tr.bl{color: white;}
 		}
 		
 		//next boss or followed boss
-		
 		n = nextBoss.bossTable.length;
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
@@ -705,53 +705,29 @@ tr.bl{color: white;}
 		var finalGameSecond = gameHour % 1 * 3600 % 60 >> 0;
 		var afternoon = (finalGameHour >= 12);
 		finalGameHour = (afternoon && finalGameHour) ? finalGameHour-12 : 12;
-		
-		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
-		document.getElementById(`dayprogress`).value= secsIntoGameDay;
 
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
+		
+		
+		const getNextReset = (date, resetDay, resetTime) => {
+			let nextReset = new Date(date);
+			const daysUntilReset = (resetDay - nextReset.getDay() + 7) % 7;
+			nextReset.setDate(nextReset.getDate() + daysUntilReset);
+			nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
+			let dateDiff = Math.ceil((nextReset - date) / 1000);
+			if (dateDiff < 0) {
+				nextReset.setDate(nextReset.getDate() + 7);
+				dateDiff = Math.ceil((nextReset - date) / 1000);
+			}
+			return dateDiff;
+		};
 
-		
-		var weeklyReset = new Date(date), weeklyString;
-		weeklyReset.setDate(weeklyReset.getDate() + (((3 - weeklyReset.getDay()) + 7) % 7));
-		weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
-		weeklyReset = new Date(`${weeklyReset} 23:00:00`);
-		dateDiff = Math.ceil((weeklyReset.getTime() - date.getTime()) / 1000);
-		if (dateDiff < 0) {
-			weeklyReset.setDate(weeklyReset.getDate() + 7);
-			weeklyReset = `${weeklyReset.getFullYear()}/${(weeklyReset.getMonth()+1)}/${weeklyReset.getDate()}`;
-			weeklyReset = new Date(`${weeklyReset} 23:00:00`);
-			dateDiff = Math.ceil((weeklyReset.getTime() - date.getTime()) / 1000);
-		}
-		weeklyString = `🗓 Weekly in: ${formatSecondsFull(dateDiff)}`;
-		
-		var blackShrine = new Date(date), blackShrineString;
-		blackShrine.setDate(blackShrine.getDate() + (((6 - blackShrine.getDay()) + 7) % 7));
-		blackShrine = `${blackShrine.getFullYear()}/${(blackShrine.getMonth()+1)}/${blackShrine.getDate()}`;
-		blackShrine = new Date(`${blackShrine} 23:00:00`);
-		dateDiff = Math.ceil((blackShrine.getTime() - date.getTime()) / 1000);
-		if (dateDiff < 0) {
-			blackShrine.setDate(blackShrine.getDate() + 7);
-			blackShrine = `${blackShrine.getFullYear()}/${(blackShrine.getMonth()+1)}/${blackShrine.getDate()}`;
-			blackShrine = new Date(`${blackShrine} 23:00:00`);
-			dateDiff = Math.ceil((blackShrine.getTime() - date.getTime()) / 1000);
-		}
-		blackShrineString = `𓉱 Black Shrine in: ${formatSecondsFull(dateDiff)}`;
-		
-		var serverMaintenance = new Date(date), maintenanceString;
-		serverMaintenance.setDate(serverMaintenance.getDate() + (((3 - serverMaintenance.getDay()) + 7) % 7));
-		serverMaintenance = `${serverMaintenance.getFullYear()}/${(serverMaintenance.getMonth()+1)}/${serverMaintenance.getDate()}`;
-		serverMaintenance = new Date(`${serverMaintenance} 05:00:00`);
-		dateDiff = Math.ceil((serverMaintenance.getTime() - date.getTime()) / 1000);
-		if (dateDiff < 0) {
-			serverMaintenance.setDate(serverMaintenance.getDate() + 7);
-			serverMaintenance = `${serverMaintenance.getFullYear()}/${(serverMaintenance.getMonth()+1)}/${serverMaintenance.getDate()}`;
-			serverMaintenance = new Date(`${serverMaintenance} 05:00:00`);
-			dateDiff = Math.ceil((serverMaintenance.getTime() - date.getTime()) / 1000);
-		}
-		maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(dateDiff)}`;
+		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, [23, 0, 0]))}`;
+		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 3, [05, 0, 0]))}`;
+		var blackShrineString =  `𓉱 Black Shrine in: ${formatSecondsFull(getNextReset(date, 6, [23, 0, 0]))}`;
+
 		
 		//dateDiff = new Date(`${dateStr} 00:00:00`);
 		dateDiff = new Date(`${dateStr} 23:00:00`);
@@ -778,6 +754,9 @@ tr.bl{color: white;}
 		setHTMLInner("blackshrine", blackShrineString);
 		setHTMLInner("imperial", imperialString);
 		setHTMLInner("trading", tradingString);
+		
+		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
+		document.getElementById(`dayprogress`).value= secsIntoGameDay;
 	}, 1000);
 
 	/*TEST Data
