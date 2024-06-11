@@ -756,11 +756,10 @@ tr.bl{color: white;}
 			var secsUntilNightStart = 12000 - secsIntoGameDaytime;
 			var gameHour = 7 + (22 - 7) * pctOfDayDone;
 		}
-		var finalGameHour = gameHour / 1 >> 0;
+		var finalGameHour = (gameHour / 1 >> 0) % 12 || 12;
 		var finalGameMinute = gameHour % 1 * 60 >> 0;
 		var finalGameSecond = gameHour % 1 * 3600 % 60 >> 0;
-		var afternoon = (finalGameHour >= 12);
-		finalGameHour = (afternoon && finalGameHour) ? finalGameHour-12 : 12;
+		var afternoon = finalGameHour >= 12;
 
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
