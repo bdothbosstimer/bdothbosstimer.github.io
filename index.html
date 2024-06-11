@@ -529,19 +529,17 @@
 			`<br>เวลา ${hour}:${minutes}:${second} น.`;
 	}
 	
-	const updateProgressBar = (progressPercentage, label) => {
+	const updateProgressBar = (progressPercentage, progressBubbleText) => {
 		const progressBar = document.getElementById('progress-bar');
 		const progressBubble = document.getElementById('progress-bubble');
 		progressBar.style.width = progressPercentage + '%';
 		progressBubble.style.left = progressPercentage + '%';
-		progressBubble.textContent = label;
+		progressBubble.textContent = progressBubbleText;
 	};
 	
 
-	const getTimebyOffset = (tzOffset) => {
-		const nowTime = new Date();
-		return new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
-	};
+	const getTimebyOffset = (tzOffset, nowTime = new Date()) =>
+		new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
 
 	//ex: getNextReset(date, 3, 7, [23, 0, 0])
 	const getNextReset = (date, resetDay, daysInCycle, resetTime) => {
@@ -558,7 +556,7 @@
 	};
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
-		Math.ceil((new Date(targetTime) - date) * (bRevert ? -1 : 1) / 1000);
+		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
 	
 	const getFadeColor = (n) => {
 		const fadedate = Math.abs(n);
