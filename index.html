@@ -70,36 +70,77 @@
 	  text-decoration: none;
 	}
 	
-	
-table.bl {
-  border-collapse: collapse;
-  //width: 100%;
-}
+	#progress-container {
+		position: relative;
+		width: 100%;
+		background-color: #ddd;
+		height: 30px;
+		margin-top: 20px;
+	}
+	#progress-bar {
+		width: 0%;
+		height: 100%;
+		background-color: #4caf50;
+		position: absolute;
+	}
+	.bubble {
+		position: absolute;
+		top: -30px;
+		left: 0;
+		transform: translateX(-50%);
+		background-color: #4caf50;
+		color: white;
+		padding: 5px 10px;
+		border-radius: 15px;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+	.checkpoint {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		background-color: red;
+	}
+	.checkpoint-label {
+		position: absolute;
+		top: 35px;
+		white-space: nowrap;
+		transform: translateX(-50%);
+		font-size: 14px;
+		color: white;
+		font-weight: bold;
+	}
 
-table.bt {
-  border-collapse: collapse;
-  //width: 100%;
-}
+	table.bl {
+	  border-collapse: collapse;
+	  //width: 100%;
+	}
 
-td.bt {text-align: center;}
-td.bc {color: #ffffff;}
-th.bl, td.bl {
-  //text-align: left;
-  //padding: 5px;
-}
-th.bl{font-size: 24px; text-align: center;}
-td.bl{font-size: 16px; text-align: center;}
-tr.bl:nth-child(odd) {background-color: #222437;}
-tr.bl:nth-child(even) {background-color: #222837;}
-tr.bl:hover {background-color: #0c2333}
-tr.bl{color: white;}
-.hl {
-    /*background: #28a745;*/
-    color: #fff!important;
-    -moz-box-shadow: inset 0 0 10px #28a745;
-    -webkit-box-shadow: inset 0 0 10px #28a745;
-    box-shadow: inset 0 0 10px #28a745;
-}
+	table.bt {
+	  border-collapse: collapse;
+	  //width: 100%;
+	}
+
+	td.bt {text-align: center;}
+	td.bc {color: #ffffff;}
+	th.bl, td.bl {
+	  //text-align: left;
+	  //padding: 5px;
+	}
+	th.bl{font-size: 24px; text-align: center;}
+	td.bl{font-size: 16px; text-align: center;}
+	tr.bl:nth-child(odd) {background-color: #222437;}
+	tr.bl:nth-child(even) {background-color: #222837;}
+	tr.bl:hover {background-color: #0c2333}
+	tr.bl{color: white;}
+	.hl {
+		/*background: #28a745;*/
+		color: #fff!important;
+		-moz-box-shadow: inset 0 0 10px #28a745;
+		-webkit-box-shadow: inset 0 0 10px #28a745;
+		box-shadow: inset 0 0 10px #28a745;
+	}
 
 	body {
 		background-color: #1a1c2a;
@@ -153,7 +194,27 @@ tr.bl{color: white;}
       <td class="td bc" valign="bottom" align="right" id="maintenance">&nbsp;</td>
     </tr>
 	<tr>
-      <td colspan="3"></br><progress id="dayprogress" value="0" max="14400" style="height:24px;width:100%;"></progress></td>
+      <td colspan="3"></br></br>
+		<div id="progress-container">
+			<div id="progress-bar"></div>
+			<div class="bubble" id="progress-bubble"></div>
+			<div class="checkpoint" style="left: 0%;">
+				<div class="checkpoint-label">🌅 Morning</div>
+			</div>
+			<div class="checkpoint" style="left: 29.17%;">
+				<div class="checkpoint-label">☀️ Afternoon</div>
+			</div>
+			<div class="checkpoint" style="left: 45.84%;">
+				<div class="checkpoint-label">🌆 Evening</div>
+			</div>
+			<div class="checkpoint" style="left: 83.34%;">
+				<div class="checkpoint-label">🌙 Night</div>
+			</div>
+			<div class="checkpoint" style="left: 100%;">
+				<div class="checkpoint-label">🌅 Morning</div>
+			</div>
+		</div>
+		</br>
 	</tr>
   </tbody>
 </table>
@@ -466,6 +527,14 @@ tr.bl{color: white;}
 			`<br>เวลา ${hour}:${minutes}:${second} น.`;
 	}
 	
+	const updateProgressBar = (progressPercentage, label) => {
+		const progressBar = document.getElementById('progress-bar');
+		const progressBubble = document.getElementById('progress-bubble');
+		progressBar.style.width = progressPercentage + '%';
+		progressBubble.style.left = progressPercentage + '%';
+		progressBubble.textContent = label;
+	};
+	
 
 	const getTimebyOffset = (tzOffset) => {
 		const nowTime = new Date();
@@ -745,7 +814,8 @@ tr.bl{color: white;}
 		setHTMLInner("trading", tradingString);
 		
 		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
-		document.getElementById(`dayprogress`).value= secsIntoGameDay;
+		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
+		//document.getElementById(`dayprogress`).value= secsIntoGameDay;
 	}, 1000);
 
 	/*TEST Data
