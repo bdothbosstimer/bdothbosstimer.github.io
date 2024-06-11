@@ -818,7 +818,7 @@
 		
 		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
 		//4000 = 12PM, 8800 = 6PM, 12000 = 10PM
-		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${secsIntoGameDay >= 12000 ? `🌙` : secsIntoGameDay >= 8800 ? `☀️` : secsIntoGameDay >= 4000 ? `🌆` : `🌅`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
+		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${secsIntoGameDay >= 12000 ? `🌙` : secsIntoGameDay >= 8800 ? `🌆` : secsIntoGameDay >= 4000 ? `☀️` : `🌅`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
 	}, 1000);
 
 	/*TEST Data
