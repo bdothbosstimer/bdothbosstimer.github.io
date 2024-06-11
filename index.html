@@ -89,7 +89,9 @@
 		left: 0;
 		transform: translateX(-50%);
 		background-color: #4caf50;
+		font-size: 18px;
 		color: white;
+		font-weight: bold;
 		padding: 5px 10px;
 		border-radius: 15px;
 		font-size: 14px;
@@ -107,7 +109,7 @@
 		top: 35px;
 		white-space: nowrap;
 		transform: translateX(-50%);
-		font-size: 14px;
+		font-size: 18px;
 		color: white;
 		font-weight: bold;
 	}
@@ -201,13 +203,13 @@
 			<div class="checkpoint" style="left: 0%;">
 				<div class="checkpoint-label">🌅 Morning</div>
 			</div>
-			<div class="checkpoint" style="left: 29.17%;">
+			<div class="checkpoint" style="left: 27%;">
 				<div class="checkpoint-label">☀️ Afternoon</div>
 			</div>
-			<div class="checkpoint" style="left: 45.84%;">
+			<div class="checkpoint" style="left: 61%;">
 				<div class="checkpoint-label">🌆 Evening</div>
 			</div>
-			<div class="checkpoint" style="left: 83.34%;">
+			<div class="checkpoint" style="left: 83%;">
 				<div class="checkpoint-label">🌙 Night</div>
 			</div>
 			<div class="checkpoint" style="left: 100%;">
@@ -772,8 +774,8 @@
 		var imperialString = `♕ Imperial in: ${formatSeconds(secsUntilImperialReset)} (${nextImperialResetTime.getHours() > 12 ? (nextImperialResetTime.getHours() - 12).toString().padStart(2, '0') : nextImperialResetTime.getHours().toString().padStart(2, '0')}:${nextImperialResetTime.getMinutes().toString().padStart(2, '0')} ${nextImperialResetTime.getHours() > 12 ? "PM" : "AM"})`;
 
 		//Ingame Time (1 day = 14400 sec)
-		var dayNight = secsIntoGameDay >= 12000; // 0 = day 1 = night
-		if (dayNight) {
+		var isNight = secsIntoGameDay >= 12000; // 0 = day 1 = night
+		if (isNight) {
 			var secsIntoGameNight = secsIntoGameDay - 12000;
 			var pctOfNightDone = secsIntoGameNight / (40 * 60);
 			var secsUntilNightEnd = 40 * 60 - secsIntoGameNight;
@@ -791,9 +793,9 @@
 		var afternoon = finalGameHour >= 12;
 		finalGameHour = finalGameHour % 12 || 12;
 
-		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
-		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
-		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
+		var timeString = `⌨ Ingame Time: ${isNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
+		var dayNighttime = Math.ceil(isNight ? secsUntilNightEnd : secsUntilNightStart);
+		var dayNightString = `${isNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 
 		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, 7, [23, 0, 0]))}`;
 		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 3, 7, [5, 0, 0]))}`;
@@ -815,8 +817,8 @@
 		setHTMLInner("trading", tradingString);
 		
 		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
-		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
-		//document.getElementById(`dayprogress`).value= secsIntoGameDay;
+		//4000 = 12PM, 8800 = 6PM, 12000 = 10PM
+		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${secsIntoGameDay >= 12000 ? `🌙` : secsIntoGameDay >= 8800 ? `☀️` : secsIntoGameDay >= 4000 ? `🌆` : `🌅`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
 	}, 1000);
 
 	/*TEST Data
