@@ -534,8 +534,12 @@ tr.bl{color: white;}
 			return dateDiff;
 		};
 		
-		const getDateDiff = (date, targetTime) => {
-			return Math.ceil((new Date(targetTime).getTime() - date.getTime()) / 1000);
+		const getDateDiff = (date, targetTime, isRevert = false) => {
+			if (isRevert) {
+				return Math.ceil((date.getTime() - new Date(targetTime).getTime()) / 1000);
+			} else {
+				return Math.ceil((new Date(targetTime).getTime() - date.getTime()) / 1000);
+			}
 		};
 		
 		const getFadeColor = (n) => {
@@ -668,13 +672,13 @@ tr.bl{color: white;}
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		dateDiff = getDateDiff(date, previousBoss.dateFormat);
+		dateDiff = getDateDiff(date, previousBoss.dateFormat, true);
 		for(let b in previousBoss.bossTable) {
 			alertType = previousBoss.bossTable[b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+previousBoss.bossTable[b]["img"]+'" width="64" height="64"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+previousBoss.bossTable[b]["name"]+'</td>';
 		}
-		
+
 		//countup update *previous
 		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>- [ '+previousBoss.spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHighlight(previousBoss.highLight, alertType, false);
