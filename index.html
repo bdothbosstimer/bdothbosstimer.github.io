@@ -520,13 +520,39 @@ tr.bl{color: white;}
 			bossPosition = 0;
 		}
 		
+		//ex: getNextReset(date, 3, 7, [23, 0, 0])
+		const getNextReset = (date, resetDay, daysInCycle, resetTime) => {
+			let nextReset = new Date(date);
+			const daysUntilReset = (resetDay - nextReset.getDay() + daysInCycle) % daysInCycle;
+			nextReset.setDate(nextReset.getDate() + daysUntilReset);
+			nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
+			let dateDiff = Math.ceil((nextReset - date) / 1000);
+			if (dateDiff < 0) {
+				nextReset.setDate(nextReset.getDate() + daysInCycle);
+				dateDiff = Math.ceil((nextReset - date) / 1000);
+			}
+			return dateDiff;
+		};
+		
+		const getDateDiff = (date, targetTime) => {
+			return Math.ceil((new Date(targetTime).getTime() - date.getTime()) / 1000);
+		};
+		
+		const getFadeColor = (n) => {
+			const fadedate = Math.abs(n);
+			return fadedate <= 1800 
+				? perc2color((fadedate / 1800) * 100) 
+				: fadedate <= 3600 
+					? perc2color2(100 - ((fadedate - 1800) / 1800) * 100) 
+					: "#FFFFFF";
+		};
+		
 		//current boss will spawn
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
 		
 		for(let i = bossPosition; i <= listTime_inDay.length-1; i++) {
-			dateDiff = new Date(listTime_inDay[i].dateFormat);
-			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
+			dateDiff = getDateDiff(date, listTime_inDay[i].dateFormat);
 			if (dateDiff >= 0) {
 				n = listTime_inDay[i].bossTable.length;
 				j = 100 / n >> 0;
@@ -570,9 +596,7 @@ tr.bl{color: white;}
 				}
 
 				//countdown update
-				fadedate = Math.abs(dateDiff);
-				fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
-				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 				setHTMLInner("currboss", tmp);
 				break;
@@ -588,8 +612,7 @@ tr.bl{color: white;}
 			j = 100 / n >> 0;
 			tmp1 = ''; tmp2 = '';
 			tmp = '<table border="0" width="100%"><tbody>';
-			dateDiff = new Date(listTime_nextDay[0].dateFormat);
-			dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
+			dateDiff = getDateDiff(date, listTime_nextDay[0].dateFormat);
 			spawnTime = listTime_nextDay[0].spawnTime;
 			if (dateDiff <= 0) {
 				dateDiff = 86400 - Math.abs(dateDiff); //86400 = 24hour
@@ -615,9 +638,7 @@ tr.bl{color: white;}
 			}
 			
 			//countdown update
-			fadedate = Math.abs(dateDiff);
-			fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
-			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(listTime_nextDay[0].highLight, alertType, true);
 			setHTMLInner("currboss", tmp);
 
@@ -631,10 +652,7 @@ tr.bl{color: white;}
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		dateDiff = new Date(nextBoss.dateFormat);
-		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-		fadedate = Math.abs(dateDiff);
-		fadecolor = fadedate <= 1800 ? perc2color((fadedate/1800)*100) : fadedate <= 3600 ? perc2color2(100-(((fadedate-1800)/1800)*100)) : "#FFFFFF";
+		dateDiff = getDateDiff(date, nextBoss.dateFormat);
 		for(let b in nextBoss.bossTable) {
 			alertType = nextBoss.bossTable[b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+nextBoss.bossTable[b]["img"]+'" width="64" height="64"/></td>';
@@ -642,7 +660,7 @@ tr.bl{color: white;}
 		}
 		
 		//countdown update
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+fadecolor+'"></br><h4>- [ '+nextBoss.spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss.spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHTMLInner("nextboss", tmp);
 		
 		//previous boss
@@ -650,8 +668,7 @@ tr.bl{color: white;}
 		j = 100 / n >> 0;
 		tmp1 = ''; tmp2 = '';
 		tmp = '<table border="0" width="100%"><tbody>';
-		dateDiff = new Date(previousBoss.dateFormat);
-		dateDiff = Math.ceil((date.getTime() - dateDiff.getTime()) / 1000);
+		dateDiff = getDateDiff(date, previousBoss.dateFormat);
 		for(let b in previousBoss.bossTable) {
 			alertType = previousBoss.bossTable[b]["type"];
 			tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+previousBoss.bossTable[b]["img"]+'" width="64" height="64"/></td>';
@@ -709,40 +726,14 @@ tr.bl{color: white;}
 		var timeString = `⌨ Ingame Time: ${dayNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
 		var dayNighttime = Math.ceil(dayNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${dayNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
-		
-		
-		const getNextReset = (date, resetDay, resetTime) => {
-			let nextReset = new Date(date);
-			const daysUntilReset = (resetDay - nextReset.getDay() + 7) % 7;
-			nextReset.setDate(nextReset.getDate() + daysUntilReset);
-			nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
-			let dateDiff = Math.ceil((nextReset - date) / 1000);
-			if (dateDiff < 0) {
-				nextReset.setDate(nextReset.getDate() + 7);
-				dateDiff = Math.ceil((nextReset - date) / 1000);
-			}
-			return dateDiff;
-		};
 
-		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, [23, 0, 0]))}`;
-		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 3, [5, 0, 0]))}`;
-		var blackShrineString =  `𓉱 Black Shrine in: ${formatSecondsFull(getNextReset(date, 6, [23, 0, 0]))}`;
+		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, 7, [23, 0, 0]))}`;
+		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 3, 7, [5, 0, 0]))}`;
+		var blackShrineString =  `𓉱 Black Shrine in: ${formatSecondsFull(getNextReset(date, 6, 7, [23, 0, 0]))}`;
 
-		
-		//dateDiff = new Date(`${dateStr} 00:00:00`);
-		dateDiff = new Date(`${dateStr} 23:00:00`);
-		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-		var dailyString = `❀ Daily in: ${formatSeconds(dateDiff)}`;
-		
-		//dateDiff = new Date(`${dateStr} 05:00:00`);
-		dateDiff = new Date(`${dateStr} 04:00:00`);
-		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(dateDiff)}`;
-		
-		//dateDiff = new Date(`${dateStr} 06:00:00`);
-		dateDiff = new Date(`${dateStr} 05:00:00`);
-		dateDiff = Math.ceil((dateDiff.getTime() - date.getTime()) / 1000);
-		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(dateDiff)}`;
+		var dailyString = `❀ Daily in: ${formatSeconds(getDateDiff(date, `${dateStr} 23:00:00`))}`;
+		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
+		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
