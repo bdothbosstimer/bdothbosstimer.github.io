@@ -505,46 +505,6 @@ tr.bl{color: white;}
 		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, d, tmp, tmp1, tmp2, fadecolor, fadedate;
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
-		//day setup
-		/*if (weekDay !== weekDay_tmp) {
-			listTime_inDay = [];
-			for(let k in bossTable[weekDay]) {
-				if (bossTable[weekDay][k].length > 0) {
-					listTime_inDay.push({spawnTime: k, bossTable: bossTable[weekDay][k], highLight: `${weekDay}-${k}`, dateFormat: `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()} ${k}`});
-				}
-			}
-			
-			n = 0;
-			listTime_nextDay = [];
-			d = new Date(date);
-			d.setDate(d.getDate() + 1);
-			w = d.getDay();
-			for(let k in bossTable[w]) {
-				if (bossTable[w][k].length > 0) {
-					listTime_nextDay.push({spawnTime: k, bossTable: bossTable[w][k], highLight: `${w}-${k}`, dateFormat: `${d.getFullYear()}/${(d.getMonth()+1)}/${d.getDate()} ${k}`});
-					if (n >= 1) { break; }
-					n++;
-				}
-			}
-			
-			n = 0;
-			listTime_previousDay = [];
-			d = new Date(date);
-			d.setDate(d.getDate() - 1);
-			w = d.getDay();
-			tmp = Object.keys(bossTable[w]);
-			for (let k = (tmp.length-1); k >= 0; k--) {
-				if (bossTable[w][tmp[k]].length > 0) {
-					listTime_previousDay.push({spawnTime: tmp[k], bossTable: bossTable[w][tmp[k]], highLight: `${w}-${tmp[k]}`, dateFormat: `${d.getFullYear()}/${(d.getMonth()+1)}/${d.getDate()} ${tmp[k]}`});
-					if (n >= 1) { break; }
-					n++;
-				}
-			}
-			
-			weekDay_tmp = weekDay;
-			bossPosition = 0;
-		}*/
-		
 		if (weekDay !== weekDay_tmp) {
 			listTime_inDay = Object.keys(bossTable[weekDay])
 				.filter(k => bossTable[weekDay][k].length > 0)
