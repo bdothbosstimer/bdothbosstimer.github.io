@@ -440,12 +440,6 @@ tr.bl{color: white;}
 				break;
 		}
 	}
-	
-	function getTimebyOffset(tzOffset) {
-		const nowTime = new Date();
-		const utcTime = nowTime.getTime() + (nowTime.getTimezoneOffset() * 60000);
-		return new Date(utcTime + (tzOffset * 3600000));
-	}
 
 	function toThaiDateString(date) {
 		let monthNames = [
@@ -471,17 +465,48 @@ tr.bl{color: white;}
 		return `วัน${day}ที่ ${numOfDay} ${month} ${year} ` +
 			`<br>เวลา ${hour}:${minutes}:${second} น.`;
 	}
+	
 
+	const getTimebyOffset = (tzOffset) => {
+		const nowTime = new Date();
+		return new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
+	};
+
+	//ex: getNextReset(date, 3, 7, [23, 0, 0])
+	const getNextReset = (date, resetDay, daysInCycle, resetTime) => {
+		const nextReset = new Date(date);
+		const aDiff = (date, nextReset) => Math.ceil((nextReset - date) / 1000);
+		nextReset.setDate(date.getDate() + (resetDay - date.getDay() + daysInCycle) % daysInCycle);
+		nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
+		let dateDiff = aDiff(date, nextReset);
+		if (dateDiff < 0) {
+			nextReset.setDate(nextReset.getDate() + daysInCycle);
+			dateDiff = aDiff(date, nextReset);
+		}
+	  return dateDiff;
+	};
+	
+	const getDateDiff = (date, targetTime, bRevert = false) => 
+		Math.ceil((new Date(targetTime) - date) * (bRevert ? -1 : 1) / 1000);
+	
+	const getFadeColor = (n) => {
+		const fadedate = Math.abs(n);
+		return fadedate <= 1800 
+			? perc2color((fadedate / 1800) * 100) 
+			: fadedate <= 3600 
+				? perc2color2(100 - ((fadedate - 1800) / 1800) * 100) 
+				: "#FFFFFF";
+	};
 
 	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, tmp, tmp1, tmp2, fadecolor, fadedate;
+		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, d, tmp, tmp1, tmp2, fadecolor, fadedate;
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
 		//day setup
-		if (weekDay !== weekDay_tmp) {
+		/*if (weekDay !== weekDay_tmp) {
 			listTime_inDay = [];
 			for(let k in bossTable[weekDay]) {
 				if (bossTable[weekDay][k].length > 0) {
@@ -491,7 +516,7 @@ tr.bl{color: white;}
 			
 			n = 0;
 			listTime_nextDay = [];
-			var d = new Date(date);
+			d = new Date(date);
 			d.setDate(d.getDate() + 1);
 			w = d.getDay();
 			for(let k in bossTable[w]) {
@@ -504,7 +529,7 @@ tr.bl{color: white;}
 			
 			n = 0;
 			listTime_previousDay = [];
-			var d = new Date(date);
+			d = new Date(date);
 			d.setDate(d.getDate() - 1);
 			w = d.getDay();
 			tmp = Object.keys(bossTable[w]);
@@ -518,38 +543,48 @@ tr.bl{color: white;}
 			
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
+		}*/
+		
+		if (weekDay !== weekDay_tmp) {
+			listTime_inDay = Object.keys(bossTable[weekDay])
+				.filter(k => bossTable[weekDay][k].length > 0)
+				.map(k => ({
+					spawnTime: k,
+					bossTable: bossTable[weekDay][k],
+					highLight: `${weekDay}-${k}`,
+					dateFormat: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${k}`
+				}));
+
+			listTime_nextDay = [];
+			d = new Date(date);
+			d.setDate(d.getDate() + 1);
+			w = d.getDay();
+			listTime_nextDay = Object.keys(bossTable[w])
+				.filter((k, n) => bossTable[w][k].length > 0 && n < 2)
+				.map(k => ({
+					spawnTime: k,
+					bossTable: bossTable[w][k],
+					highLight: `${w}-${k}`,
+					dateFormat: `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${k}`
+				}));
+
+			listTime_previousDay = [];
+			d = new Date(date);
+			d.setDate(d.getDate() - 1);
+			w = d.getDay();
+			listTime_previousDay = Object.keys(bossTable[w])
+				.reverse()
+				.filter((k, n) => bossTable[w][k].length > 0 && n < 2)
+				.map(k => ({
+					spawnTime: k,
+					bossTable: bossTable[w][k],
+					highLight: `${w}-${k}`,
+					dateFormat: `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${k}`
+				}));
+
+			weekDay_tmp = weekDay;
+			bossPosition = 0;
 		}
-		
-		//ex: getNextReset(date, 3, 7, [23, 0, 0])
-		const getNextReset = (date, resetDay, daysInCycle, resetTime) => {
-			let nextReset = new Date(date);
-			const daysUntilReset = (resetDay - nextReset.getDay() + daysInCycle) % daysInCycle;
-			nextReset.setDate(nextReset.getDate() + daysUntilReset);
-			nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
-			let dateDiff = Math.ceil((nextReset - date) / 1000);
-			if (dateDiff < 0) {
-				nextReset.setDate(nextReset.getDate() + daysInCycle);
-				dateDiff = Math.ceil((nextReset - date) / 1000);
-			}
-			return dateDiff;
-		};
-		
-		const getDateDiff = (date, targetTime, isRevert = false) => {
-			if (isRevert) {
-				return Math.ceil((date.getTime() - new Date(targetTime).getTime()) / 1000);
-			} else {
-				return Math.ceil((new Date(targetTime).getTime() - date.getTime()) / 1000);
-			}
-		};
-		
-		const getFadeColor = (n) => {
-			const fadedate = Math.abs(n);
-			return fadedate <= 1800 
-				? perc2color((fadedate / 1800) * 100) 
-				: fadedate <= 3600 
-					? perc2color2(100 - ((fadedate - 1800) / 1800) * 100) 
-					: "#FFFFFF";
-		};
 		
 		//current boss will spawn
 		tmp1 = ''; tmp2 = '';
