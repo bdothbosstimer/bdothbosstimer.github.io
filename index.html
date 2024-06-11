@@ -571,7 +571,7 @@
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, d, tmp, tmp1, tmp2, fadecolor, fadedate;
+		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, d, tmp, tmp1, tmp2;
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
 		if (weekDay !== weekDay_tmp) {
@@ -624,7 +624,6 @@
 			if (dateDiff >= 0) {
 				n = listTime_inDay[i].bossTable.length;
 				j = 100 / n >> 0;
-				spawnTime = listTime_inDay[i]["spawnTime"];
 				for(let b in listTime_inDay[i].bossTable) {
 					alertType = listTime_inDay[i].bossTable[b]["type"];
 					tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+listTime_inDay[i].bossTable[b]["img"]+'" width="360" height="360"/></td>';
@@ -635,7 +634,7 @@
 				nextBoss = (i == listTime_inDay.length-1) ? listTime_nextDay[0] : listTime_inDay[i+1];
 
 				//countdown update
-				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+listTime_inDay[i]["spawnTime"]+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 				setHTMLInner("currboss", tmp);
 				break;
@@ -652,10 +651,6 @@
 			tmp1 = ''; tmp2 = '';
 			tmp = '<table border="0" width="100%"><tbody>';
 			dateDiff = getDateDiff(date, listTime_nextDay[0].dateFormat);
-			spawnTime = listTime_nextDay[0].spawnTime;
-			if (dateDiff <= 0) {
-				dateDiff = 86400 - Math.abs(dateDiff); //86400 = 24hour
-			}
 			for(let b in listTime_nextDay[0].bossTable) {
 				alertType = listTime_nextDay[0].bossTable[b]["type"];
 				tmp1 += '<td class="td bt" width="'+j+'%"><img src="'+listTime_nextDay[0].bossTable[b]["img"]+'" width="360" height="360"/></td>';
@@ -666,7 +661,7 @@
 			nextBoss = listTime_nextDay[1];
 			
 			//countdown update
-			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+spawnTime+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+listTime_nextDay[0]['spawnTime']+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 			setHighlight(listTime_nextDay[0].highLight, alertType, true);
 			setHTMLInner("currboss", tmp);
 
@@ -688,7 +683,7 @@
 		}
 		
 		//countdown update
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss.spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHTMLInner("nextboss", tmp);
 		
 		//previous boss
@@ -704,7 +699,7 @@
 		}
 
 		//countup update *previous
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>- [ '+previousBoss.spawnTime+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>- [ '+previousBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
 		setHighlight(previousBoss.highLight, alertType, false);
 		setHTMLInner("prevboss", tmp);
 		
