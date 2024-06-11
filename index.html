@@ -560,7 +560,7 @@ tr.bl{color: white;}
 			d.setDate(d.getDate() + 1);
 			w = d.getDay();
 			listTime_nextDay = Object.keys(bossTable[w])
-				.filter((k, n) => bossTable[w][k].length > 0 && n < 2)
+				.filter(k => bossTable[w][k].length > 0)
 				.map(k => ({
 					spawnTime: k,
 					bossTable: bossTable[w][k],
@@ -574,7 +574,7 @@ tr.bl{color: white;}
 			w = d.getDay();
 			listTime_previousDay = Object.keys(bossTable[w])
 				.reverse()
-				.filter((k, n) => bossTable[w][k].length > 0 && n < 2)
+				.filter(k => bossTable[w][k].length > 0)
 				.map(k => ({
 					spawnTime: k,
 					bossTable: bossTable[w][k],
