@@ -574,6 +574,7 @@
 		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, d, tmp, tmp1, tmp2;
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
+		//Boss Table Setup
 		if (weekDay !== weekDay_tmp) {
 			listTime_inDay = Object.keys(bossTable[weekDay])
 				.filter(k => bossTable[weekDay][k].length > 0)
@@ -584,7 +585,6 @@
 					dateFormat: `${dateStr} ${k}`
 				}));
 
-			listTime_nextDay = [];
 			d = new Date(date);
 			d.setDate(d.getDate() + 1);
 			w = d.getDay();
@@ -597,7 +597,6 @@
 					dateFormat: `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${k}`
 				}));
 
-			listTime_previousDay = [];
 			d = new Date(date);
 			d.setDate(d.getDate() - 1);
 			w = d.getDay();
@@ -643,7 +642,6 @@
 			}
 		}
 		
-		//console.log(listTime_nextDay[0].dateFormat)
 		//Fix next day boss (current boss spawn)
 		if (bossPosition > (listTime_inDay.length-1)) {
 			n = listTime_nextDay[0].bossTable.length;
@@ -666,8 +664,6 @@
 			setHTMLInner("currboss", tmp);
 
 			//playAlert(dateDiff, alertType);
-			
-			//key for table highlight "w listTime[listSize-3]" ex table id = 4-20:00:00
 		}
 		
 		//next boss or followed boss
