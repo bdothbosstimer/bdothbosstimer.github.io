@@ -246,7 +246,7 @@
       <td class="td bl" id="0-14:00:00">คูทุม</br>คารานด้า</td>
       <td class="td bl" id="0-15:00:00">เบลล์</td>
       <td class="td bl" id="0-16:00:00">&nbsp;</td>
-	  <td class="td bl" id="0-17:00:00">&nbsp;</td>
+	  <td class="td bl" id="war-roses">&nbsp;</td>
       <td class="td bl" id="0-19:00:00">คจาคาร์</br>คารานด้า</td>
       <td rowspan="6" class="td bl" id="war-node">สงคราม</br>ฐาน</td>
 	  <td class="td bl" id="0-22:15:00">กามอส</td>
@@ -753,6 +753,8 @@
 		var dailyString = `❀ Daily in: ${formatSeconds(getDateDiff(date, `${dateStr} 23:00:00`))}`;
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
+		
+		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 7, 21, [17, 0, 0]))}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
