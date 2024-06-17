@@ -567,49 +567,33 @@
 				: "#FFFFFF";
 	};
 
+	const getBossTableForDay = (date, dayOffset = 0) => {
+		const d = new Date(date);
+		d.setDate(d.getDate() + dayOffset);
+		const day = d.getDay();
+		const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+		return Object.keys(bossTable[day])
+			.filter(k => bossTable[day][k].length > 0)
+			.map(k => ({
+				spawnTime: k,
+				bossTable: bossTable[day][k],
+				highLight: `${day}-${k}`,
+				dateFormat: `${dateStr} ${k}`
+			}));
+	};
+
 	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss, nextBoss, alertType, spawnTime, dateDiff, n, m, w, j, d, tmp, tmp1, tmp2;
+		let previousBoss, nextBoss, alertType, dateDiff, n, j, tmp, tmp1, tmp2;
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
 		//Boss Table Setup
 		if (weekDay !== weekDay_tmp) {
-			listTime_inDay = Object.keys(bossTable[weekDay])
-				.filter(k => bossTable[weekDay][k].length > 0)
-				.map(k => ({
-					spawnTime: k,
-					bossTable: bossTable[weekDay][k],
-					highLight: `${weekDay}-${k}`,
-					dateFormat: `${dateStr} ${k}`
-				}));
-
-			d = new Date(date);
-			d.setDate(d.getDate() + 1);
-			w = d.getDay();
-			listTime_nextDay = Object.keys(bossTable[w])
-				.filter(k => bossTable[w][k].length > 0)
-				.map(k => ({
-					spawnTime: k,
-					bossTable: bossTable[w][k],
-					highLight: `${w}-${k}`,
-					dateFormat: `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${k}`
-				}));
-
-			d = new Date(date);
-			d.setDate(d.getDate() - 1);
-			w = d.getDay();
-			listTime_previousDay = Object.keys(bossTable[w])
-				.reverse()
-				.filter(k => bossTable[w][k].length > 0)
-				.map(k => ({
-					spawnTime: k,
-					bossTable: bossTable[w][k],
-					highLight: `${w}-${k}`,
-					dateFormat: `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${k}`
-				}));
-
+			listTime_inDay = getBossTableForDay(date);
+			listTime_nextDay = getBossTableForDay(date, 1);
+			listTime_previousDay = getBossTableForDay(date, -1).reverse();
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
 		}
