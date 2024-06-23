@@ -738,7 +738,7 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
-		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 0, 21, [17, 0, 0]))}`);
+		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 0, 14, [17, 0, 0]))}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
