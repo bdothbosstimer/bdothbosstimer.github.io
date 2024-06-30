@@ -546,8 +546,11 @@
 		const nextReset = new Date(date);
 		const _getDiff = (date, nextReset) => Math.ceil((nextReset - date) / 1000);
 		let addDate = (resetDay - date.getDay() + daysInCycle) % daysInCycle;
-		if (addDate === 0 && daysInCycle > 7) {
-			addDate = daysInCycle - 7;
+		if (daysInCycle > 7) {
+			const _weekOfMonth = (date) => Math.ceil((date.getDate() + new Date(date.getFullYear(), date.getMonth(), 1).getDay()) / 7);
+			const currentWeekOfMonth = _weekOfMonth(date);
+			const totalWeeksInMonth = _weekOfMonth(new Date(date.getFullYear(), date.getMonth() + 1, 0));
+			addDate = ((daysInCycle > 7) && (currentWeekOfMonth === totalWeeksInMonth || currentWeekOfMonth === 1)) ? addDate - 7 : addDate;
 		}
 		nextReset.setDate(date.getDate() + addDate);
 		nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
