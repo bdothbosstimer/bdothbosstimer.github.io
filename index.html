@@ -544,13 +544,17 @@
 	//ex: getNextReset(date, 3, 7, [23, 0, 0])
 	const getNextReset = (date, resetDay, daysInCycle, resetTime) => {
 		const nextReset = new Date(date);
-		const aDiff = (date, nextReset) => Math.ceil((nextReset - date) / 1000);
-		nextReset.setDate(date.getDate() + (resetDay - date.getDay() + daysInCycle) % daysInCycle);
+		const _getDiff = (date, nextReset) => Math.ceil((nextReset - date) / 1000);
+		let addDate = (resetDay - date.getDay() + daysInCycle) % daysInCycle;
+		if (addDate === 0 && daysInCycle > 7) {
+			addDate = daysInCycle - 7;
+		}
+		nextReset.setDate(date.getDate() + addDate);
 		nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
-		let dateDiff = aDiff(date, nextReset);
+		let dateDiff = _getDiff(date, nextReset);
 		if (dateDiff < 0) {
 			nextReset.setDate(nextReset.getDate() + daysInCycle);
-			dateDiff = aDiff(date, nextReset);
+			dateDiff = _getDiff(date, nextReset);
 		}
 	  return dateDiff;
 	};
