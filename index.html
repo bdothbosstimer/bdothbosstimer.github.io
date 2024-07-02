@@ -541,26 +541,23 @@
 	const getTimebyOffset = (tzOffset, nowTime = new Date()) =>
 		new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
 
-	//ex: getNextReset(date, 3, 7, [23, 0, 0])
-	const getNextReset = (date, resetDay, daysInCycle, resetTime) => {
-		const nextReset = new Date(date);
-		const _getDiff = (date, nextReset) => Math.ceil((nextReset - date) / 1000);
-		let addDate = (resetDay - date.getDay() + daysInCycle) % daysInCycle;
-		if (daysInCycle > 7) {
-			const _weekOfMonth = (date) => Math.ceil((date.getDate() + new Date(date.getFullYear(), date.getMonth(), 1).getDay()) / 7);
-			const currentWeekOfMonth = _weekOfMonth(date);
-			const totalWeeksInMonth = _weekOfMonth(new Date(date.getFullYear(), date.getMonth() + 1, 0));
-			addDate = ((daysInCycle > 7) && (currentWeekOfMonth === totalWeeksInMonth || currentWeekOfMonth === 1)) ? addDate - 7 : addDate;
+	function getNextReset(date, resetDay, daysInCycle, resetTime) {
+		const currentDate = new Date(date);
+		const [resetHour, resetMinute, resetSecond] = resetTime;
+		const cycleStart = new Date(currentDate.getFullYear(), 0, 1);
+		const daysPassed = Math.floor((currentDate - cycleStart) / (1000 * 60 * 60 * 24));
+		const cyclesPassed = Math.floor(daysPassed / daysInCycle);
+		const cycleStartDate = new Date(cycleStart.getTime() + cyclesPassed * daysInCycle * 24 * 60 * 60 * 1000);
+		let nextResetDate = new Date(cycleStartDate);
+		nextResetDate.setDate(nextResetDate.getDate() + resetDay -1);
+		nextResetDate.setHours(resetHour, resetMinute, resetSecond, 0);
+		if (nextResetDate <= currentDate) {
+			nextResetDate = new Date(cycleStartDate);
+			nextResetDate.setDate(nextResetDate.getDate() + resetDay + daysInCycle -1);
+			nextResetDate.setHours(resetHour, resetMinute, resetSecond, 0);
 		}
-		nextReset.setDate(date.getDate() + addDate);
-		nextReset.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
-		let dateDiff = _getDiff(date, nextReset);
-		if (dateDiff < 0) {
-			nextReset.setDate(nextReset.getDate() + daysInCycle);
-			dateDiff = _getDiff(date, nextReset);
-		}
-	  return dateDiff;
-	};
+		return Math.ceil((nextResetDate - currentDate) / 1000);
+	}
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
 		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
@@ -745,7 +742,7 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
-		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 0, 14, [17, 0, 0]))}`);
+		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 7, 14, [17, 0, 0]))}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
