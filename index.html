@@ -341,14 +341,12 @@
 	if (isVideoElementSupported()) {
 		try {
 			const noSleepVideo = document.createElement('video');
-			noSleepVideo.id = 'nosleep';
+			noSleepVideo.id = 'noSleep';
 			noSleepVideo.width = 0;
 			noSleepVideo.height = 0;
-			noSleepVideo.volume = 0; 
 			noSleepVideo.loop = true;
 			noSleepVideo.muted = true;
 			noSleepVideo.playsInline = true;
-			noSleepVideo.style.display= "none";
 			const noSleepSource = document.createElement('source');
 			noSleepSource.src = 'data:video/mp4;base64,AAAAHGZ0eXBpc29tAAACAGlzb21pc28ybXA0MQAAAAhmcmVlAAAAl2F2YzEAAAAAAAAACGZyZWUAACqEBG1kYXQhEAUAAARghHRyYWsAAABcdGtoZAAAAAEAAAAAAAAAAAAAACaWm0AAA1Rtb292AAAAbG12aGQAAAAAAAAAAAAAAAAAAAPoAAAAAAAAGQAAZGF0YQAAAAEAAAAARW5jb2RlIGJ5IEZGVkJMTUJPSUwgAA==';
 			noSleepSource.type = 'video/mp4';
@@ -370,7 +368,6 @@
 				//console.error(`${err.name}, ${err.message}`);
 			}
 		};
-
 		const releaseWakeLock = () => {
 			if (wakeLock !== null) {
 				wakeLock.release().then(() => {
