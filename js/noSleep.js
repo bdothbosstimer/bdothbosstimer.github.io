@@ -20,7 +20,7 @@ if (isVideoElementSupported) {
 	});
 
 	noSleepVideo.appendChild(noSleepSource);
-	//document.body.appendChild(noSleepVideo);
+	document.body.appendChild(noSleepVideo);
 
 	window.setNoSleep = async (noSleepState) => {
 		if (noSleepState) {
