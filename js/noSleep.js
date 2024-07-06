@@ -1,4 +1,4 @@
-const isVideoElementSupported = !!document.createElement('video').canPlayType;
+const isVideoElementSupported = !!document.createElement('video').canPlayType && document.body;
 const isWakeLockSupported = 'wakeLock' in navigator;
 //const isOldIOS = /iP(hone|od|ad)/.test(navigator.platform) && !isWakeLockSupported;
 
