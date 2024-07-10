@@ -752,8 +752,8 @@
 		var dayNighttime = Math.ceil(isNight ? secsUntilNightEnd : secsUntilNightStart);
 		var dayNightString = `${isNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 
-		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, 7, [23, 0, 0]))}`;
-		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 3, 7, [5, 0, 0]))}`;
+		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 4, 7, [23, 0, 0]))}`;
+		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 4, 7, [5, 0, 0]))}`;
 		var blackShrineString =  `𓉱 Black Shrine in: ${formatSecondsFull(getNextReset(date, 6, 7, [23, 0, 0]))}`;
 
 		var dailyString = `❀ Daily in: ${formatSeconds(getDateDiff(date, `${dateStr} 23:00:00`))}`;
