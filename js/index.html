@@ -1,0 +1,793 @@
+<html>
+<head>
+<meta charset="UTF-8">
+
+<!-- Primary Meta Tags -->
+<title>[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer</title>
+<meta name="title" content="[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer">
+<meta name="description" content="ตารางเวลาและการแจ้งเตือนบอสโลก github: https://github.com/bdothbosstimer/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bdothbosstimer.github.io/">
+<meta property="og:title" content="[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer">
+<meta property="og:description" content="ตารางเวลาและการแจ้งเตือนบอสโลก github: https://github.com/bdothbosstimer/">
+<meta property="og:image" content="https://bdothbosstimer.github.io/imgs/bosstable.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://bdothbosstimer.github.io/">
+<meta property="twitter:title" content="[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer">
+<meta property="twitter:description" content="ตารางเวลาและการแจ้งเตือนบอสโลก  github: https://github.com/bdothbosstimer/">
+<meta property="twitter:image" content="https://bdothbosstimer.github.io/imgs/bosstable.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="imgs/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="imgs/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="imgs/favicon-16x16.png">
+<link rel="manifest" href="imgs/site.webmanifest">
+<style>
+	h1 {
+		font-size: 100px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	h2 {
+		font-size: 35px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	h3 {
+		font-size: 25px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	h4 {
+		font-size: 15px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	a:link {
+	  text-decoration: none;
+	}
+
+	a:visited {
+	  text-decoration: none;
+	}
+
+	a:hover {
+	  text-decoration: none;
+	}
+
+	a:active {
+	  text-decoration: none;
+	}
+	
+	#progress-container {
+		position: relative;
+		width: 100%;
+		background-color: #2B2F31;
+		height: 30px;
+		margin-top: 20px;
+	}
+	#progress-bar {
+		width: 0%;
+		height: 100%;
+		background-color: #3D8C40;
+		position: absolute;
+	}
+	.bubble {
+		position: absolute;
+		top: -30px;
+		left: 0;
+		transform: translateX(-50%);
+		background-color: #3D8C40;
+		font-size: 18px;
+		color: white;
+		font-weight: bold;
+		padding: 5px 10px;
+		border-radius: 15px;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+	.checkpoint {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		background-color: #C90101;
+	}
+	.checkpoint-label {
+		position: absolute;
+		top: 35px;
+		white-space: nowrap;
+		transform: translateX(-50%);
+		font-size: 18px;
+		color: white;
+		font-weight: bold;
+	}
+
+	table.bl {
+	  border-collapse: collapse;
+	  //width: 100%;
+	}
+
+	table.bt {
+	  border-collapse: collapse;
+	  //width: 100%;
+	}
+
+	td.bt {text-align: center;}
+	td.bc {color: #ffffff;}
+	th.bl, td.bl {
+	  //text-align: left;
+	  //padding: 5px;
+	}
+	th.bl{font-size: 24px; text-align: center;}
+	td.bl{font-size: 16px; text-align: center;}
+	tr.bl:nth-child(odd) {background-color: #222437;}
+	tr.bl:nth-child(even) {background-color: #222837;}
+	tr.bl:hover {background-color: #0c2333}
+	tr.bl{color: white;}
+	.hl {
+		/*background: #28a745;*/
+		color: #fff!important;
+		-moz-box-shadow: inset 0 0 10px #28a745;
+		-webkit-box-shadow: inset 0 0 10px #28a745;
+		box-shadow: inset 0 0 10px #28a745;
+	}
+
+	body {
+		background-color: #1a1c2a;
+		margin: -19px 0 0 0;
+		position: absolute; 
+		width: 100%;
+		height: 100%;
+	}
+</style>
+</head>
+<body>
+<p>&nbsp;</p>
+<table width="1250" border="0" align="center" cellpadding="0" cellspacing="0" class="table bt">
+  <tbody>
+	<tr>
+      <td colspan="3" class="td bc" id ="nowtime" valign="middle" align="center">&nbsp;</td>
+	</tr>
+    <tr>
+      <td width="25%" id="prevboss" valign="bottom" align="center">&nbsp;</td>
+      <td width="50%" id="currboss" valign="bottom" align="center">&nbsp;</td>
+      <td width="25%" id="nextboss" valign="bottom" align="center">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="ingame">&nbsp;</td>
+      <td>&nbsp;</td>
+	  <td class="td bc" valign="bottom" align="right" id="daynight">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="trading">&nbsp;</td>
+      <td>&nbsp;</td>
+	   <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="imperial">&nbsp;</td>
+      <td>&nbsp;</td>
+	  <td class="td bc" valign="bottom" align="right" id="weekly">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="blackshrine">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="bartering">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="maintenance">&nbsp;</td>
+    </tr>
+	<tr>
+      <td colspan="3"></br></br>
+		<div id="progress-container">
+			<div id="progress-bar"></div>
+			<div class="bubble" id="progress-bubble"></div>
+			<div class="checkpoint" style="left: 0%;">
+				<div class="checkpoint-label">🌅 Morning</div>
+			</div>
+			<div class="checkpoint" style="left: 27%;">
+				<div class="checkpoint-label">☀️ Afternoon</div>
+			</div>
+			<div class="checkpoint" style="left: 61%;">
+				<div class="checkpoint-label">🌆 Evening</div>
+			</div>
+			<div class="checkpoint" style="left: 83%;">
+				<div class="checkpoint-label">🌙 Night</div>
+			</div>
+			<div class="checkpoint" style="left: 100%;">
+				<div class="checkpoint-label">🌅 Morning</div>
+			</div>
+		</div>
+		</br>
+	</tr>
+  </tbody>
+</table>
+
+</br>
+<table width="1250" border="0" align="center" cellpadding="15" cellspacing="0" class="table bl">
+  <tbody>
+    <tr class="tr bl">
+      <th class="td bl">วัน/เวลา</th>
+      <th class="td bl">00:30</th>
+      <th class="td bl">10:00</th>
+	  <th class="td bl">13:00</th>
+      <th class="td bl">14:00</th>
+      <th class="td bl">15:00</th>
+      <th class="td bl">16:00</th>
+	  <th class="td bl">17:00</th>
+      <th class="td bl">19:00</th>
+      <th class="td bl">20:00</th>
+	  <th class="td bl">22:15</th>
+      <th class="td bl">23:00</th>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">อาทิตย์</th>
+      <td class="td bl" id="0-00:30:00">คจาคาร์</td>
+      <td class="td bl" id="0-10:00:00">นูเวอร์</br>คารานด้า</td>
+      <td class="td bl" id="0-13:00:00">กามอส</td>
+      <td class="td bl" id="0-14:00:00">คูทุม</br>คารานด้า</td>
+      <td class="td bl" id="0-15:00:00">เบลล์</td>
+      <td class="td bl" id="0-16:00:00">&nbsp;</td>
+	  <td class="td bl" id="war-roses">&nbsp;</td>
+      <td class="td bl" id="0-19:00:00">คจาคาร์</br>คารานด้า</td>
+      <td rowspan="6" class="td bl" id="war-node">สงคราม</br>ฐาน</td>
+	  <td class="td bl" id="0-22:15:00">กามอส</td>
+      <td class="td bl" id="0-23:00:00">คูทุม</br>นูเวอร์</td>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">จันทร์</th>
+      <td class="td bl" id="1-00:30:00">คูทุม</td>
+      <td class="td bl" id="1-10:00:00">คจาคาร์</br>นูเวอร์</td>
+	  <td class="td bl" id="1-13:00:00">กามอส</td>
+      <td class="td bl" id="1-14:00:00">คูทุม</br>นูเวอร์</td>
+      <td class="td bl" id="1-15:00:00">&nbsp;</td>
+      <td class="td bl" id="1-16:00:00">&nbsp;</td>
+	  <td class="td bl" id="1-17:00:00">&nbsp;</td>
+      <td class="td bl" id="1-19:00:00">คจาจาร์</br>คารานด้า</td>
+	  <td class="td bl" id="1-22:15:00">กามอส</td>
+      <td class="td bl" id="1-23:00:00">โอฟิน</td>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">อังคาร</th>
+      <td class="td bl" id="2-00:30:00">นูเวอร์</td>
+      <td class="td bl" id="2-10:00:00">คูทุม</br>คารานด้า</td>
+	  <td class="td bl" id="2-13:00:00">กามอส</td>
+      <td class="td bl" id="2-14:00:00">คูทุม</br>คจาคาร์</td>
+      <td class="td bl" id="2-15:00:00">&nbsp;</td>
+      <td class="td bl" id="2-16:00:00">&nbsp;</td>
+	  <td class="td bl" id="2-17:00:00">&nbsp;</td>
+      <td class="td bl" id="2-19:00:00">มูลัคคา</br>กวินท์</td>
+	  <td class="td bl" id="2-22:15:00">กามอส</td>
+      <td class="td bl" id="2-23:00:00">&nbsp;</td>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">พุธ</th>
+      <td class="td bl" id="3-00:30:00">คจาคาร์</br>โอฟิน</td>
+      <td class="td bl" id="3-10:00:00">คูทุม</br>นูเวอร์</td>
+	  <td class="td bl" id="3-13:00:00">กามอส</td>
+      <td class="td bl" id="3-14:00:00">คารานด้า</br>คจาคาร์</td>
+      <td class="td bl" id="3-15:00:00">&nbsp;</td>
+      <td class="td bl" id="3-16:00:00">&nbsp;</td>
+	  <td class="td bl" id="3-17:00:00">&nbsp;</td>
+      <td class="td bl" id="3-19:00:00">คูทุม</br>นูเวอร์</td>
+	  <td class="td bl" id="3-22:15:00">กามอส</td>
+      <td class="td bl" id="3-23:00:00">เบลล์</td>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">พฤหัส</th>
+      <td class="td bl" id="4-00:30:00">คูทุม</td>
+      <td class="td bl" id="4-10:00:00">คารานด้า</br>คจาคาร์</td>
+	  <td class="td bl" id="4-13:00:00">กามอส</td>
+      <td class="td bl" id="4-14:00:00">คูทุม</br>นูเวอร์</td>
+      <td class="td bl" id="4-15:00:00">&nbsp;</td>
+      <td class="td bl" id="4-16:00:00">&nbsp;</td>
+	  <td class="td bl" id="4-17:00:00">&nbsp;</td>
+      <td class="td bl" id="4-19:00:00">นูเวอร์</br>คารานด้า</td>
+	  <td class="td bl" id="4-22:15:00">กามอส</td>
+      <td class="td bl" id="4-23:00:00">&nbsp;</td>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">ศุกร์</th>
+      <td class="td bl" id="5-00:30:00">นูเวอร์</td>
+      <td class="td bl" id="5-10:00:00">คูทุม</br>คจาคาร์</td>
+	  <td class="td bl" id="5-13:00:00">กามอส</td>
+      <td class="td bl" id="5-14:00:00">คารานด้า</br>คจาคาร์</td>
+      <td class="td bl" id="5-15:00:00">&nbsp;</td>
+      <td class="td bl" id="5-16:00:00">&nbsp;</td>
+	  <td class="td bl" id="5-17:00:00">&nbsp;</td>
+      <td class="td bl" id="5-19:00:00">คูทุม</br>นูเวอร์</td>
+	  <td class="td bl" id="5-22:15:00">กามอส</td>
+      <td class="td bl" id="5-23:00:00">โอฟิน</td>
+    </tr>
+    <tr class="tr bl">
+      <th class="td bl">เสาร์</th>
+      <td class="td bl" id="6-00:30:00">คารานด้า</td>
+      <td class="td bl" id="6-10:00:00">คูทุม</br>คจาคาร์</td>
+      <td class="td bl" id="6-13:00:00">กามอส</td>
+      <td class="td bl" id="6-14:00:00">คารานด้า</br>นูเวอร์</td>
+      <td class="td bl" id="6-15:00:00">&nbsp;</td>
+      <td class="td bl" id="6-16:00:00">เงาดำ</td>
+	  <td class="td bl" id="6-17:00:00">กามอส</td>
+      <td class="td bl" id="6-19:00:00">มูลัคคา</br>กวินท์</td>
+      <td colspan="3" class="td bl" id="war-castle">สงคราม</br>ปราสาท</td>
+    </tr>
+  </tbody>
+</table>
+</br>
+</br>
+<center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong></br><img src="imgs/github.png"/></a></center></br>
+<script src="js/boss.js"></script>
+<script>	
+	const isVideoElementSupported = !!document.createElement('video').canPlayType && !!document.body;
+	if (isVideoElementSupported) {
+		try {
+			const noSleepVideo = document.createElement('video');
+			noSleepVideo.id = 'noSleep';
+			noSleepVideo.width = 0;
+			noSleepVideo.height = 0;
+			noSleepVideo.loop = true;
+			noSleepVideo.muted = true;
+			noSleepVideo.playsInline = true;
+			const noSleepSource = document.createElement('source');
+			noSleepSource.src = 'data:video/mp4;base64,AAAAHGZ0eXBpc29tAAACAGlzb21pc28ybXA0MQAAAAhmcmVlAAAAl2F2YzEAAAAAAAAACGZyZWUAACqEBG1kYXQhEAUAAARghHRyYWsAAABcdGtoZAAAAAEAAAAAAAAAAAAAACaWm0AAA1Rtb292AAAAbG12aGQAAAAAAAAAAAAAAAAAAAPoAAAAAAAAGQAAZGF0YQAAAAEAAAAARW5jb2RlIGJ5IEZGVkJMTUJPSUwgAA==';
+			noSleepSource.type = 'video/mp4';
+			noSleepVideo.appendChild(noSleepSource);
+			document.body.appendChild(noSleepVideo);
+			noSleepVideo.play();
+		} catch (err) {
+			//console.error(`${err.name}, ${err.message}`);
+		}
+	}
+	
+	const isWakeLockSupported = 'wakeLock' in navigator;
+	if (isWakeLockSupported) {
+		let wakeLock = null;
+		const requestWakeLock = async () => {
+			try {
+				wakeLock = await navigator.wakeLock.request('screen');
+			} catch (err) {
+				//console.error(`${err.name}, ${err.message}`);
+			}
+		};
+		const releaseWakeLock = () => {
+			if (wakeLock !== null) {
+				wakeLock.release().then(() => {
+					wakeLock = null;
+				}).catch((err) => {
+					//console.error(`${err.name}, ${err.message}`);
+				});
+			}
+		};
+		document.addEventListener('visibilitychange', () => {
+			if (document.visibilityState === 'visible') {
+				requestWakeLock();
+			} else {
+				releaseWakeLock();
+			}
+		});
+		window.addEventListener('load', () => {
+			requestWakeLock();
+		});
+		window.addEventListener('beforeunload', () => {
+			releaseWakeLock();
+		});
+	}
+	
+	function formatSeconds(n) {
+		var date = new Date(1970, 0, 1);
+		date.setSeconds(n);
+		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+	}
+	
+	function formatSecondsFull(n) {
+		var date = new Date(1970, 0, 1);
+		date.setSeconds(n);
+		
+		var result = '';
+		var year = date.getFullYear() - 1970;
+		var month = date.getMonth();
+		var day = date.getDate() - 1;
+		var hours = date.getHours();
+		var minutes = date.getMinutes();
+		var seconds = date.getSeconds();
+		
+		if (year > 0) result += year + ' Y ';
+		if (month > 0) result += month + ' M ';
+		if (day > 0) result += day + ' D ';
+		result += hours.toString().padStart(2, '0') + ':' +
+					minutes.toString().padStart(2, '0') + ':' +
+					seconds.toString().padStart(2, '0');
+		return result;
+	}
+
+	function perc2color(perc) {
+		var r, g, b = 0;
+		if(perc < 50) {
+			r = 255;
+			g = Math.round(5.1 * perc);
+		}
+		else {
+			g = 255;
+			r = Math.round(510 - 5.10 * perc);
+		}
+		var h = r * 0x10000 + g * 0x100 + b * 0x1;
+		return '#' + ('000000' + h.toString(16)).slice(-6);
+	}
+	
+	function perc2color2(perc) {
+		const startColor = [255, 255, 255]; // White
+		const endColor = [0, 255, 0];       // Green
+		const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * (perc / 100));
+		const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * (perc / 100));
+		const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * (perc / 100));
+		var h = r * 0x10000 + g * 0x100 + b * 0x1;
+		return '#' + ('000000' + h.toString(16)).slice(-6);
+	}
+	
+	function playAlert(dateDiff, alertType) {
+		const play = (p) => {
+			audio = new Audio(p);
+			//audio.volume = 50/100 >> 0;
+			audio.volume = 1;
+			audio.play();
+		}
+		switch(dateDiff) {
+			case 1800:
+				switch(alertType) {
+					case "world-boss": play('audio/30minboss.mp3'); break;
+					case "war-node": play('audio/30minnode.mp3'); break;
+					case "war-castle": play('audio/30mincastle.mp3'); break;
+				}
+				break;
+			case 900:
+				switch(alertType) {
+					case "world-boss": play('audio/15minboss.mp3'); break;
+					case "war-node": play('audio/15minnode.mp3'); break;
+					case "war-castle": play('audio/15mincastle.mp3'); break;
+				}
+				break;
+			case 600:
+				switch(alertType) {
+					case "world-boss": play('audio/10minboss.mp3'); break;
+					case "war-node": play('audio/10minnode.mp3'); break;
+					case "war-castle": play('audio/10mincastle.mp3'); break;
+				}
+				break;
+			case 300:
+				switch(alertType) {
+					case "world-boss": play('audio/5minboss.mp3'); break;
+					case "war-node": play('audio/5minnode.mp3'); break;
+					case "war-castle": play('audio/5mincastle.mp3'); break;
+				}
+				break;
+			case 0:
+				switch(alertType) {
+					case "world-boss": play('audio/bossappear.mp3'); break;
+					case "war-node": play('audio/nodewar.mp3'); break;
+					case "war-castle": play('audio/castlewar.mp3'); break;
+				}
+				break;
+		}
+	}
+	
+	function getNightTime(secondsToAdd) {
+		var t = new Date();
+			t.setSeconds(t.getSeconds() + secondsToAdd);
+		var hours   = t.getHours();
+		var amPm    = (hours >= 12) ? "PM" : "AM";
+			hours       = (hours > 12) ? hours - 12 : hours;
+			hours       = (hours === 0) ? 12 : hours;
+			hours		= (hours < 10) ? "0" + hours : hours;
+		var minutes = t.getMinutes();
+			minutes     = (minutes < 10) ? "0" + minutes : minutes;
+			return hours + ":" + minutes + " " + amPm;
+	}
+	
+	function setHTMLInner(id, str) {
+		document.getElementById(id).innerHTML = str;
+	}
+	
+	function setHighlight(id, alertType, bool) {
+		const css = (id, cn) => {
+				let e = document.getElementById(id);
+				if (e) {e.className = cn;}
+			}
+		switch(alertType) {
+			case "world-boss":
+			case "field-boss":
+				css(id, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-node":
+				css(`war-node`, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-castle":
+				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
+				break;
+		}
+	}
+
+	function toThaiDateString(date) {
+		let monthNames = [
+			"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
+			"พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม",
+			"กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+		];
+		
+		let dayNames = [
+			"อาทิตย์", "จันทร์", "อังคาร", "พุธ",
+			"พฤหัสบดี", "ศุกร์", "เสาร์"
+		];
+
+		let day = dayNames[date.getDay()];
+		let year = date.getFullYear() + 543;
+		let month = monthNames[date.getMonth()];
+		let numOfDay = date.getDate();
+
+		let hour = date.getHours().toString().padStart(2, "0");
+		let minutes = date.getMinutes().toString().padStart(2, "0");
+		let second = date.getSeconds().toString().padStart(2, "0");
+
+		return `วัน${day}ที่ ${numOfDay} ${month} ${year} ` +
+			`<br>เวลา ${hour}:${minutes}:${second} น.`;
+	}
+	
+	const updateProgressBar = (progressPercentage, progressBubbleText) => {
+		const progressBar = document.getElementById('progress-bar');
+		const progressBubble = document.getElementById('progress-bubble');
+		progressBar.style.width = progressPercentage + '%';
+		progressBubble.style.left = progressPercentage + '%';
+		progressBubble.textContent = progressBubbleText;
+	};
+	
+
+	const getTimebyOffset = (tzOffset, nowTime = new Date()) =>
+		new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
+	
+	const getNextReset = (date, resetDay, daysInCycle, resetTime, initialCycleDate = null) => {
+		const cycleStart = initialCycleDate ? new Date(initialCycleDate) : new Date(date.getFullYear(), 0, 1);
+		const daysPassed = Math.floor((date - cycleStart) / (1000 * 60 * 60 * 24));
+		const cyclesPassed = Math.floor(daysPassed / daysInCycle);
+		const currentCycleStartDate = new Date(cycleStart.getTime() + cyclesPassed * daysInCycle * 24 * 60 * 60 * 1000);
+		let nextResetDate = new Date(currentCycleStartDate);
+		nextResetDate.setDate(nextResetDate.getDate() + resetDay - (initialCycleDate ? 0 : 1));
+		nextResetDate.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
+		if (nextResetDate <= date) nextResetDate.setDate(nextResetDate.getDate() + daysInCycle);
+		return Math.ceil((nextResetDate - date) / 1000);
+	};
+	
+	const getDateDiff = (date, targetTime, bRevert = false) => 
+		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
+	
+	const getFadeColor = (n) => {
+		const fadedate = Math.abs(n);
+		return fadedate <= 1800 
+			? perc2color((fadedate / 1800) * 100) 
+			: fadedate <= 3600 
+				? perc2color2(100 - ((fadedate - 1800) / 1800) * 100) 
+				: "#FFFFFF";
+	};
+
+	const getBossTableForDay = (date, dayOffset = 0) => {
+		const d = new Date(date);
+		d.setDate(d.getDate() + dayOffset);
+		const day = d.getDay();
+		const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+		return Object.keys(bossTable[day])
+			.filter(k => bossTable[day][k].length > 0)
+			.map(k => ({
+				spawnTime: k,
+				bossTable: bossTable[day][k],
+				highLight: `${day}-${k}`,
+				dateFormat: `${dateStr} ${k}`
+			}));
+	};
+
+	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
+	setInterval(function() {
+		const date = getTimebyOffset(7), weekDay = date.getDay();
+		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
+		let previousBoss, nextBoss, alertType, dateDiff, n, j, tmp, tmp1, tmp2;
+		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
+		
+		//Boss Table Setup
+		if (weekDay !== weekDay_tmp) {
+			listTime_inDay = getBossTableForDay(date);
+			listTime_nextDay = getBossTableForDay(date, 1);
+			listTime_previousDay = getBossTableForDay(date, -1).reverse();
+			weekDay_tmp = weekDay;
+			bossPosition = 0;
+		}
+		
+		//current boss will spawn
+		tmp1 = ''; tmp2 = '';
+		tmp = '<table border="0" width="100%"><tbody>';
+		
+		for(let i = bossPosition; i <= listTime_inDay.length-1; i++) {
+			dateDiff = getDateDiff(date, listTime_inDay[i].dateFormat);
+			if (dateDiff >= 0) {
+				n = listTime_inDay[i].bossTable.length;
+				j = 100 / n >> 0;
+				for(let b in listTime_inDay[i].bossTable) {
+					alertType = listTime_inDay[i].bossTable[b]["type"];
+					tmp1 += '<td class="td bt" width="'+j+'%" style="height:160px"><img src="'+listTime_inDay[i].bossTable[b]["img"]+'" height="100%"/></td>';
+					tmp2 += '<td class="td bt"><h3>'+listTime_inDay[i].bossTable[b]["name"]+'</td>';
+				}
+				
+				previousBoss = (i === 0) ? listTime_previousDay[0] : listTime_inDay[i-1];
+				nextBoss = (i === listTime_inDay.length-1) ? listTime_nextDay[0] : listTime_inDay[i+1];
+
+				//countdown update
+				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+listTime_inDay[i]["spawnTime"]+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
+				setHTMLInner("currboss", tmp);
+				break;
+			} else {
+				bossPosition++;
+			}
+		}
+		
+		//Fix next day boss (current boss spawn)
+		if (bossPosition > (listTime_inDay.length-1)) {
+			n = listTime_nextDay[0].bossTable.length;
+			j = 100 / n >> 0;
+			tmp1 = ''; tmp2 = '';
+			tmp = '<table border="0" width="100%"><tbody>';
+			dateDiff = getDateDiff(date, listTime_nextDay[0].dateFormat);
+			for(let b in listTime_nextDay[0].bossTable) {
+				alertType = listTime_nextDay[0].bossTable[b]["type"];
+				tmp1 += '<td class="td bt" width="'+j+'%" style="height:160px"><img src="'+listTime_nextDay[0].bossTable[b]["img"]+'" height="100%"/></td>';
+				tmp2 += '<td class="td bt"><h3>'+listTime_nextDay[0].bossTable[b]["name"]+'</td>';
+			}
+			
+			previousBoss = listTime_inDay[listTime_inDay.length-1];
+			nextBoss = listTime_nextDay[1];
+			
+			//countdown update
+			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+listTime_nextDay[0]['spawnTime']+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+			setHighlight(listTime_nextDay[0].highLight, alertType, true);
+			setHTMLInner("currboss", tmp);
+
+			//playAlert(dateDiff, alertType);
+		}
+		
+		//next boss or followed boss
+		n = nextBoss.bossTable.length;
+		j = 100 / n >> 0;
+		tmp1 = ''; tmp2 = '';
+		tmp = '<table border="0" width="100%"><tbody>';
+		dateDiff = getDateDiff(date, nextBoss.dateFormat);
+		for(let b in nextBoss.bossTable) {
+			alertType = nextBoss.bossTable[b]["type"];
+			tmp1 += '<td class="td bt" width="'+j+'%" style="height:64px"><img src="'+nextBoss.bossTable[b]["img"]+'" height="100%"/></td>';
+			tmp2 += '<td class="td bt"><h4>'+nextBoss.bossTable[b]["name"]+'</td>';
+		}
+		
+		//countdown update
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		setHTMLInner("nextboss", tmp);
+		
+		//previous boss
+		n = previousBoss.bossTable.length;
+		j = 100 / n >> 0;
+		tmp1 = ''; tmp2 = '';
+		tmp = '<table border="0" width="100%"><tbody>';
+		dateDiff = getDateDiff(date, previousBoss.dateFormat, true);
+		for(let b in previousBoss.bossTable) {
+			alertType = previousBoss.bossTable[b]["type"];
+			tmp1 += '<td class="td bt" width="'+j+'%" style="height:64px"><img src="'+previousBoss.bossTable[b]["img"]+'" height="100%"/></td>';
+			tmp2 += '<td class="td bt"><h4>'+previousBoss.bossTable[b]["name"]+'</td>';
+		}
+
+		//countup update *previous
+		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>- [ '+previousBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		setHighlight(previousBoss.highLight, alertType, false);
+		setHTMLInner("prevboss", tmp);
+		
+		//code from http://bdocalc.com/
+		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
+		var rlDayElapsedS = (date - startHour) / 1000;
+		var secsIntoGameDay = (rlDayElapsedS + 200 * 60 + 20 * 60) % (240 * 60);
+		
+		
+		// Trading reset
+		var secsUntilTradingReset = Math.ceil(60 * 60 * 4 - (rlDayElapsedS - 2 * 60 * 60) % (60 * 60 * 4));
+		if (secsUntilTradingReset > (60 * 60 * 4) ) secsUntilTradingReset -= Math.ceil(60 * 60 * 4);
+		//var secsSinceTradingReset = rlDayElapsedS - (rlDayElapsedS % (60 * 60 * 3));
+		//var lastTradingReset = new Date(startHour + secsSinceTradingReset * 1000);
+		var nextTradingResetTime = new Date(date.getTime() + secsUntilTradingReset * 1000);
+		var tradingString = `𖥞 Trading in: ${formatSeconds(secsUntilTradingReset)} (${(h => h > 12 ? h - 12 : h)(nextTradingResetTime.getHours()).toString().padStart(2, '0')}:${nextTradingResetTime.getMinutes().toString().padStart(2, '0')} ${nextTradingResetTime.getHours() > 12 ? "PM" : "AM"})`;
+
+		// Imperial delievery reset
+		var secsUntilImperialReset = Math.ceil(3 * 60 * 60 - rlDayElapsedS % (60 * 60 * 3));
+		//var secsSinceImperialReset = rlDayElapsedS - (rlDayElapsedS % (60 * 60 * 3));
+		//var lastImperialReset = new Date(startHour + secsSinceImperialReset * 1000);
+		var nextImperialResetTime = new Date(date.getTime() + secsUntilImperialReset * 1000);
+		var imperialString = `♕ Imperial in: ${formatSeconds(secsUntilImperialReset)} (${(h => h > 12 ? h - 12 : h)(nextImperialResetTime.getHours()).toString().padStart(2, '0')}:${nextImperialResetTime.getMinutes().toString().padStart(2, '0')} ${nextImperialResetTime.getHours() > 12 ? "PM" : "AM"})`;
+
+		//Ingame Time (1 day = 14400 sec)
+		var isNight = secsIntoGameDay >= 12000; // 0 = day 1 = night
+		if (isNight) {
+			var secsIntoGameNight = secsIntoGameDay - 12000;
+			var pctOfNightDone = secsIntoGameNight / (40 * 60);
+			var secsUntilNightEnd = 40 * 60 - secsIntoGameNight;
+			var gameHour = 9 * pctOfNightDone;
+			gameHour = gameHour < 2 ? 22 + gameHour : gameHour - 2;
+		} else {
+			var secsIntoGameDaytime = secsIntoGameDay;
+			var pctOfDayDone = secsIntoGameDay / (200 * 60);
+			var secsUntilNightStart = 12000 - secsIntoGameDaytime;
+			var gameHour = 7 + (22 - 7) * pctOfDayDone;
+		}
+		var finalGameHour = gameHour / 1 >> 0;
+		var finalGameMinute = gameHour % 1 * 60 >> 0;
+		var finalGameSecond = gameHour % 1 * 3600 % 60 >> 0;
+		var afternoon = finalGameHour >= 12;
+		finalGameHour = finalGameHour % 12 || 12;
+
+		var timeString = `⌨ Ingame Time: ${isNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
+		var dayNighttime = Math.ceil(isNight ? secsUntilNightEnd : secsUntilNightStart);
+		var dayNightString = `${isNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
+
+		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, 7, [23, 0, 0]))}`;
+		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 4, 7, [5, 0, 0]))}`;
+		var blackShrineString =  `𓉱 Black Shrine in: ${formatSecondsFull(getNextReset(date, 6, 7, [23, 0, 0]))}`;
+
+		var dailyString = `❀ Daily in: ${formatSeconds(getDateDiff(date, `${dateStr} 23:00:00`))}`;
+		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
+		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
+		
+		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]))}`);
+
+		setHTMLInner("ingame", timeString);
+		setHTMLInner("daynight", dayNightString);
+		setHTMLInner("maintenance", maintenanceString);
+		setHTMLInner("blackspirit", blackspiritString);
+		setHTMLInner("daily", dailyString);
+		setHTMLInner("bartering", barteringString);
+		setHTMLInner("weekly", weeklyString);
+		setHTMLInner("blackshrine", blackShrineString);
+		setHTMLInner("imperial", imperialString);
+		setHTMLInner("trading", tradingString);
+		
+		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
+		//4000 = 12PM, 8800 = 6PM, 12000 = 10PM
+		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${secsIntoGameDay >= 12000 ? `🌙` : secsIntoGameDay >= 8800 ? `🌆` : secsIntoGameDay >= 4000 ? `☀️` : `🌅`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
+	}, 1000);
+
+	/*TEST Data
+	data position note
+	object	object		array		object
+	weekDay	spawnTime	bossArray	bossTable
+	for(var d in bossTable) {
+		for(var t in bossTable[d]) {
+			for(var b in bossTable[d][t]) {
+				for(var p in bossTable[d][t][b]) {
+					console.log(`${d} ${t} ${bossTable[d][t][b]["img"]}`)
+					console.log(`${d} ${t} ${bossTable[d][t][b]["name"]}`)
+					console.log(`${d} ${t} ${bossTable[d][t][b]["type"]}`)
+				}
+			}
+		}
+	
+	}*/
+  </script>
+</body>
+</html>
