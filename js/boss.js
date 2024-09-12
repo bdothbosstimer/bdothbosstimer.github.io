@@ -109,8 +109,13 @@ const bossTable = {
 			"23:00:00": [
 				{
 					"type": "world-boss",
-					"name": "ราชาหมูทองคำ",
-					"img": "imgs/goldenpigking.png"
+					"name": "คูทุม",
+					"img": "imgs/kutum.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "นูเวอร์",
+					"img": "imgs/nouver.png"
 				},
 				{
 					"type": "world-boss",
@@ -119,13 +124,8 @@ const bossTable = {
 				},
 				{
 					"type": "world-boss",
-					"name": "คูทุม",
-					"img": "imgs/kutum.png"
-				},
-				{
-					"type": "world-boss",
-					"name": "นูเวอร์",
-					"img": "imgs/nouver.png"
+					"name": "ราชาหมูทองคำ",
+					"img": "imgs/goldenpigking.png"
 				}
 			],
 			"23:30:00": [
@@ -627,6 +627,11 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "นูเวอร์",
 					"img": "imgs/nouver.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "ซันกุน",
+					"img": "imgs/sangun.png"
 				}
 			],
 			"06:00:00": [
@@ -641,6 +646,11 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "เทพแห่งการทุจริต คจาคาร์",
 					"img": "imgs/kzarka.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "บุลกาซัล",
+					"img": "imgs/bulgasal.png"
 				}
 			],
 			"12:00:00": [
@@ -662,6 +672,11 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "เทพแห่งการทุจริต คจาคาร์",
 					"img": "imgs/kzarka.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "อูทูรี",
+					"img": "imgs/uturi.png"
 				}
 			],
 			"15:00:00": [
@@ -680,6 +695,16 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "นูเวอร์",
 					"img": "imgs/nouver.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "ราชาหมูทองคำ",
+					"img": "imgs/goldenpigking.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "บุลกาซัล",
+					"img": "imgs/bulgasal.png"
 				}
 			],
 			"20:00:00": [
@@ -701,6 +726,16 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "ผู้ทำลายแห่งมีลม็อก โอฟิน",
 					"img": "imgs/offin.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "อูทูรี",
+					"img": "imgs/uturi.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "ซันกุน",
+					"img": "imgs/sangun.png"
 				}
 			],
 			"23:30:00": [
@@ -716,6 +751,11 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "คารานด้า",
 					"img": "imgs/karanda.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "บุลกาซัล",
+					"img": "imgs/bulgasal.png"
 				}
 			],
 			"06:00:00": [
@@ -730,6 +770,11 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "เทพแห่งการทุจริต คจาคาร์",
 					"img": "imgs/kzarka.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "ราชาหมูทองคำ",
+					"img": "imgs/goldenpigking.png"
 				}
 			],
 			"12:00:00": [
@@ -758,6 +803,11 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "นูเวอร์",
 					"img": "imgs/nouver.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "ซันกุน",
+					"img": "imgs/sangun.png"
 				}
 			],
 			"15:00:00": [
@@ -786,6 +836,16 @@ const bossTable = {
 					"type": "world-boss",
 					"name": "กวินท์",
 					"img": "imgs/quint.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "อูทูรี",
+					"img": "imgs/uturi.png"
+				},
+				{
+					"type": "world-boss",
+					"name": "บุลกาซัล",
+					"img": "imgs/bulgasal.png"
 				}
 			],
 			"20:00:00": [
