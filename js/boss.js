@@ -119,13 +119,13 @@ const bossTable = {
 				},
 				{
 					"type": "world-boss",
-					"name": "ซันกุน",
-					"img": "imgs/sangun.png"
+					"name": "ราชาหมูทองคำ",
+					"img": "imgs/goldenpigking.png"
 				},
 				{
 					"type": "world-boss",
-					"name": "ราชาหมูทองคำ",
-					"img": "imgs/goldenpigking.png"
+					"name": "ซันกุน",
+					"img": "imgs/sangun.png"
 				}
 			],
 			"23:30:00": [
