@@ -621,7 +621,8 @@
 	}
 	
 	function setHTMLInner(id, str) {
-		document.getElementById(id).innerHTML = str;
+		let e = document.getElementById(id);
+		if (e) {e.innerHTML = str;}
 	}
 	
 	function setHighlight(id, alertType, bool) {
@@ -868,7 +869,7 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
-		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]))}`);
+		//setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]))}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
