@@ -326,13 +326,9 @@
     </tr>
     <tr class="tr bl">
         <th class="td bl">20:00</th>
-		<td class="td bl" id="1-20:00:00">สงคราม</br>ฐาน</td>
-		<td class="td bl" id="2-20:00:00">สงคราม</br>ฐาน</td>
-		<td class="td bl" id="3-20:00:00">สงคราม</br>ฐาน</td>
-		<td class="td bl" id="4-20:00:00">สงคราม</br>ฐาน</td>
-		<td class="td bl" id="5-20:00:00">สงคราม</br>ฐาน</td>
-        <td class="td bl" id="6-20:00:00">สงคราม</br>ปราสาท</td>
-        <td class="td bl" id="0-20:00:00">สงคราม</br>ฐาน</td>
+		<td class="td bl" id="war-node-1" colspan="5">สงคราม</br>ฐาน</td>
+        <td class="td bl" id="war-castle">สงคราม</br>ปราสาท</td>
+        <td class="td bl" id="war-node-2">สงคราม</br>ฐาน</td>
     </tr>
     <tr class="tr bl">
         <th class="td bl">22:15</th>
@@ -554,7 +550,8 @@
 				css(id, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-node":
-				css(`war-node`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-node-1`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-node-2`, bool ? `tr bl hl` : `tr bl`);
 				break;
 			case "war-castle":
 				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
