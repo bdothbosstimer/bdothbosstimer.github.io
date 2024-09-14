@@ -670,7 +670,6 @@
 			listTime_inDay = getBossTableForDay(date);
 			listTime_nextDay = getBossTableForDay(date, 1);
 			listTime_previousDay = getBossTableForDay(date, -1);
-			
 			if (weekDay === 0 && getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]) <= 84000) {
 				listTime_inDay.push({
 					spawnTime: '17:00:00',
@@ -678,7 +677,7 @@
 						{
 							"type": "war-roses",
 							"name": "สงครามกุหลาบ",
-							"img": "imgs/rosewars.png"
+							"img": "imgs/warroses.png"
 						}
 					],
 					highLight: `${weekDay}-17:00:00`,
