@@ -559,6 +559,14 @@
 		}
 	}
 
+	function formatDate(date) {
+		const day = date.getDate();
+		const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+		const month = months[date.getMonth()];
+		const year = date.getFullYear() + 543;
+		return `${day} ${month} ${year}`;
+	}
+
 	function toThaiDateString(date) {
 		let monthNames = [
 			"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
@@ -596,7 +604,7 @@
 	const getTimebyOffset = (tzOffset, nowTime = new Date()) =>
 		new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
 	
-	const getNextReset = (date, resetDay, daysInCycle, resetTime, initialCycleDate = null) => {
+	const getNextReset = (date, resetDay, daysInCycle, resetTime, initialCycleDate = null, bDateDiff = true) => {
 		const cycleStart = initialCycleDate 
 			? new Date(initialCycleDate[0], initialCycleDate[1] - 1, initialCycleDate[2])
 			: new Date(date.getFullYear(), 0, 1);
@@ -613,7 +621,7 @@
 			nextResetDate.setDate(nextResetDate.getDate() + daysInCycle);
 		}
 
-		return Math.ceil((nextResetDate - date) / 1000);
+		return bDateDiff ? Math.ceil((nextResetDate - date) / 1000) : nextResetDate;
 	};
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
@@ -792,7 +800,9 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
-		setHTMLInner("war-roses", `Rose Wars<br>${formatSecondsFull(getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]))}`);
+		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7], false);
+		dateDiff = formatSecondsFull(getDateDiff(date, warroses));		
+		setHTMLInner("war-roses", `สงครามกุหลาบ<br>${dateDiff}<br>${formatDate(warroses)}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
