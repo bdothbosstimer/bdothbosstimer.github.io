@@ -556,6 +556,9 @@
 			case "war-castle":
 				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
 				break;
+			case "war-roses":
+				css(`war-roses`, bool ? `tr bl hl` : `tr bl`);
+				break;
 		}
 	}
 
@@ -651,6 +654,10 @@
 			}));
 	};
 
+	const sortByTimeKey = (list, timeKey) => {
+		return list.sort((a, b) => new Date(`1970/01/01 ${a[timeKey]}`).getTime() - new Date(`1970/01/01 ${b[timeKey]}`).getTime());
+	};
+
 	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
@@ -662,7 +669,24 @@
 		if (weekDay !== weekDay_tmp) {
 			listTime_inDay = getBossTableForDay(date);
 			listTime_nextDay = getBossTableForDay(date, 1);
-			listTime_previousDay = getBossTableForDay(date, -1).reverse();
+			listTime_previousDay = getBossTableForDay(date, -1);
+			
+			if (weekDay === 0 && getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]) <= 84000) {
+				listTime_inDay.push({
+					spawnTime: '17:00:00',
+					bossTable: [
+						{
+							"type": "war-roses",
+							"name": "สงครามกุหลาบ",
+							"img": "imgs/rosewars.png"
+						}
+					],
+					highLight: `${weekDay}-17:00:00`,
+					dateFormat: `${dateStr} 17:00:00`
+				});
+			}
+			[listTime_inDay, listTime_nextDay, listTime_previousDay].forEach(list => sortByTimeKey(list, 'spawnTime'));
+			listTime_previousDay.reverse();
 			weekDay_tmp = weekDay;
 			bossPosition = 0;
 		}
@@ -801,8 +825,7 @@
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
 		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7], false);
-		dateDiff = formatSecondsFull(getDateDiff(date, warroses));		
-		setHTMLInner("war-roses", `สงครามกุหลาบ<br>${dateDiff}<br>${formatDate(warroses)}`);
+		setHTMLInner("war-roses", `สงครามกุหลาบ<br>${formatSecondsFull(getDateDiff(date, warroses))}<br>${formatDate(warroses)}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
