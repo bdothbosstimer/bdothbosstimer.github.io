@@ -657,7 +657,7 @@
 				} else if (index === totalItems - 1 && i === rows - 1) {
 					let lastItem = data[totalItems - 1];
 					table += `<td colspan="${columns - j}" style="text-align: center;">
-								<img src="${lastItem.img}" alt="${lastItem.name}" height="${imgHeight}">
+								<img src="${lastItem.img}" alt="${lastItem.name}" height="${totalItems === 1 ? imgHeight * 2 : imgHeight}">
 							  </td>`;
 					break;
 				} else {
