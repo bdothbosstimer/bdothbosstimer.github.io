@@ -698,7 +698,7 @@
 				n = listTime_inDay[i].bossTable.length;
 				for(let b in listTime_inDay[i].bossTable) {
 					alertType = listTime_inDay[i].bossTable[b]["type"];
-					tmp1 += '<td class="td bt"><img src="'+listTime_inDay[i].bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((500 / n) >> 0)+'px; object-fit: contain;"/></td>';
+					tmp1 += '<td class="td bt" style="width: '+((600 / n) >> 0)+'pt;"><img src="'+listTime_inDay[i].bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((500 / n) >> 0)+'px; object-fit: contain;"/></td>';
 					tmp2 += '<td class="td bt"><h3>'+listTime_inDay[i].bossTable[b]["name"]+'</td>';
 				}
 				
@@ -722,7 +722,7 @@
 			dateDiff = getDateDiff(date, listTime_nextDay[0].dateFormat);
 			for(let b in listTime_nextDay[0].bossTable) {
 				alertType = listTime_nextDay[0].bossTable[b]["type"];
-				tmp1 += '<td class="td bt"><img src="'+listTime_nextDay[0].bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((500 / n) >> 0)+'px; object-fit: contain;"/></td>';
+				tmp1 += '<td class="td bt" style="width: '+((600 / n) >> 0)+'pt;"><img src="'+listTime_nextDay[0].bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((500 / n) >> 0)+'px; object-fit: contain;"/></td>';
 				tmp2 += '<td class="td bt"><h3>'+listTime_nextDay[0].bossTable[b]["name"]+'</td>';
 			}
 			
@@ -744,7 +744,7 @@
 		dateDiff = getDateDiff(date, nextBoss.dateFormat);
 		for(let b in nextBoss.bossTable) {
 			alertType = nextBoss.bossTable[b]["type"];
-			tmp1 += '<td class="td bt"><img src="'+nextBoss.bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((200 / n) >> 0)+'px; object-fit: contain;"/></td>';
+			tmp1 += '<td class="td bt" style="width: '+((200 / n) >> 0)+'pt;"><img src="'+nextBoss.bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((200 / n) >> 0)+'px; object-fit: contain;"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+nextBoss.bossTable[b]["name"]+'</td>';
 		}
 		
@@ -759,7 +759,7 @@
 		dateDiff = getDateDiff(date, previousBoss.dateFormat, true);
 		for(let b in previousBoss.bossTable) {
 			alertType = previousBoss.bossTable[b]["type"];
-			tmp1 += '<td class="td bt"><img src="'+previousBoss.bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((200 / n) >> 0)+'px; object-fit: contain;"/></td>';
+			tmp1 += '<td class="td bt" style="width: '+((200 / n) >> 0)+'pt;"><img src="'+previousBoss.bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((200 / n) >> 0)+'px; object-fit: contain;"/></td>';
 			tmp2 += '<td class="td bt"><h4>'+previousBoss.bossTable[b]["name"]+'</td>';
 		}
 
