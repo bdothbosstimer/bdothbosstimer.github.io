@@ -766,10 +766,10 @@
 				}
 				if (listTime_inDay[i].update !== 1) {
 					setHTMLInner('currboss', createBossTableWrapper('current', listTime_inDay[i].bossTable, 2));
+					setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 					listTime_inDay[i].update = 1;
 				}
 				setHTMLInner("currboss-timer", '<font color="'+getFadeColor(dateDiff)+'"><br><h3>- [ '+listTime_inDay[i]["spawnTime"]+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font>');
-				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 				
 				previousBoss = (i === 0) ? listTime_previousDay[0] : listTime_inDay[i-1];
 				nextBoss = (i === listTime_inDay.length-1) ? listTime_nextDay[0] : listTime_inDay[i+1];
@@ -790,10 +790,10 @@
 			}
 			if (listTime_nextDay[0].update !== 2) {
 				setHTMLInner('currboss', createBossTableWrapper('current', listTime_nextDay[0].bossTable, 2));
+				setHighlight(listTime_nextDay[0].highLight, alertType, true);
 				listTime_nextDay[0].update = 2;
 			}
 			setHTMLInner("currboss-timer", '<font color="'+getFadeColor(dateDiff)+'"><br><h3>- [ '+listTime_nextDay[0]['spawnTime']+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font>');
-			setHighlight(listTime_nextDay[0].highLight, alertType, true);
 			
 			previousBoss = listTime_inDay[listTime_inDay.length-1];
 			nextBoss = listTime_nextDay[1];
@@ -819,10 +819,10 @@
 		}
 		if (previousBoss.update !== 4) {
 			setHTMLInner("prevboss", createBossTableWrapper('previous' ,previousBoss.bossTable, 2));
+			setHighlight(previousBoss.highLight, alertType, false);
 			previousBoss.update = 4;
 		}
 		setHTMLInner("prevboss-timer", '<font color="#ff0000"></br><h4>- [ '+previousBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font>');
-		setHighlight(previousBoss.highLight, alertType, false);
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
