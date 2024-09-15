@@ -145,6 +145,7 @@
 	}
 
 	body {
+		font-family: Arial, sans-serif;
 		background-color: #1a1c2a;
 		margin: -19px 0 0 0;
 		position: absolute; 
@@ -821,7 +822,7 @@
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
 		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7], false);
-		setHTMLInner("war-roses", `สงครามกุหลาบ<br>${formatSecondsFull(getDateDiff(date, warroses))}<br>${formatDate(warroses)}`);
+		setHTMLInner("war-roses", `สงครามกุหลาบ<br>${formatDate(warroses)}<br>${formatSecondsFull(getDateDiff(date, warroses))}`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
