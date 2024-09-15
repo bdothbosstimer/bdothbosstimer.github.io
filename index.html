@@ -156,15 +156,15 @@
 </head>
 <body>
 <p>&nbsp;</p>
-<table style="table-layout: fixed; width: 1000pt; border-collapse: collapse;" border="0" cellspacing="0" cellpadding="0" align="center" class="table bt">
+<table style="width: 1000pt;" border="0" cellspacing="0" cellpadding="0" align="center" class="table bt">
   <tbody>
 	<tr>
       <td colspan="3" class="td bc" id ="nowtime" valign="middle" align="center">&nbsp;</td>
 	</tr>
     <tr>
-      <td id="prevboss" style="width: 200pt; height: 350pt; text-align: left; vertical-align: bottom; word-wrap: break-word; word-break: break-all;">&nbsp;</td>
-      <td id="currboss" style="width: 600pt; height: 350pt; text-align: center; vertical-align: top; word-wrap: break-word; word-break: break-all;">&nbsp;</td>
-      <td id="nextboss" style="width: 200pt; height: 350pt; text-align: right; vertical-align: bottom; word-wrap: break-word; word-break: break-all;">&nbsp;</td>
+      <td id="prevboss" style="width: 200pt; height: 350pt; text-align: left; vertical-align: bottom;">&nbsp;</td>
+      <td id="currboss" style="width: 600pt; height: 350pt; text-align: center; vertical-align: top;">&nbsp;</td>
+      <td id="nextboss" style="width: 200pt; height: 350pt; text-align: right; vertical-align: bottom;">&nbsp;</td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -224,7 +224,7 @@
 
 </br></br>
 
-<table style="border-collapse: collapse; width: 1000pt;" border="0" cellspacing="0" cellpadding="15" align="center" class="table bl">
+<table style="width: 1000pt;" border="0" cellspacing="0" cellpadding="15" align="center" class="table bl">
     <tr class="tr bl">
         <th class="td bl">เวลา</th>
         <th class="td bl">จันทร์</th>
@@ -639,6 +639,71 @@
 				? perc2color2(100 - ((fadedate - 1800) / 1800) * 100) 
 				: "#FFFFFF";
 	};
+	
+	function createBossTable(data, columns, imgHeight, tableWidth, textTag, valign, align, timerId) {
+		let table = `<table valign="${valign}" align="${align}" style="table-layout: fixed; width: ${tableWidth}pt; border-collapse: collapse;">`;
+		let totalItems = data.length;
+		let rows = Math.ceil(totalItems / columns);
+
+		for (let i = 0; i < rows; i++) {
+			table += '<tr>';
+			for (let j = 0; j < columns; j++) {
+				let index = i * columns + j;
+				if (index < totalItems - 1) {
+					let item = data[index];
+					table += `<td style="text-align: center; width: ${tableWidth / totalItems >> 0}pt;">
+								<img src="${item.img}" alt="${item.name}" height="${imgHeight}">
+							  </td>`;
+				} else if (index === totalItems - 1 && i === rows - 1) {
+					let lastItem = data[totalItems - 1];
+					table += `<td colspan="${columns - j}" style="text-align: center;">
+								<img src="${lastItem.img}" alt="${lastItem.name}" height="${imgHeight}">
+							  </td>`;
+					break;
+				} else {
+					table += '<td></td>';
+				}
+			}
+			table += '</tr>';
+
+			table += '<tr>';
+			for (let j = 0; j < columns; j++) {
+				let index = i * columns + j;
+				if (index < totalItems - 1) {
+					let item = data[index];
+					table += `<td style="text-align: center;"><${textTag}>${item.name}</${textTag}></td>`;
+				} else if (index === totalItems - 1 && i === rows - 1) {
+					let lastItem = data[totalItems - 1];
+					table += `<td colspan="${columns - j}" style="text-align: center;">
+								<${textTag}>${lastItem.name}</${textTag}>
+							  </td>`;
+					break;
+				} else {
+					table += '<td></td>';
+				}
+			}
+			table += '</tr>';
+		}
+
+		table += `<tr><td colspan="${columns}" style="text-align: center;" id="${timerId}"></td></tr>`;
+		table += '</table>';
+
+		return table;
+	}
+
+
+	function createBossTableWrapper(type, data, columns) {
+		switch (type) {
+			case 'current':
+				return createBossTable(data, columns, 128, 500, 'h3', 'top', 'center', 'currboss-timer');
+			case 'next':
+				return createBossTable(data, columns, 64, 250, 'h4', 'bottom', 'right', 'nextboss-timer');
+			case 'previous':
+				return createBossTable(data, columns, 64, 250, 'h4', 'bottom', 'left', 'prevboss-timer');
+			default:
+				return '';
+		}
+	}
 
 	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
 	setInterval(function() {
@@ -660,7 +725,8 @@
 						spawnTime: k,
 						bossTable: bossTable[day][k],
 						highLight: `${day}-${k}`,
-						dateFormat: `${dateStr} ${k}`
+						dateFormat: `${dateStr} ${k}`,
+						update: 0
 					}));
 			};
 			const sortByTimeKey = (list, timeKey) => {
@@ -680,7 +746,8 @@
 						}
 					],
 					highLight: `${weekDay}-17:00:00`,
-					dateFormat: `${dateStr} 17:00:00`
+					dateFormat: `${dateStr} 17:00:00`,
+					update: 0
 				});
 			}
 			[listTime_inDay, listTime_nextDay, listTime_previousDay].forEach(list => sortByTimeKey(list, 'spawnTime'));
@@ -690,25 +757,22 @@
 		}
 		
 		//current boss will spawn
-		tmp1 = ''; tmp2 = '';
-		tmp = '<table width="100%" valign="top" align="center"><tbody>';
 		for(let i = bossPosition; i <= listTime_inDay.length-1; i++) {
 			dateDiff = getDateDiff(date, listTime_inDay[i].dateFormat);
 			if (dateDiff >= 0) {
-				n = listTime_inDay[i].bossTable.length;
 				for(let b in listTime_inDay[i].bossTable) {
 					alertType = listTime_inDay[i].bossTable[b]["type"];
-					tmp1 += '<td class="td bt" style="width: '+((600 / n) >> 0)+'pt;"><img src="'+listTime_inDay[i].bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((500 / n) >> 0)+'px; object-fit: contain;"/></td>';
-					tmp2 += '<td class="td bt"><h3>'+listTime_inDay[i].bossTable[b]["name"]+'</td>';
+					break;
 				}
+				if (listTime_inDay[i].update !== 1) {
+					setHTMLInner('currboss', createBossTableWrapper('current', listTime_inDay[i].bossTable, 2));
+					listTime_inDay[i].update = 1;
+				}
+				setHTMLInner("currboss-timer", '<font color="'+getFadeColor(dateDiff)+'"><br><h3>- [ '+listTime_inDay[i]["spawnTime"]+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font>');
+				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
 				
 				previousBoss = (i === 0) ? listTime_previousDay[0] : listTime_inDay[i-1];
 				nextBoss = (i === listTime_inDay.length-1) ? listTime_nextDay[0] : listTime_inDay[i+1];
-
-				//countdown update
-				tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+listTime_inDay[i]["spawnTime"]+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
-				setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
-				setHTMLInner("currboss", tmp);
 				break;
 			} else {
 				bossPosition++;
@@ -722,51 +786,43 @@
 			dateDiff = getDateDiff(date, listTime_nextDay[0].dateFormat);
 			for(let b in listTime_nextDay[0].bossTable) {
 				alertType = listTime_nextDay[0].bossTable[b]["type"];
-				tmp1 += '<td class="td bt" style="width: '+((600 / n) >> 0)+'pt;"><img src="'+listTime_nextDay[0].bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((500 / n) >> 0)+'px; object-fit: contain;"/></td>';
-				tmp2 += '<td class="td bt"><h3>'+listTime_nextDay[0].bossTable[b]["name"]+'</td>';
+				break;
 			}
+			if (listTime_nextDay[0].update !== 2) {
+				setHTMLInner('currboss', createBossTableWrapper('current', listTime_nextDay[0].bossTable, 2));
+				listTime_nextDay[0].update = 2;
+			}
+			setHTMLInner("currboss-timer", '<font color="'+getFadeColor(dateDiff)+'"><br><h3>- [ '+listTime_nextDay[0]['spawnTime']+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font>');
+			setHighlight(listTime_nextDay[0].highLight, alertType, true);
 			
 			previousBoss = listTime_inDay[listTime_inDay.length-1];
 			nextBoss = listTime_nextDay[1];
-			
-			//countdown update
-			tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h3>- [ '+listTime_nextDay[0]['spawnTime']+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
-			setHighlight(listTime_nextDay[0].highLight, alertType, true);
-			setHTMLInner("currboss", tmp);
-
-			//playAlert(dateDiff, alertType);
 		}
 		
 		//next boss or followed boss
-		n = nextBoss.bossTable.length;
-		tmp1 = ''; tmp2 = '';
-		tmp = '<table width="100%" valign="bottom" align="right"><tbody>';
 		dateDiff = getDateDiff(date, nextBoss.dateFormat);
 		for(let b in nextBoss.bossTable) {
 			alertType = nextBoss.bossTable[b]["type"];
-			tmp1 += '<td class="td bt" style="width: '+((200 / n) >> 0)+'pt;"><img src="'+nextBoss.bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((200 / n) >> 0)+'px; object-fit: contain;"/></td>';
-			tmp2 += '<td class="td bt"><h4>'+nextBoss.bossTable[b]["name"]+'</td>';
+			break;
 		}
-		
-		//countdown update
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
-		setHTMLInner("nextboss", tmp);
+		if (nextBoss.update !== 3) {
+			setHTMLInner("nextboss", createBossTableWrapper('next', nextBoss.bossTable, 2));
+			nextBoss.update = 3;
+		}
+		setHTMLInner("nextboss-timer", '<font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font>');
 		
 		//previous boss
-		n = previousBoss.bossTable.length;
-		tmp1 = ''; tmp2 = '';
-		tmp = '<table width="100%" valign="bottom" align="left"><tbody>';
 		dateDiff = getDateDiff(date, previousBoss.dateFormat, true);
 		for(let b in previousBoss.bossTable) {
 			alertType = previousBoss.bossTable[b]["type"];
-			tmp1 += '<td class="td bt" style="width: '+((200 / n) >> 0)+'pt;"><img src="'+previousBoss.bossTable[b]["img"]+'" style="max-width: 100%; max-height: '+((200 / n) >> 0)+'px; object-fit: contain;"/></td>';
-			tmp2 += '<td class="td bt"><h4>'+previousBoss.bossTable[b]["name"]+'</td>';
+			break;
 		}
-
-		//countup update *previous
-		tmp += '<tr>' + tmp1 + '</tr><tr>' + tmp2 + '</tr><tr><td colspan="'+n+'" class="td bt"><font color="#ff0000"></br><h4>- [ '+previousBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font></td></tr></tbody></table>'; 
+		if (previousBoss.update !== 4) {
+			setHTMLInner("prevboss", createBossTableWrapper('previous' ,previousBoss.bossTable, 2));
+			previousBoss.update = 4;
+		}
+		setHTMLInner("prevboss-timer", '<font color="#ff0000"></br><h4>- [ '+previousBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font>');
 		setHighlight(previousBoss.highLight, alertType, false);
-		setHTMLInner("prevboss", tmp);
 		
 		//code from http://bdocalc.com/
 		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
