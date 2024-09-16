@@ -657,7 +657,7 @@
 							  '</td>';
 				} else if (index === totalItems - 1 && i === rows - 1) {
 					let lastItem = data[totalItems - 1];
-					table += '<td colspan="' + (columns - j) + '" style="text-align: center; width: ' + ((tableWidth / columns) >> 0) + 'pt;">' +
+					table += '<td '+ (totalItems === 1 ? '' : 'colspan="' + (columns - j)+'" ') +'style="text-align: center; width: ' + tableWidth + 'pt;">' +
 								'<img src="' + lastItem.img + '" alt="' + lastItem.name + '" height="' + (totalItems === 1 ? imgHeight * 2 : imgHeight) + '">' +
 							  '</td>';
 					break;
@@ -675,7 +675,7 @@
 					table += '<td style="text-align: center;"><' + textTag + '>' + item.name + '</' + textTag + '></td>';
 				} else if (index === totalItems - 1 && i === rows - 1) {
 					let lastItem = data[totalItems - 1];
-					table += '<td colspan="' + (columns - j) + '" style="text-align: center;">' +
+					table += '<td '+ (totalItems === 1 ? '' : 'colspan="' + (columns - j)+'" ') +'style="text-align: center;">' +
 								'<' + textTag + '>' + lastItem.name + '</' + textTag + '>' +
 							  '</td>';
 					break;
