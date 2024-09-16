@@ -652,7 +652,7 @@
 				let index = i * columns + j;
 				if (index < totalItems - 1) {
 					let item = data[index];
-					table += `<td style="text-align: center; width: ${tableWidth / totalItems >> 0}pt;">
+					table += `<td style="text-align: center; width: ${tableWidth / columns >> 0}pt;">
 								<img src="${item.img}" alt="${item.name}" height="${imgHeight}">
 							  </td>`;
 				} else if (index === totalItems - 1 && i === rows - 1) {
