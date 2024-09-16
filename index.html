@@ -642,7 +642,7 @@
 	};
 	
 	function createBossTable(data, columns, imgHeight, tableWidth, textTag, valign, align, timerId) {
-		let table = `<table valign="${valign}" align="${align}" style="table-layout: fixed; width: ${tableWidth}pt; border-collapse: collapse;">`;
+		let table = '<table valign="' + valign + '" align="' + align + '" style="table-layout: fixed; width: ' + tableWidth + 'pt; border-collapse: collapse;">';
 		let totalItems = data.length;
 		let rows = Math.ceil(totalItems / columns);
 
@@ -652,14 +652,14 @@
 				let index = i * columns + j;
 				if (index < totalItems - 1) {
 					let item = data[index];
-					table += `<td style="text-align: center; width: ${(tableWidth / columns) >> 0}pt;">
-								<img src="${item.img}" alt="${item.name}" height="${imgHeight}">
-							  </td>`;
+					table += '<td style="text-align: center; width: ' + ((tableWidth / columns) >> 0) + 'pt;">' +
+								'<img src="' + item.img + '" alt="' + item.name + '" height="' + imgHeight + '">' +
+							  '</td>';
 				} else if (index === totalItems - 1 && i === rows - 1) {
 					let lastItem = data[totalItems - 1];
-					table += `<td colspan="${columns - j}" style="text-align: center; width: ${(tableWidth / columns) >> 0}pt;">
-								<img src="${lastItem.img}" alt="${lastItem.name}" height="${totalItems === 1 ? imgHeight * 2 : imgHeight}">
-							  </td>`;
+					table += '<td colspan="' + (columns - j) + '" style="text-align: center; width: ' + ((tableWidth / columns) >> 0) + 'pt;">' +
+								'<img src="' + lastItem.img + '" alt="' + lastItem.name + '" height="' + (totalItems === 1 ? imgHeight * 2 : imgHeight) + '">' +
+							  '</td>';
 					break;
 				} else {
 					table += '<td></td>';
@@ -672,12 +672,12 @@
 				let index = i * columns + j;
 				if (index < totalItems - 1) {
 					let item = data[index];
-					table += `<td style="text-align: center;"><${textTag}>${item.name}</${textTag}></td>`;
+					table += '<td style="text-align: center;"><' + textTag + '>' + item.name + '</' + textTag + '></td>';
 				} else if (index === totalItems - 1 && i === rows - 1) {
 					let lastItem = data[totalItems - 1];
-					table += `<td colspan="${columns - j}" style="text-align: center;">
-								<${textTag}>${lastItem.name}</${textTag}>
-							  </td>`;
+					table += '<td colspan="' + (columns - j) + '" style="text-align: center;">' +
+								'<' + textTag + '>' + lastItem.name + '</' + textTag + '>' +
+							  '</td>';
 					break;
 				} else {
 					table += '<td></td>';
@@ -686,12 +686,11 @@
 			table += '</tr>';
 		}
 
-		table += `<tr><td colspan="${columns}" style="text-align: center;" id="${timerId}"></td></tr>`;
+		table += '<tr><td colspan="' + columns + '" style="text-align: center;" id="' + timerId + '"></td></tr>';
 		table += '</table>';
 
 		return table;
 	}
-
 
 	function createBossTableWrapper(type, data, columns) {
 		switch (type) {
