@@ -657,7 +657,7 @@
 							  '</td>';
 				} else if (index === totalItems - 1 && i === rows - 1) {
 					let lastItem = data[totalItems - 1];
-					table += '<td '+ (totalItems === 1 ? '' : 'colspan="' + (columns - j)+'" ') +'style="text-align: center; width: ' + tableWidth + 'pt;">' +
+					table += '<td ' + (totalItems === 1 ? '' : 'colspan="' + (columns - j)+'" ') + 'style="text-align: center; ' + (totalItems === 1 ? 'width: ' + tableWidth + 'pt;' : '') + '">' +
 								'<img src="' + lastItem.img + '" alt="' + lastItem.name + '" height="' + (totalItems === 1 ? imgHeight * 2 : imgHeight) + '">' +
 							  '</td>';
 					break;
