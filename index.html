@@ -892,7 +892,7 @@
 		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
 
 		var warHero = getWarHeroEnd(date);
-		setHTMLInner('warHeros', formatSecondsFull(getDateDiff(date, warHero)));
+		setHTMLInner('warHeros', `${formatSecondsFull(getDateDiff(date, warHero))} (${warHero.getHours() === 21 ? '09:10' : '10:10'} PM)`);
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
