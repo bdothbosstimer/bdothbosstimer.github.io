@@ -170,7 +170,7 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
+      <td >&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -190,12 +190,12 @@
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
-      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="center">- War Hero -</td>
       <td class="td bc" valign="bottom" align="right" id="blackshrine">&nbsp;</td>
     </tr>
     <tr>
       <td class="td bc" valign="bottom" align="left" id="bartering">&nbsp;</td>
-      <td>&nbsp;</td>
+      <td class="td bc" valign="bottom" align="center" id="warHero">&nbsp;</td>
       <td class="td bc" valign="bottom" align="right" id="maintenance">&nbsp;</td>
     </tr>
 	<tr>
@@ -630,6 +630,16 @@
 		return bDateDiff ? Math.ceil((nextResetDate - date) / 1000) : nextResetDate;
 	};
 	
+	const getWarHeroEnd = (date) => {
+		const targetTime = new Date(date);
+		targetTime.setHours(targetTime.getDay() === 6 ? 22 : 21, 10, 0, 0);
+		if (targetTime <= date) {
+			targetTime.setDate(targetTime.getDate() + 1);
+			if (targetTime.getDay() === 6) targetTime.setHours(22, 10, 0, 0);
+		}
+		return targetTime;
+	}
+	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
 		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
 	
@@ -710,7 +720,7 @@
 	setInterval(function() {
 		const date = getTimebyOffset(7), weekDay = date.getDay();
 		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
-		let previousBoss, nextBoss, alertType, dateDiff, n, tmp, tmp1, tmp2;
+		let previousBoss, nextBoss, alertType, dateDiff;
 		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
 		
 		//Boss Table Setup
@@ -880,6 +890,9 @@
 		
 		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7], false);
 		setHTMLInner("war-roses", `สงครามกุหลาบ<br>${formatDate(warroses)}<br>${formatSecondsFull(getDateDiff(date, warroses))}`);
+
+		var warHero = getWarHeroEnd(date);
+		setHTMLInner('warHero', formatSecondsFull(getDateDiff(date, warHero)));
 
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
