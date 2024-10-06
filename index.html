@@ -632,11 +632,11 @@
 	
 	const getWarHeroEnd = (date) => {
 		const targetTime = new Date(date);
-		targetTime.setHours(targetTime.getDay() === 0 ? 00 : 21, 10, 0, 0);
+		targetTime.setHours(targetTime.getDay() === 0 ? 0 : 21, 10, 0, 0);
 		if (targetTime <= date) {
 			targetTime.setDate(targetTime.getDate() + 1);
 			if (targetTime.getDay() === 0) {
-				targetTime.setHours(00, 10, 0, 0);
+				targetTime.setHours(0, 10, 0, 0);
 			} else {
 				targetTime.setDate(targetTime.getDate() - 1);
 				targetTime.setHours(21, 10, 0, 0);
