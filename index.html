@@ -372,60 +372,44 @@
 <center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong></br><img src="imgs/github.png"/></a></center></br>
 <script src="js/boss.js"></script>
 <script>	
-	const isVideoElementSupported = !!document.createElement('video').canPlayType && !!document.body;
-	if (isVideoElementSupported) {
+	let wakeLock, noSleepVideo;
+
+	async function requestWakeLock() {
+	  if ('wakeLock' in navigator) {
 		try {
-			const noSleepVideo = document.createElement('video');
-			noSleepVideo.id = 'noSleep';
-			noSleepVideo.width = 0;
-			noSleepVideo.height = 0;
-			noSleepVideo.loop = true;
-			noSleepVideo.muted = true;
-			noSleepVideo.playsInline = true;
-			const noSleepSource = document.createElement('source');
-			noSleepSource.src = 'data:video/mp4;base64,AAAAHGZ0eXBpc29tAAACAGlzb21pc28ybXA0MQAAAAhmcmVlAAAAl2F2YzEAAAAAAAAACGZyZWUAACqEBG1kYXQhEAUAAARghHRyYWsAAABcdGtoZAAAAAEAAAAAAAAAAAAAACaWm0AAA1Rtb292AAAAbG12aGQAAAAAAAAAAAAAAAAAAAPoAAAAAAAAGQAAZGF0YQAAAAEAAAAARW5jb2RlIGJ5IEZGVkJMTUJPSUwgAA==';
-			noSleepSource.type = 'video/mp4';
-			noSleepVideo.appendChild(noSleepSource);
-			document.body.appendChild(noSleepVideo);
-			noSleepVideo.play();
-		} catch (err) {
-			//console.error(`${err.name}, ${err.message}`);
-		}
+		  wakeLock = await navigator.wakeLock.request('screen');
+		  wakeLock.addEventListener('release', () => (wakeLock = null));
+		} catch {}
+	  } else {
+		enableNoSleep();
+	  }
 	}
-	
-	const isWakeLockSupported = 'wakeLock' in navigator;
-	if (isWakeLockSupported) {
-		let wakeLock = null;
-		const requestWakeLock = async () => {
-			try {
-				wakeLock = await navigator.wakeLock.request('screen');
-			} catch (err) {
-				//console.error(`${err.name}, ${err.message}`);
-			}
-		};
-		const releaseWakeLock = () => {
-			if (wakeLock !== null) {
-				wakeLock.release().then(() => {
-					wakeLock = null;
-				}).catch((err) => {
-					//console.error(`${err.name}, ${err.message}`);
-				});
-			}
-		};
-		document.addEventListener('visibilitychange', () => {
-			if (document.visibilityState === 'visible') {
-				requestWakeLock();
-			} else {
-				releaseWakeLock();
-			}
-		});
-		window.addEventListener('load', () => {
-			requestWakeLock();
-		});
-		window.addEventListener('beforeunload', () => {
-			releaseWakeLock();
-		});
+
+	function releaseWakeLock() {
+	  if (wakeLock) wakeLock.release().catch(() => {});
+	  if (noSleepVideo) disableNoSleep();
 	}
+
+	function enableNoSleep() {
+	  noSleepVideo = document.createElement('video');
+	  noSleepVideo.src = "data:video/mp4;base64,AAAAHGZ0eXBtcDQyAAAAAG1wNDFtcDQyaXNvbWF2YzEAAACmbW9vdgAAAGxtdmhkAAAAANrVgY9tANrVgY9tAAABAAEAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAwAAQAAAAEAAAAGAAAAAAAAGP//AAAALXBzYyAAAAAAAAAABAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABzdHRzAAAAAAAAAAEAAAAMAAAAAQAAABxzdHNjAAAAAAAAAAEAAAABAAAAHHN0c2QAAAAAAAAAAQAAAAEAAAAUc3RzegAAAAAAAAAAAAEAAAAZAAAACQAAAAEAAAAkc3R6bwg=";
+	  noSleepVideo.loop = true;
+	  noSleepVideo.muted = true;
+	  noSleepVideo.playsInline = true;
+	  noSleepVideo.play().catch(() => {});
+	}
+
+	function disableNoSleep() {
+	  noSleepVideo.pause();
+	  noSleepVideo = null;
+	}
+
+	document.addEventListener('visibilitychange', () => 
+	  document.visibilityState === 'visible' ? requestWakeLock() : releaseWakeLock()
+	);
+
+	if (document.visibilityState === 'visible') requestWakeLock();
+
 	
 	function formatSeconds(n) {
 		var date = new Date(1970, 0, 1);
