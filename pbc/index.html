@@ -71,7 +71,7 @@
         <div class="section">
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
-                <input type="text" id="startProb" value="0.73%" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
+                <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
                 <input type="range" id="startSlider" min="0" max="100" step="0.01" value="0.73" oninput="updateStartProb()">
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="section">
             <label for="targetProb">Target Cumulative Success (%):</label>
             <div class="input-group">
-                <input type="text" id="targetProb" value="10.00%" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
+                <input type="text" id="targetProb" value="10.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
                 <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="10.00" oninput="updateTargetProb()">
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div class="section">
             <label for="attempts">Attempts Needed:</label>
             <div class="input-group">
-                <input type="number" id="attempts" min="1" value="0" oninput="calculateGoalSuccess()">
+                <input type="number" id="attempts" min="1" value="0" onclick="this.select()" onkeydown="checkEnter(event, calculateGoalSuccess)" oninput="calculateGoalSuccess()">
                 <input type="range" id="attemptsSlider" min="1" max="1" value="0" oninput="updateAttempts()">
             </div>
         </div>
@@ -100,31 +100,35 @@
             clearTimeout(debounceTimeout);
             debounceTimeout = setTimeout(() => {
                 callback(input, sliderId);
-            }, 500); // ตั้งเวลา debounce ที่ 500ms หรือมากกว่านี้ตามต้องการ
+            }, 500);
         }
 
         function handlePercentageInput(input, sliderId) {
             const slider = document.getElementById(sliderId);
-            let value = parseFloat(input.value.replace("%", ""));
+            let value = parseFloat(input.value);
             
-            // ตรวจสอบและแก้ไขค่าที่เกินขอบเขต 0-100
             if (isNaN(value) || value < 0) value = 0;
             if (value > 100) value = 100;
             
-            // แสดงค่าใหม่ที่มี % และอัปเดต Slider
-            input.value = value.toFixed(2) + "%";
+            input.value = value.toFixed(2);
             slider.value = value;
 
-            // เรียกใช้ฟังก์ชันคำนวณที่จำเป็น
             calculateMaxAttempts();
             calculateTarget();
+        }
+
+        function checkEnter(event, callback, ...args) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                callback(...args);
+            }
         }
 
         function updateStartProb() {
             const startSlider = document.getElementById("startSlider");
             const startProb = document.getElementById("startProb");
 
-            startProb.value = parseFloat(startSlider.value).toFixed(2) + "%";
+            startProb.value = parseFloat(startSlider.value).toFixed(2);
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -133,19 +137,20 @@
             const targetSlider = document.getElementById("targetSlider");
             const targetProb = document.getElementById("targetProb");
 
-            targetProb.value = parseFloat(targetSlider.value).toFixed(2) + "%";
+            targetProb.value = parseFloat(targetSlider.value).toFixed(2);
             calculateMaxAttempts();
             calculateTarget();
         }
 
         function calculateTarget() {
-            const startProb = parseFloat(document.getElementById("startProb").value.replace("%", "")) / 100;
-            const targetProb = parseFloat(document.getElementById("targetProb").value.replace("%", "")) / 100;
+            const startProb = parseFloat(document.getElementById("startProb").value) / 100;
+            const targetProb = parseFloat(document.getElementById("targetProb").value) / 100;
             let attempts = 0;
             let cumulativeProb = 0;
 
             if (startProb <= 0 || targetProb <= 0 || targetProb > 1) {
-                document.getElementById("attempts").value = "Invalid Input";
+				document.getElementById("attempts").value = 0;
+				document.getElementById("attemptsSlider").value = 0;
                 return;
             }
 
@@ -158,7 +163,7 @@
         }
 
         function calculateGoalSuccess() {
-            const startProb = parseFloat(document.getElementById("startProb").value.replace("%", "")) / 100;
+            const startProb = parseFloat(document.getElementById("startProb").value) / 100;
             const attempts = parseInt(document.getElementById("attempts").value);
             if (startProb <= 0 || attempts <= 0) {
                 document.getElementById("targetProb").value = "Invalid Input";
@@ -166,7 +171,7 @@
             }
 
             const cumulativeProb = 1 - Math.pow(1 - startProb, attempts);
-            document.getElementById("targetProb").value = (cumulativeProb * 100).toFixed(2) + "%";
+            document.getElementById("targetProb").value = (cumulativeProb * 100).toFixed(2);
 
             const targetSlider = document.getElementById("targetSlider");
             targetSlider.value = (cumulativeProb * 100).toFixed(2);
@@ -180,8 +185,8 @@
         }
 
         function calculateMaxAttempts() {
-            const startProb = parseFloat(document.getElementById("startProb").value.replace("%", "")) / 100;
-            const targetProb = 1; // เป้าหมายที่ 100%
+            const startProb = parseFloat(document.getElementById("startProb").value) / 100;
+            const targetProb = 1;
             let maxAttempts = 0;
             let cumulativeProb = 0;
 
