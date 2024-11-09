@@ -71,7 +71,7 @@
         <div class="section">
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
-                <input type="text" id="startProb" value="0.73%" onfocus="removePercentage(this)" onblur="addPercentage(this)" oninput="updateStartSlider()">
+                <input type="text" id="startProb" value="0.73%" onfocus="removePercentage(this)" onblur="delayedAddPercentage(this)" oninput="updateStartSlider()">
                 <input type="range" id="startSlider" min="0" max="100" step="0.01" value="0.73" oninput="updateStartProb()">
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="section">
             <label for="targetProb">Target Cumulative Success (%):</label>
             <div class="input-group">
-                <input type="text" id="targetProb" value="10.00%" onfocus="removePercentage(this)" onblur="addPercentage(this)" oninput="updateTargetSlider()">
+                <input type="text" id="targetProb" value="10.00%" onfocus="removePercentage(this)" onblur="delayedAddPercentage(this)" oninput="updateTargetSlider()">
                 <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="10.00" oninput="updateTargetProb()">
             </div>
         </div>
@@ -96,10 +96,14 @@
     <script>
         function addPercentage(input) {
             if (input.value !== "") {
-				if (input.value > 100) input.value = 100;
-				if (input.value < 0) input.value = 0;
+                if (input.value > 100) input.value = 100;
+                if (input.value < 0) input.value = 0;
                 input.value = parseFloat(input.value).toFixed(2) + "%";
             }
+        }
+
+        function delayedAddPercentage(input) {
+            setTimeout(() => addPercentage(input), 20);
         }
 
         function removePercentage(input) {
