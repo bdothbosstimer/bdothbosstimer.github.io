@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section label {
+            display: block;
+            font-weight: bold;
+            color: #bbbbbb;
+            margin-bottom: 5px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="text"], input[type="number"] {
+            flex: 1;
+            padding: 8px;
+            font-size: 1rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 5px 0;
+            accent-color: #76c7c0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="section">
+            <label for="startProb">Probability per Attempt (%):</label>
+            <div class="input-group">
+                <input type="text" id="startProb" value="0.73%" onfocus="removePercentage(this)" onblur="addPercentage(this)" oninput="updateStartSlider()">
+                <input type="range" id="startSlider" min="0" max="100" step="0.01" value="0.73" oninput="updateStartProb()">
+            </div>
+        </div>
+
+        <div class="section">
+            <label for="targetProb">Target Cumulative Success (%):</label>
+            <div class="input-group">
+                <input type="text" id="targetProb" value="10.00%" onfocus="removePercentage(this)" onblur="addPercentage(this)" oninput="updateTargetSlider()">
+                <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="10.00" oninput="updateTargetProb()">
+            </div>
+        </div>
+
+        <div class="section">
+            <label for="attempts">Attempts Needed:</label>
+            <div class="input-group">
+                <input type="number" id="attempts" min="1" value="0" oninput="calculateGoalSuccess()">
+                <input type="range" id="attemptsSlider" min="1" max="1" value="0" oninput="updateAttempts()">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addPercentage(input) {
+            if (input.value !== "") {
+				if (input.value > 100) input.value = 100;
+				if (input.value < 0) input.value = 0;
+                input.value = parseFloat(input.value).toFixed(2) + "%";
+            }
+        }
+
+        function removePercentage(input) {
+            input.value = input.value.replace("%", "");
+        }
+
+        function updateStartProb() {
+            const startSlider = document.getElementById("startSlider");
+            const startProb = document.getElementById("startProb");
+
+            if (parseFloat(startSlider.value) > 100) {
+                startSlider.value = 100;
+            }
+
+            startProb.value = parseFloat(startSlider.value).toFixed(2) + "%";
+            calculateMaxAttempts();
+            calculateTarget();
+        }
+
+        function updateStartSlider() {
+            const startProb = document.getElementById("startProb");
+            const startSlider = document.getElementById("startSlider");
+
+            let startValue = parseFloat(startProb.value.replace("%", ""));
+            if (startValue > 100) {
+                startValue = 100;
+            }
+            startSlider.value = startValue;
+            calculateMaxAttempts();
+            calculateTarget();
+        }
+
+        function updateTargetProb() {
+            const targetSlider = document.getElementById("targetSlider");
+            const targetProb = document.getElementById("targetProb");
+
+            if (parseFloat(targetSlider.value) > 100) {
+                targetSlider.value = 100;
+            }
+
+            targetProb.value = parseFloat(targetSlider.value).toFixed(2) + "%";
+            calculateMaxAttempts();
+            calculateTarget();
+        }
+
+        function updateTargetSlider() {
+            const targetProb = document.getElementById("targetProb");
+            const targetSlider = document.getElementById("targetSlider");
+
+            let targetValue = parseFloat(targetProb.value.replace("%", ""));
+            if (targetValue > 100) {
+                targetValue = 100;
+            }
+            targetSlider.value = targetValue;
+            calculateMaxAttempts();
+            calculateTarget();
+        }
+
+        function calculateTarget() {
+            const startProb = parseFloat(document.getElementById("startProb").value.replace("%", "")) / 100;
+            const targetProb = parseFloat(document.getElementById("targetProb").value.replace("%", "")) / 100;
+            let attempts = 0;
+            let cumulativeProb = 0;
+
+            if (startProb <= 0 || targetProb <= 0 || targetProb > 1) {
+                document.getElementById("attempts").value = "Invalid Input";
+                return;
+            }
+
+            while (cumulativeProb < targetProb) {
+                cumulativeProb = 1 - Math.pow(1 - startProb, ++attempts);
+            }
+
+            document.getElementById("attempts").value = attempts;
+            document.getElementById("attemptsSlider").value = attempts;
+        }
+
+        function calculateGoalSuccess() {
+            const startProb = parseFloat(document.getElementById("startProb").value.replace("%", "")) / 100;
+            const attempts = parseInt(document.getElementById("attempts").value);
+            if (startProb <= 0 || attempts <= 0) {
+                document.getElementById("targetProb").value = "Invalid Input";
+                return;
+            }
+
+            const cumulativeProb = 1 - Math.pow(1 - startProb, attempts);
+            document.getElementById("targetProb").value = (cumulativeProb * 100).toFixed(2) + "%";
+
+            const targetSlider = document.getElementById("targetSlider");
+            targetSlider.value = (cumulativeProb * 100).toFixed(2);
+            calculateMaxAttempts();
+        }
+
+        function updateAttempts() {
+            const attemptsSlider = document.getElementById("attemptsSlider");
+            document.getElementById("attempts").value = attemptsSlider.value;
+            calculateGoalSuccess();
+        }
+
+        function calculateMaxAttempts() {
+            const startProb = parseFloat(document.getElementById("startProb").value.replace("%", "")) / 100;
+            const targetProb = 1; // เป้าหมายที่ 100%
+            let maxAttempts = 0;
+            let cumulativeProb = 0;
+
+            if (startProb > 0) {
+                while (cumulativeProb < targetProb) {
+                    cumulativeProb = 1 - Math.pow(1 - startProb, ++maxAttempts);
+                }
+            }
+
+            document.getElementById("attemptsSlider").max = maxAttempts;
+        }
+
+        // เรียกใช้ฟังก์ชันคำนวณทันทีเมื่อหน้าเพจโหลดเสร็จ
+        window.onload = function() {
+            calculateMaxAttempts();
+            calculateTarget();
+        }
+    </script>
+
+</body>
+</html>
