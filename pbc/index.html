@@ -17,8 +17,16 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+        }
+
+        body.light-mode {
+            background-color: #f0f0f5;
+            color: #121212;
+        }
+
+        body.dark-mode {
             background-color: #121212;
-            color: #e0e0e0;
+            color: #ffffff;
         }
 
         .container {
@@ -28,6 +36,13 @@
             background: #1e1e1e;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        body.light-mode .container {
+            background: #ffffff;
+            color: #121212;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .section {
@@ -37,8 +52,12 @@
         .section label {
             display: block;
             font-weight: bold;
-            color: #bbbbbb;
+            color: #cccccc;
             margin-bottom: 5px;
+        }
+
+        body.light-mode .section label {
+            color: #555555;
         }
 
         .input-group {
@@ -51,10 +70,10 @@
             flex: 1;
             padding: 8px;
             font-size: 1rem;
-            border: 1px solid #444;
+            border: 1px solid #cccccc;
             border-radius: 5px;
-            background-color: #333;
-            color: #e0e0e0;
+            background-color: #eeeeee;
+            color: #121212;
             text-align: center;
         }
 
@@ -63,11 +82,43 @@
             margin: 5px 0;
             accent-color: #76c7c0;
         }
+
+        /* Toggle button */
+        .dark-mode-toggle {
+            position: absolute;
+            bottom: 15px; /* เพิ่มระยะห่างจากขอบล่างของ container */
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background-color: #444;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode-toggle.light-mode {
+            background-color: #dddddd;
+            color: #121212;
+        }
+
+        /* เพิ่มระยะห่างของ Attempts Needed */
+        #attempts-section {
+            margin-bottom: 60px;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- Dark Mode Toggle Button -->
+        <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
+
         <div class="section">
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
@@ -79,15 +130,16 @@
         <div class="section">
             <label for="targetProb">Target Cumulative Success (%):</label>
             <div class="input-group">
-                <input type="text" id="targetProb" value="10.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
-                <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="10.00" oninput="updateTargetProb()">
+                <input type="text" id="targetProb" value="50.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
+                <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="50.00" oninput="updateTargetProb()">
             </div>
         </div>
 
-        <div class="section">
+        <!-- Section ของ Attempts Needed -->
+        <div class="section" id="attempts-section">
             <label for="attempts">Attempts Needed:</label>
             <div class="input-group">
-                <input type="number" id="attempts" min="1" value="0" onclick="this.select()" onkeydown="checkEnter(event, calculateGoalSuccess)" oninput="calculateGoalSuccess()">
+                <input type="text" id="attempts" min="1" value="0" onclick="this.select()" onkeydown="checkEnter(event, calculateGoalSuccess)" oninput="calculateGoalSuccess()">
                 <input type="range" id="attemptsSlider" min="1" max="1" value="0" oninput="updateAttempts()">
             </div>
         </div>
@@ -149,8 +201,8 @@
             let cumulativeProb = 0;
 
             if (startProb <= 0 || targetProb <= 0 || targetProb > 1) {
-				document.getElementById("attempts").value = 0;
-				document.getElementById("attemptsSlider").value = 0;
+                document.getElementById("attempts").value = 0;
+                document.getElementById("attemptsSlider").value = 0;
                 return;
             }
 
@@ -199,7 +251,42 @@
             document.getElementById("attemptsSlider").max = maxAttempts;
         }
 
+        function setCookie(name, value, days) {
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+        }
+
+        function getCookie(name) {
+            return document.cookie.split('; ').reduce((r, v) => {
+                const [key, value] = v.split('=');
+                return key === name ? decodeURIComponent(value) : r;
+            }, '');
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const toggleButton = document.getElementById('darkModeToggle');
+            const isDarkMode = body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode', !isDarkMode);
+
+            toggleButton.textContent = isDarkMode ? '☀️' : '🌙';
+            toggleButton.classList.toggle('light-mode', !isDarkMode);
+            setCookie('darkMode', isDarkMode, 30);
+        }
+
         window.onload = function() {
+            const darkModeSetting = getCookie('darkMode');
+            const toggleButton = document.getElementById('darkModeToggle');
+            
+            if (darkModeSetting === 'true') {
+                document.body.classList.add('dark-mode');
+                toggleButton.textContent = '☀️';
+            } else {
+                document.body.classList.add('light-mode');
+                toggleButton.textContent = '🌙';
+                toggleButton.classList.add('light-mode');
+            }
+
             calculateMaxAttempts();
             calculateTarget();
         }
