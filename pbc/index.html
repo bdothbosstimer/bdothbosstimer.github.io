@@ -71,7 +71,7 @@
         <div class="section">
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
-                <input type="text" id="startProb" value="0.73%" onfocus="removePercentage(this)" onblur="delayedAddPercentage(this)" oninput="updateStartSlider()">
+                <input type="text" id="startProb" value="0.73%" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
                 <input type="range" id="startSlider" min="0" max="100" step="0.01" value="0.73" oninput="updateStartProb()">
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="section">
             <label for="targetProb">Target Cumulative Success (%):</label>
             <div class="input-group">
-                <input type="text" id="targetProb" value="10.00%" onfocus="removePercentage(this)" onblur="delayedAddPercentage(this)" oninput="updateTargetSlider()">
+                <input type="text" id="targetProb" value="10.00%" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
                 <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="10.00" oninput="updateTargetProb()">
             </div>
         </div>
@@ -94,44 +94,37 @@
     </div>
 
     <script>
-        function addPercentage(input) {
-            if (input.value !== "") {
-                if (input.value > 100) input.value = 100;
-                if (input.value < 0) input.value = 0;
-                input.value = parseFloat(input.value).toFixed(2) + "%";
-            }
+        let debounceTimeout;
+
+        function debounceInput(callback, input, sliderId) {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                callback(input, sliderId);
+            }, 500); // ตั้งเวลา debounce ที่ 500ms หรือมากกว่านี้ตามต้องการ
         }
 
-        function delayedAddPercentage(input) {
-            setTimeout(() => addPercentage(input), 20);
-        }
+        function handlePercentageInput(input, sliderId) {
+            const slider = document.getElementById(sliderId);
+            let value = parseFloat(input.value.replace("%", ""));
+            
+            // ตรวจสอบและแก้ไขค่าที่เกินขอบเขต 0-100
+            if (isNaN(value) || value < 0) value = 0;
+            if (value > 100) value = 100;
+            
+            // แสดงค่าใหม่ที่มี % และอัปเดต Slider
+            input.value = value.toFixed(2) + "%";
+            slider.value = value;
 
-        function removePercentage(input) {
-            input.value = input.value.replace("%", "");
+            // เรียกใช้ฟังก์ชันคำนวณที่จำเป็น
+            calculateMaxAttempts();
+            calculateTarget();
         }
 
         function updateStartProb() {
             const startSlider = document.getElementById("startSlider");
             const startProb = document.getElementById("startProb");
 
-            if (parseFloat(startSlider.value) > 100) {
-                startSlider.value = 100;
-            }
-
             startProb.value = parseFloat(startSlider.value).toFixed(2) + "%";
-            calculateMaxAttempts();
-            calculateTarget();
-        }
-
-        function updateStartSlider() {
-            const startProb = document.getElementById("startProb");
-            const startSlider = document.getElementById("startSlider");
-
-            let startValue = parseFloat(startProb.value.replace("%", ""));
-            if (startValue > 100) {
-                startValue = 100;
-            }
-            startSlider.value = startValue;
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -140,24 +133,7 @@
             const targetSlider = document.getElementById("targetSlider");
             const targetProb = document.getElementById("targetProb");
 
-            if (parseFloat(targetSlider.value) > 100) {
-                targetSlider.value = 100;
-            }
-
             targetProb.value = parseFloat(targetSlider.value).toFixed(2) + "%";
-            calculateMaxAttempts();
-            calculateTarget();
-        }
-
-        function updateTargetSlider() {
-            const targetProb = document.getElementById("targetProb");
-            const targetSlider = document.getElementById("targetSlider");
-
-            let targetValue = parseFloat(targetProb.value.replace("%", ""));
-            if (targetValue > 100) {
-                targetValue = 100;
-            }
-            targetSlider.value = targetValue;
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -218,7 +194,6 @@
             document.getElementById("attemptsSlider").max = maxAttempts;
         }
 
-        // เรียกใช้ฟังก์ชันคำนวณทันทีเมื่อหน้าเพจโหลดเสร็จ
         window.onload = function() {
             calculateMaxAttempts();
             calculateTarget();
