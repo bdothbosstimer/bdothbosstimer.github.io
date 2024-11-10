@@ -151,6 +151,24 @@
             background-color: #4b5563;
             color: #f9fafb;
         }
+		
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        #rollButton {
+            flex: 3;
+        }
+
+        #clearButton {
+            flex: 1;
+            background-color: #e53e3e;
+        }
+
+        #clearButton:hover {
+            background-color: #c53030;
+        }
 
         button {
             width: 100%;
@@ -221,7 +239,10 @@
         </div>
 
         <div class="section">
-            <button id="rollButton" onclick="startRoll()">Roll</button>
+			<div class="button-group">
+                <button id="rollButton" onclick="startRoll()">Roll</button>
+                <button id="clearButton" onclick="clearResults()">Clear</button>
+			</div>
         </div>
 
         <div class="section">
@@ -238,7 +259,7 @@
     <button id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
 	
     <script>
-        let debounceTimeout, failButton = 0, failStack = 0;
+        let debounceTimeout, failButton = 0, failStack = 0, succStack = 0;
 		const decimalNumber = 4;
 
         function debounceInput(callback, input, sliderId) {
@@ -393,13 +414,21 @@
 			rollResultsLog.innerHTML = successCount > 0 ? rollResultsLog.innerHTML : "--- No Success Results ---";
 			rollButton.innerHTML = successCount > 0 ? (failButton = 0, "Roll") : `[${++failButton}] Roll`;
 			
-			const failureCount = totalAttempts - successCount;
-			const successRate = ((successCount / (failStack += failureCount)) * 100).toFixed(decimalNumber);
+			const successRate = (((succStack += successCount) / (failStack += (totalAttempts - successCount))) * 100).toFixed(decimalNumber);
 
-			document.getElementById("successCount").innerText = successCount;
+			document.getElementById("successCount").innerText = succStack;
 			document.getElementById("failureCount").innerText = failStack;
 			document.getElementById("successRate").innerText = successRate;
-			if (successCount > 0) failStack = 0;
+		}
+		
+		function clearResults() {
+			document.getElementById("rollButton").innerHTML = "Roll"
+			document.getElementById("roll-results").innerHTML = "";
+			document.getElementById("successCount").innerText = 0;
+			document.getElementById("failureCount").innerText = 0;
+			document.getElementById("successRate").innerText = (0).toFixed(decimalNumber);
+			failStack = 0;
+			succStack = 0;
 		}
 
         window.onload = function() {
