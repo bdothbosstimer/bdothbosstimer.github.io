@@ -238,7 +238,7 @@
     <button id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
 	
     <script>
-        let debounceTimeout, failButton = 0;
+        let debounceTimeout, failButton = 0, failStack = 0;
 		const decimalNumber = 4;
 
         function debounceInput(callback, input, sliderId) {
@@ -376,7 +376,6 @@
 			const totalAttempts = parseInt(document.getElementById("attemptsTester").value);
 			const rollResultsLog = document.getElementById("roll-results");
 			const rollButton = document.getElementById("rollButton");
-
 			let successCount = 0;
 			rollResultsLog.innerHTML = "";
 
@@ -395,11 +394,12 @@
 			rollButton.innerHTML = successCount > 0 ? (failButton = 0, "Roll") : `[${++failButton}] Roll`;
 			
 			const failureCount = totalAttempts - successCount;
-			const successRate = ((successCount / totalAttempts) * 100).toFixed(decimalNumber);
+			const successRate = ((successCount / (failStack += failureCount)) * 100).toFixed(decimalNumber);
 
 			document.getElementById("successCount").innerText = successCount;
-			document.getElementById("failureCount").innerText = failureCount;
+			document.getElementById("failureCount").innerText = failStack;
 			document.getElementById("successRate").innerText = successRate;
+			if (successCount > 0) failStack = 0;
 		}
 
         window.onload = function() {
