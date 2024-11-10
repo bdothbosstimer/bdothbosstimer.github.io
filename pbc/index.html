@@ -423,10 +423,9 @@
 			
 			let startP = document.getElementById("startProb");
 			let targetP = document.getElementById("targetProb");
-			
+			document.getElementById("successRate").innerText = (0).toFixed(decimalNumber);
 			document.getElementById("startSlider").step = rangeinputStep;
 			document.getElementById("targetSlider").step = rangeinputStep;
-			
 			startP.value = parseFloat(startP.value).toFixed(decimalNumber);
 			targetP.value = parseFloat(targetP.value).toFixed(decimalNumber);
 			
