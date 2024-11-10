@@ -209,7 +209,7 @@
             <h3>Probability Calculator</h3>
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
-                <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
+                <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="handlePercentageInput(this, 'startSlider')">
                 <input type="range" id="startSlider" min="0" max="100" step="0.01" value="0.73" oninput="updateStartProb()">
             </div>
         </div>
@@ -217,7 +217,7 @@
         <div class="section">
             <label for="targetProb">Target Cumulative Success (%):</label>
             <div class="input-group">
-                <input type="text" id="targetProb" value="50.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
+                <input type="text" id="targetProb" value="50.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="handlePercentageInput(this, 'targetSlider')">
                 <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="50.00" oninput="updateTargetProb()">
             </div>
         </div>
@@ -260,7 +260,15 @@
 	
     <script>
         let debounceTimeout, buttonStack = 0, failStack = 0, succStack = 0;
-		const decimalNumber = 4;
+
+		function getDecimal(value) {
+			return (value.toString().split('.')[1] || '').length;
+		}
+		
+        function getDecimalStep(value) {
+            const decimalPlaces = getDecimal(value)
+            return decimalPlaces > 0 ? parseFloat("0." + "0".repeat(decimalPlaces - 1) + "1") : 1;
+        }
 
         function debounceInput(callback, input, sliderId) {
             clearTimeout(debounceTimeout);
@@ -276,8 +284,8 @@
             if (isNaN(value) || value < 0) value = 0;
             if (value > 100) value = 100;
             
-            input.value = value.toFixed(decimalNumber);
-            slider.value = value;
+			slider.step = getDecimalStep(value);
+			slider.value = value;
 
             calculateMaxAttempts();
             calculateTarget();
@@ -293,8 +301,11 @@
         function updateStartProb() {
             const startSlider = document.getElementById("startSlider");
             const startProb = document.getElementById("startProb");
-
-            startProb.value = parseFloat(startSlider.value).toFixed(decimalNumber);
+			const decimal = getDecimal(startProb.value);
+			
+            startProb.value = parseFloat(startSlider.value).toFixed(decimal);
+			startSlider.step = getDecimalStep(startProb.value);
+			
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -302,8 +313,11 @@
         function updateTargetProb() {
             const targetSlider = document.getElementById("targetSlider");
             const targetProb = document.getElementById("targetProb");
+			const decimal = getDecimal(targetProb.value);
 
-            targetProb.value = parseFloat(targetSlider.value).toFixed(decimalNumber);
+            targetProb.value = parseFloat(targetSlider.value).toFixed(decimal);
+			targetSlider.step = getDecimalStep(targetProb.value);
+			
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -333,6 +347,7 @@
         function calculateGoalSuccess() {
             const startProb = parseFloat(document.getElementById("startProb").value) / 100;
             const attempts = parseInt(document.getElementById("attempts").value);
+
             if (startProb <= 0 || attempts <= 0 || !startProb || !attempts) {
                 document.getElementById("targetProb").value = "Invalid Input";
 				document.getElementById("attemptsTester").value = "Invalid Input";
@@ -340,10 +355,12 @@
             }
 
             const cumulativeProb = 1 - Math.pow(1 - startProb, attempts);
-            document.getElementById("targetProb").value = (cumulativeProb * 100).toFixed(decimalNumber);
+			const targetProb = document.getElementById("targetProb");
+			const decimal = getDecimal(targetProb.value);
+            targetProb.value = (cumulativeProb * 100).toFixed(decimal);
 
             const targetSlider = document.getElementById("targetSlider");
-            targetSlider.value = (cumulativeProb * 100).toFixed(decimalNumber);
+            targetSlider.value = (cumulativeProb * 100).toFixed(decimal);
 			document.getElementById("attemptsTester").value = attempts;
             calculateMaxAttempts();
         }
@@ -393,10 +410,12 @@
         }
 		
 		function startRoll() {
-			const probabilityPerAttempt = parseFloat(document.getElementById("startProb").value);
+			const startProb = document.getElementById("startProb");
+			const probabilityPerAttempt = parseFloat(startProb.value);
 			const totalAttempts = parseInt(document.getElementById("attemptsTester").value);
 			const rollResultsLog = document.getElementById("roll-results");
 			const rollButton = document.getElementById("rollButton");
+			const decimal = getDecimal(startProb.value);
 			let successCount = 0;
 			rollResultsLog.innerHTML = "";
 
@@ -406,7 +425,7 @@
 					if (rollResultsLog.innerHTML) {
 						rollResultsLog.innerHTML += "<br>";
 					}
-					rollResultsLog.innerHTML += `[${attempt}] Roll: ${randomRoll.toFixed(decimalNumber)} - Success!!`;
+					rollResultsLog.innerHTML += `[${attempt}] Roll: ${randomRoll.toFixed(decimal)} - Success!!`;
 					successCount++;
 				}
 			}
@@ -414,7 +433,7 @@
 			rollResultsLog.innerHTML = successCount > 0 ? rollResultsLog.innerHTML : "--- No Success Results ---";
 			rollButton.innerText = `[${++buttonStack}] Roll`;
 			
-			const successRate = (((succStack += successCount) / (failStack += (totalAttempts - successCount))) * 100).toFixed(decimalNumber);
+			const successRate = (((succStack += successCount) / (failStack += (totalAttempts - successCount))) * 100).toFixed(decimal);
 
 			document.getElementById("successCount").innerText = succStack;
 			document.getElementById("failureCount").innerText = failStack;
@@ -425,7 +444,6 @@
 			document.getElementById("roll-results").innerHTML = "";
 			document.getElementById("successCount").innerText = 0;
 			document.getElementById("failureCount").innerText = 0;
-			document.getElementById("successRate").innerText = (0).toFixed(decimalNumber);
 			document.getElementById("rollButton").innerText = "Roll"
 			buttonStack = 0;
 			failStack = 0;
@@ -444,20 +462,6 @@
                 toggleButton.textContent = '🌙';
                 toggleButton.classList.add('light-mode');
             }
-			
-			let rangeinputStep = "0.";
-			for(let rangeStep = 0; rangeStep < decimalNumber - 1; rangeStep++) {
-				rangeinputStep += "0";
-			}
-			rangeinputStep += "1";
-			
-			let startP = document.getElementById("startProb");
-			let targetP = document.getElementById("targetProb");
-			document.getElementById("successRate").innerText = (0).toFixed(decimalNumber);
-			document.getElementById("startSlider").step = rangeinputStep;
-			document.getElementById("targetSlider").step = rangeinputStep;
-			startP.value = parseFloat(startP.value).toFixed(decimalNumber);
-			targetP.value = parseFloat(targetP.value).toFixed(decimalNumber);
 			
             calculateMaxAttempts();
             calculateTarget();
