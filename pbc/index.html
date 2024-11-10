@@ -221,7 +221,7 @@
         </div>
 
         <div class="section">
-            <button onclick="startRoll()">Roll</button>
+            <button id="rollButton" onclick="startRoll()">Roll</button>
         </div>
 
         <div class="section">
@@ -238,7 +238,7 @@
     <button id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
 	
     <script>
-        let debounceTimeout;
+        let debounceTimeout, failButton = 0;
 
         function debounceInput(callback, input, sliderId) {
             clearTimeout(debounceTimeout);
@@ -373,6 +373,7 @@
 			const probabilityPerAttempt = parseFloat(document.getElementById("startProb").value);
 			const totalAttempts = parseInt(document.getElementById("attemptsTester").value);
 			const rollResultsLog = document.getElementById("roll-results");
+			const rollButton = document.getElementById("rollButton");
 
 			let successCount = 0;
 			rollResultsLog.innerHTML = "";
@@ -389,7 +390,8 @@
 			}
 
 			rollResultsLog.innerHTML = successCount > 0 ? rollResultsLog.innerHTML : "--- No Success Results ---";
-
+			rollButton.innerHTML = successCount > 0 ? (failButton = 0, "Roll") : `[${++failButton}] Roll`;
+			
 			const failureCount = totalAttempts - successCount;
 			const successRate = ((successCount / totalAttempts) * 100).toFixed(2);
 
