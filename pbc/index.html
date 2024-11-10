@@ -108,9 +108,12 @@
 
         /* เพิ่มระยะห่างของ Attempts Needed */
         #attempts-section {
-            margin-bottom: 60px;
+            margin-bottom: 30px;
         }
 
+        #results-section {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -118,8 +121,8 @@
     <div class="container">
         <!-- Dark Mode Toggle Button -->
         <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
-
         <div class="section">
+			<center><h3>Probability Calculator</h3></center>
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
                 <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
@@ -143,6 +146,31 @@
                 <input type="range" id="attemptsSlider" min="1" max="1" value="0" oninput="updateAttempts()">
             </div>
         </div>
+		
+        <!-- Probability Tester Section -->
+		<div class="section">
+			<center><h3>Probability Tester</h3></center>
+			<label for="attemptsTester">Attempts:</label>
+			<div class="input-group">
+				<input type="text" id="attemptsTester" onkeydown="checkEnter(event, startRoll)">
+			</div>
+        </div>
+		
+		<div class="section">
+			<div class="input-group">
+				<button onclick="startRoll()" style="width:100%;height:30px;">Roll</button>
+			</div>
+		</div>
+		
+		<div class="section">
+			<center><p id="roll-results"></p></center>
+		</div>
+		
+		<div class="results" id="results-section">
+			<p>Success Count: <span id="successCount">0</span></p>
+			<p>Failure Count: <span id="failureCount">0</span></p>
+			<p>Success Rate: <span id="successRate">0</span>%</p>
+		</div>
     </div>
 
     <script>
@@ -202,6 +230,7 @@
 
             if (startProb <= 0 || targetProb <= 0 || targetProb > 1) {
                 document.getElementById("attempts").value = 0;
+				document.getElementById("attemptsTester").value = 0;
                 document.getElementById("attemptsSlider").value = 0;
                 return;
             }
@@ -211,6 +240,7 @@
             }
 
             document.getElementById("attempts").value = attempts;
+			document.getElementById("attemptsTester").value = attempts;
             document.getElementById("attemptsSlider").value = attempts;
         }
 
@@ -233,6 +263,7 @@
         function updateAttempts() {
             const attemptsSlider = document.getElementById("attemptsSlider");
             document.getElementById("attempts").value = attemptsSlider.value;
+			document.getElementById("attemptsTester").value = attemptsSlider.value;
             calculateGoalSuccess();
         }
 
@@ -272,6 +303,31 @@
             toggleButton.textContent = isDarkMode ? '☀️' : '🌙';
             toggleButton.classList.toggle('light-mode', !isDarkMode);
             setCookie('darkMode', isDarkMode, 30);
+        }
+		
+        function startRoll() {
+			const startProb = parseFloat(document.getElementById("startProb").value).toFixed(2);
+            const attempts = parseInt(document.getElementById("attemptsTester").value);
+			const resultlogs = document.getElementById("roll-results")
+
+			resultlogs.innerHTML = "";
+            let successCount = 0;
+            for (let i = 0; i < attempts; i++) {
+                const roll = Math.random() * 100;
+                if (parseFloat(startProb) >= parseFloat(roll)) {
+					resultlogs.innerHTML = resultlogs.innerHTML + `<br>[${i}] Roll: ${roll.toFixed(2)} - Success!!`
+					successCount++;
+				}
+            }
+			
+			if (successCount === 0) resultlogs.innerHTML = "--- No Success Results ---"
+
+            const failureCount = attempts - successCount;
+            const successRate = ((successCount / attempts) * 100).toFixed(2);
+
+            document.getElementById("successCount").innerText = successCount;
+            document.getElementById("failureCount").innerText = failureCount;
+            document.getElementById("successRate").innerText = successRate;
         }
 
         window.onload = function() {
