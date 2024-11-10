@@ -9,7 +9,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -17,15 +17,18 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background-color: #f3f4f6;
+            color: #333;
+            position: relative;
         }
 
         body.light-mode {
-            background-color: #f0f0f5;
-            color: #121212;
+            background-color: #f3f4f6;
+            color: #333;
         }
 
         body.dark-mode {
-            background-color: #121212;
+            background-color: #1f2937;
             color: #ffffff;
         }
 
@@ -33,16 +36,15 @@
             width: 100%;
             max-width: 400px;
             padding: 20px;
-            background: #1e1e1e;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
-        body.light-mode .container {
-            background: #ffffff;
-            color: #121212;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        body.dark-mode .container {
+            background: #374151;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
         .section {
@@ -51,13 +53,25 @@
 
         .section label {
             display: block;
-            font-weight: bold;
-            color: #cccccc;
+            font-weight: 600;
+            color: #4b5563;
             margin-bottom: 5px;
         }
 
-        body.light-mode .section label {
-            color: #555555;
+        body.dark-mode .section label {
+            color: #d1d5db;
+        }
+
+        h3 {
+            color: #1f2937;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        body.dark-mode h3 {
+            color: #e5e7eb;
         }
 
         .input-group {
@@ -68,29 +82,40 @@
 
         input[type="text"], input[type="number"] {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             font-size: 1rem;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            background-color: #eeeeee;
-            color: #121212;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            color: #333;
             text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+        }
+
+        body.dark-mode input[type="text"], body.dark-mode input[type="number"] {
+            background-color: #4b5563;
+            border: 1px solid #6b7280;
+            color: #ffffff;
         }
 
         input[type="range"] {
             width: 100%;
             margin: 5px 0;
-            accent-color: #76c7c0;
+            accent-color: #3b82f6;
         }
 
-        /* Toggle button */
-        .dark-mode-toggle {
-            position: absolute;
-            bottom: 15px; /* เพิ่มระยะห่างจากขอบล่างของ container */
-            right: 15px;
-            width: 35px;
-            height: 35px;
-            background-color: #444;
+        #darkModeToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: #6b7280;
             color: #ffffff;
             border: none;
             border-radius: 50%;
@@ -99,30 +124,71 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
+            transition: background-color 0.3s;
+            z-index: 10;
         }
 
-        .dark-mode-toggle.light-mode {
-            background-color: #dddddd;
-            color: #121212;
+        #darkModeToggle.light-mode {
+            background-color: #e5e7eb;
+            color: #333;
         }
 
-        /* เพิ่มระยะห่างของ Attempts Needed */
         #attempts-section {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         #results-section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f3f4f6;
+            border-radius: 10px;
+            font-size: 0.9em;
+            text-align: center;
+            color: #333;
+        }
+
+        body.dark-mode #results-section {
+            background-color: #4b5563;
+            color: #f9fafb;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3b82f6;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        #roll-results {
+            font-size: 0.85em;
+            color: #111827;
+            padding: 8px;
+            overflow-y: auto;
+            max-height: 150px;
+            border-radius: 10px;
+			text-align: center;
+        }
+
+        body.dark-mode #roll-results {
+            color: #f9fafb;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Dark Mode Toggle Button -->
-        <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
         <div class="section">
-			<center><h3>Probability Calculator</h3></center>
+            <h3>Probability Calculator</h3>
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
                 <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
@@ -138,7 +204,6 @@
             </div>
         </div>
 
-        <!-- Section ของ Attempts Needed -->
         <div class="section" id="attempts-section">
             <label for="attempts">Attempts Needed:</label>
             <div class="input-group">
@@ -146,33 +211,32 @@
                 <input type="range" id="attemptsSlider" min="1" max="1" value="0" oninput="updateAttempts()">
             </div>
         </div>
-		
-        <!-- Probability Tester Section -->
-		<div class="section">
-			<center><h3>Probability Tester</h3></center>
-			<label for="attemptsTester">Attempts:</label>
-			<div class="input-group">
-				<input type="text" id="attemptsTester" onkeydown="checkEnter(event, startRoll)">
-			</div>
+
+        <div class="section">
+            <h3>Probability Tester</h3>
+            <label for="attemptsTester">Attempts:</label>
+            <div class="input-group">
+                <input type="text" id="attemptsTester" onkeydown="checkEnter(event, startRoll)">
+            </div>
         </div>
-		
-		<div class="section">
-			<div class="input-group">
-				<button onclick="startRoll()" style="width:100%;height:30px;">Roll</button>
-			</div>
-		</div>
-		
-		<div class="section">
-			<center><p id="roll-results"></p></center>
-		</div>
-		
-		<div class="results" id="results-section">
-			<p>Success Count: <span id="successCount">0</span></p>
-			<p>Failure Count: <span id="failureCount">0</span></p>
-			<p>Success Rate: <span id="successRate">0</span>%</p>
-		</div>
+
+        <div class="section">
+            <button onclick="startRoll()">Roll</button>
+        </div>
+
+        <div class="section">
+            <p id="roll-results"></p>
+        </div>
+
+        <div class="results" id="results-section">
+            <p>Success Count: <span id="successCount">0</span></p>
+            <p>Failure Count: <span id="failureCount">0</span></p>
+            <p>Success Rate: <span id="successRate">0</span>%</p>
+        </div>
     </div>
 
+    <button id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
+	
     <script>
         let debounceTimeout;
 
@@ -305,30 +369,34 @@
             setCookie('darkMode', isDarkMode, 30);
         }
 		
-        function startRoll() {
-			const startProb = parseFloat(document.getElementById("startProb").value).toFixed(2);
-            const attempts = parseInt(document.getElementById("attemptsTester").value);
-			const resultlogs = document.getElementById("roll-results")
+		function startRoll() {
+			const probabilityPerAttempt = parseFloat(document.getElementById("startProb").value);
+			const totalAttempts = parseInt(document.getElementById("attemptsTester").value);
+			const rollResultsLog = document.getElementById("roll-results");
 
-			resultlogs.innerHTML = "";
-            let successCount = 0;
-            for (let i = 0; i < attempts; i++) {
-                const roll = Math.random() * 100;
-                if (parseFloat(startProb) >= parseFloat(roll)) {
-					resultlogs.innerHTML = resultlogs.innerHTML + `<br>[${i}] Roll: ${roll.toFixed(2)} - Success!!`
+			let successCount = 0;
+			rollResultsLog.innerHTML = "";
+
+			for (let attempt = 0; attempt < totalAttempts; attempt++) {
+				const randomRoll = Math.random() * 100;
+				if (parseFloat(probabilityPerAttempt) >= parseFloat(randomRoll)) {
+					if (rollResultsLog.innerHTML) {
+						rollResultsLog.innerHTML += "<br>";
+					}
+					rollResultsLog.innerHTML += `[${attempt}] Roll: ${randomRoll.toFixed(2)} - Success!!`;
 					successCount++;
 				}
-            }
-			
-			if (successCount === 0) resultlogs.innerHTML = "--- No Success Results ---"
+			}
 
-            const failureCount = attempts - successCount;
-            const successRate = ((successCount / attempts) * 100).toFixed(2);
+			rollResultsLog.innerHTML = successCount > 0 ? rollResultsLog.innerHTML : "--- No Success Results ---";
 
-            document.getElementById("successCount").innerText = successCount;
-            document.getElementById("failureCount").innerText = failureCount;
-            document.getElementById("successRate").innerText = successRate;
-        }
+			const failureCount = totalAttempts - successCount;
+			const successRate = ((successCount / totalAttempts) * 100).toFixed(2);
+
+			document.getElementById("successCount").innerText = successCount;
+			document.getElementById("failureCount").innerText = failureCount;
+			document.getElementById("successRate").innerText = successRate;
+		}
 
         window.onload = function() {
             const darkModeSetting = getCookie('darkMode');
