@@ -311,8 +311,9 @@
         function calculateGoalSuccess() {
             const startProb = parseFloat(document.getElementById("startProb").value) / 100;
             const attempts = parseInt(document.getElementById("attempts").value);
-            if (startProb <= 0 || attempts <= 0) {
+            if (startProb <= 0 || attempts <= 0 || !startProb || !attempts) {
                 document.getElementById("targetProb").value = "Invalid Input";
+				document.getElementById("attemptsTester").value = "Invalid Input";
                 return;
             }
 
@@ -321,6 +322,7 @@
 
             const targetSlider = document.getElementById("targetSlider");
             targetSlider.value = (cumulativeProb * 100).toFixed(2);
+			document.getElementById("attemptsTester").value = attempts;
             calculateMaxAttempts();
         }
 
