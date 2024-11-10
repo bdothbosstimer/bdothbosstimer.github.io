@@ -239,6 +239,7 @@
 	
     <script>
         let debounceTimeout, failButton = 0;
+		const decimalNumber = 4;
 
         function debounceInput(callback, input, sliderId) {
             clearTimeout(debounceTimeout);
@@ -254,7 +255,7 @@
             if (isNaN(value) || value < 0) value = 0;
             if (value > 100) value = 100;
             
-            input.value = value.toFixed(2);
+            input.value = value.toFixed(decimalNumber);
             slider.value = value;
 
             calculateMaxAttempts();
@@ -272,7 +273,7 @@
             const startSlider = document.getElementById("startSlider");
             const startProb = document.getElementById("startProb");
 
-            startProb.value = parseFloat(startSlider.value).toFixed(2);
+            startProb.value = parseFloat(startSlider.value).toFixed(decimalNumber);
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -281,7 +282,7 @@
             const targetSlider = document.getElementById("targetSlider");
             const targetProb = document.getElementById("targetProb");
 
-            targetProb.value = parseFloat(targetSlider.value).toFixed(2);
+            targetProb.value = parseFloat(targetSlider.value).toFixed(decimalNumber);
             calculateMaxAttempts();
             calculateTarget();
         }
@@ -318,10 +319,10 @@
             }
 
             const cumulativeProb = 1 - Math.pow(1 - startProb, attempts);
-            document.getElementById("targetProb").value = (cumulativeProb * 100).toFixed(2);
+            document.getElementById("targetProb").value = (cumulativeProb * 100).toFixed(decimalNumber);
 
             const targetSlider = document.getElementById("targetSlider");
-            targetSlider.value = (cumulativeProb * 100).toFixed(2);
+            targetSlider.value = (cumulativeProb * 100).toFixed(decimalNumber);
 			document.getElementById("attemptsTester").value = attempts;
             calculateMaxAttempts();
         }
@@ -385,7 +386,7 @@
 					if (rollResultsLog.innerHTML) {
 						rollResultsLog.innerHTML += "<br>";
 					}
-					rollResultsLog.innerHTML += `[${attempt}] Roll: ${randomRoll.toFixed(2)} - Success!!`;
+					rollResultsLog.innerHTML += `[${attempt}] Roll: ${randomRoll.toFixed(decimalNumber)} - Success!!`;
 					successCount++;
 				}
 			}
@@ -394,7 +395,7 @@
 			rollButton.innerHTML = successCount > 0 ? (failButton = 0, "Roll") : `[${++failButton}] Roll`;
 			
 			const failureCount = totalAttempts - successCount;
-			const successRate = ((successCount / totalAttempts) * 100).toFixed(2);
+			const successRate = ((successCount / totalAttempts) * 100).toFixed(decimalNumber);
 
 			document.getElementById("successCount").innerText = successCount;
 			document.getElementById("failureCount").innerText = failureCount;
@@ -413,7 +414,22 @@
                 toggleButton.textContent = '🌙';
                 toggleButton.classList.add('light-mode');
             }
-
+			
+			let rangeinputStep = "0.";
+			for(let rangeStep = 0; rangeStep < decimalNumber - 1; rangeStep++) {
+				rangeinputStep += "0";
+			}
+			rangeinputStep += "1";
+			
+			let startP = document.getElementById("startProb");
+			let targetP = document.getElementById("targetProb");
+			
+			document.getElementById("startSlider").step = rangeinputStep;
+			document.getElementById("targetSlider").step = rangeinputStep;
+			
+			startP.value = parseFloat(startP.value).toFixed(decimalNumber);
+			targetP.value = parseFloat(targetP.value).toFixed(decimalNumber);
+			
             calculateMaxAttempts();
             calculateTarget();
         }
