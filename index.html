@@ -622,7 +622,7 @@
 			if (targetTime.getDay() === 0) {
 				targetTime.setHours(0, 10, 0, 0);
 			} else {
-				if (targetTime > date) targetTime.setDate(targetTime.getDate() - 1);
+				if (targetTime >= date) targetTime.setDate(targetTime.getDate() - 1);
 				targetTime.setHours(21, 10, 0, 0);
 			}
 		}
