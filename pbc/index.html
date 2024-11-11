@@ -287,11 +287,11 @@
 			slider.step = getDecimalStep(value);
 			slider.value = value;
 			
-			if (sliderId === 'startSlider') {
+			/*if (sliderId === 'startSlider') {
 				setCookie('startProb', value, 30);
 			} else if (sliderId === 'targetSlider') {
 				setCookie('targetProb', value, 30);
-			}
+			}*/
 
             calculateMaxAttempts();
             calculateTarget();
@@ -461,11 +461,6 @@
             const darkModeSetting = getCookie('darkMode');
             const toggleButton = document.getElementById('darkModeToggle');
 			
-			const startProb = document.getElementById('startProb');
-			const targetProb = document.getElementById('targetProb');
-			const startSlider = document.getElementById('startSlider');
-			const targetSlider = document.getElementById('targetSlider');
-			
             if (darkModeSetting === 'true') {
                 document.body.classList.add('dark-mode');
                 toggleButton.textContent = '☀️';
@@ -474,6 +469,11 @@
                 toggleButton.textContent = '🌙';
                 toggleButton.classList.add('light-mode');
             }
+			
+			/*const startProb = document.getElementById('startProb');
+			const targetProb = document.getElementById('targetProb');
+			const startSlider = document.getElementById('startSlider');
+			const targetSlider = document.getElementById('targetSlider');
 			
 			const startProbCookie = getCookie('startProb');
 			if (startProbCookie) {
@@ -485,7 +485,7 @@
 			if (targetProbCookie) {
 				targetProb.value = targetProbCookie;
 				targetSlider.value = targetProbCookie;
-			}	
+			}*/
             calculateMaxAttempts();
             calculateTarget();
         }
