@@ -266,7 +266,7 @@
 		}
 		
         function getDecimalStep(value) {
-            const decimalPlaces = getDecimal(value)
+            const decimalPlaces = getDecimal(value);
             return decimalPlaces > 0 ? parseFloat("0." + "0".repeat(decimalPlaces - 1) + "1") : 1;
         }
 
@@ -286,12 +286,6 @@
             
 			slider.step = getDecimalStep(value);
 			slider.value = value;
-			
-			/*if (sliderId === 'startSlider') {
-				setCookie('startProb', value, 30);
-			} else if (sliderId === 'targetSlider') {
-				setCookie('targetProb', value, 30);
-			}*/
 
             calculateMaxAttempts();
             calculateTarget();
@@ -307,10 +301,8 @@
         function updateStartProb() {
             const startSlider = document.getElementById("startSlider");
             const startProb = document.getElementById("startProb");
-			const decimal = getDecimal(startProb.value);
 			
-            startProb.value = parseFloat(startSlider.value).toFixed(decimal);
-			startSlider.step = getDecimalStep(startProb.value);
+            startProb.value = parseFloat(startSlider.value).toFixed(getDecimal(startProb.value));
 			
             calculateMaxAttempts();
             calculateTarget();
@@ -319,10 +311,8 @@
         function updateTargetProb() {
             const targetSlider = document.getElementById("targetSlider");
             const targetProb = document.getElementById("targetProb");
-			const decimal = getDecimal(targetProb.value);
 
-            targetProb.value = parseFloat(targetSlider.value).toFixed(decimal);
-			targetSlider.step = getDecimalStep(targetProb.value);
+            targetProb.value = parseFloat(targetSlider.value).toFixed(getDecimal(targetProb.value));
 			
             calculateMaxAttempts();
             calculateTarget();
@@ -362,10 +352,10 @@
 
             const cumulativeProb = 1 - Math.pow(1 - startProb, attempts);
 			const targetProb = document.getElementById("targetProb");
+			const targetSlider = document.getElementById("targetSlider");
 			const decimal = getDecimal(targetProb.value);
+			
             targetProb.value = (cumulativeProb * 100).toFixed(decimal);
-
-            const targetSlider = document.getElementById("targetSlider");
             targetSlider.value = (cumulativeProb * 100).toFixed(decimal);
 			document.getElementById("attemptsTester").value = attempts;
             calculateMaxAttempts();
@@ -470,22 +460,6 @@
                 toggleButton.classList.add('light-mode');
             }
 			
-			/*const startProb = document.getElementById('startProb');
-			const targetProb = document.getElementById('targetProb');
-			const startSlider = document.getElementById('startSlider');
-			const targetSlider = document.getElementById('targetSlider');
-			
-			const startProbCookie = getCookie('startProb');
-			if (startProbCookie) {
-				startProb.value = startProbCookie;
-				startSlider.value = startProbCookie;
-			}
-
-			const targetProbCookie = getCookie('targetProb');
-			if (targetProbCookie) {
-				targetProb.value = targetProbCookie;
-				targetSlider.value = targetProbCookie;
-			}*/
             calculateMaxAttempts();
             calculateTarget();
         }
