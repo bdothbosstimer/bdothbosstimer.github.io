@@ -209,7 +209,7 @@
             <h3>Probability Calculator</h3>
             <label for="startProb">Probability per Attempt (%):</label>
             <div class="input-group">
-                <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="handlePercentageInput(this, 'startSlider')">
+                <input type="text" id="startProb" value="0.73" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'startSlider')" oninput="debounceInput(handlePercentageInput, this, 'startSlider')">
                 <input type="range" id="startSlider" min="0" max="100" step="0.01" value="0.73" oninput="updateStartProb()">
             </div>
         </div>
@@ -217,7 +217,7 @@
         <div class="section">
             <label for="targetProb">Target Cumulative Success (%):</label>
             <div class="input-group">
-                <input type="text" id="targetProb" value="50.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="handlePercentageInput(this, 'targetSlider')">
+                <input type="text" id="targetProb" value="50.00" onclick="this.select()" onkeydown="checkEnter(event, handlePercentageInput, this, 'targetSlider')" oninput="debounceInput(handlePercentageInput, this, 'targetSlider')">
                 <input type="range" id="targetSlider" min="0" max="100" step="0.01" value="50.00" oninput="updateTargetProb()">
             </div>
         </div>
