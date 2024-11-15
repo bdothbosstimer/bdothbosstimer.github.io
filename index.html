@@ -616,10 +616,10 @@
 	
 	const getWarHeroEnd = (date) => {
 		const targetTime = new Date(date);
-		targetTime.setHours(targetTime.getDay() === 0 ? 0 : 21, 10, 0, 0);
+		targetTime.setHours(targetTime.getDay() === 6 || targetTime.getDay() === 0 ? 0 : 21, 10, 0, 0);
 		if (targetTime <= date) {
 			targetTime.setDate(targetTime.getDate() + 1);
-			if (targetTime.getDay() === 0) {
+			if (targetTime.getDay() === 6 || targetTime.getDay() === 0) {
 				targetTime.setHours(0, 10, 0, 0);
 			} else {
 				if (targetTime >= date) targetTime.setDate(targetTime.getDate() - 1);
