@@ -262,7 +262,8 @@
         let debounceTimeout, buttonStack = 0, failStack = 0, succStack = 0;
 
 		function getDecimal(value) {
-			return (value.toString().split('.')[1] || '').length;
+			const Decimal = (value.toString().split('.')[1] || '').length;
+			return Decimal < 2 ? 2 : Decimal;
 		}
 		
         function getDecimalStep(value) {
@@ -416,8 +417,8 @@
 			rollResultsLog.innerHTML = "";
 
 			for (let attempt = 0; attempt < totalAttempts; attempt++) {
-				const randomRoll = Math.random() * 100;
-				if (parseFloat(probabilityPerAttempt) >= parseFloat(randomRoll)) {
+				const randomRoll = parseFloat(Math.random() * 100);
+				if (probabilityPerAttempt >= parseFloat(randomRoll)) {
 					if (rollResultsLog.innerHTML) {
 						rollResultsLog.innerHTML += "<br>";
 					}
