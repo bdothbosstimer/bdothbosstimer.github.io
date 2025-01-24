@@ -593,26 +593,25 @@
 
 	const getTimebyOffset = (tzOffset, nowTime = new Date()) =>
 		new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
-	
+
 	const getNextReset = (date, resetDay, daysInCycle, resetTime, initialCycleDate = null, bDateDiff = true) => {
 		const cycleStart = initialCycleDate 
 			? new Date(initialCycleDate[0], initialCycleDate[1] - 1, initialCycleDate[2])
 			: new Date(date.getFullYear(), 0, 1);
-
 		const daysPassed = Math.floor((date - cycleStart) / (1000 * 60 * 60 * 24));
 		const cyclesPassed = Math.floor(daysPassed / daysInCycle);
 		const currentCycleStartDate = new Date(cycleStart.getTime() + cyclesPassed * daysInCycle * 24 * 60 * 60 * 1000);
-
 		let nextResetDate = new Date(currentCycleStartDate);
-		nextResetDate.setDate(nextResetDate.getDate() + resetDay - (initialCycleDate ? 0 : 3));
+		const currentDayOfWeek = nextResetDate.getDay();
+		const offsetDays = (resetDay - currentDayOfWeek + 7) % 7;
+		nextResetDate.setDate(nextResetDate.getDate() + offsetDays);
 		nextResetDate.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
-
 		if (nextResetDate <= date) {
 			nextResetDate.setDate(nextResetDate.getDate() + daysInCycle);
 		}
-
 		return bDateDiff ? Math.ceil((nextResetDate - date) / 1000) : nextResetDate;
 	};
+
 	
 	const getWarHeroEnd = (date) => {
 		const targetTime = new Date(date);
@@ -735,7 +734,7 @@
 			listTime_inDay = getBossTableForDay(date);
 			listTime_nextDay = getBossTableForDay(date, 1);
 			listTime_previousDay = getBossTableForDay(date, -1);
-			if (weekDay === 0 && getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7]) <= 84000) {
+			if (weekDay === 0 && getNextReset(date, 7, 14, [17, 0, 0], [2025, 1, 12]) <= 84000) {
 				listTime_inDay.push({
 					spawnTime: '17:00:00',
 					bossTable: [
@@ -877,7 +876,7 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
-		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2024, 7, 7], false);
+		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2025, 1, 12], false);
 		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
 
 		var warHero = getWarHeroEnd(date);
