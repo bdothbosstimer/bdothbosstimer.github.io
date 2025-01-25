@@ -734,7 +734,7 @@
 			listTime_inDay = getBossTableForDay(date);
 			listTime_nextDay = getBossTableForDay(date, 1);
 			listTime_previousDay = getBossTableForDay(date, -1);
-			if (weekDay === 0 && getNextReset(date, 7, 14, [17, 0, 0], [2025, 1, 12]) <= 84000) {
+			if (weekDay === 0 && getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12]) <= 84000) {
 				listTime_inDay.push({
 					spawnTime: '17:00:00',
 					bossTable: [
@@ -876,7 +876,7 @@
 		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
 		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
 		
-		var warroses = getNextReset(date, 7, 14, [17, 0, 0], [2025, 1, 12], false);
+		var warroses = getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12], false);
 		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
 
 		var warHero = getWarHeroEnd(date);
