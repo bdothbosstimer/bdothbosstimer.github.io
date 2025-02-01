@@ -417,26 +417,16 @@
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
-	function formatSecondsFull(n) {
-		var date = new Date(1970, 0, 1);
-		date.setSeconds(n);
-		
-		var result = '';
-		var year = date.getFullYear() - 1970;
-		var month = date.getMonth();
-		var day = date.getDate() - 1;
-		var hours = date.getHours();
-		var minutes = date.getMinutes();
-		var seconds = date.getSeconds();
-		
-		if (year > 0) result += year + ' Y ';
-		if (month > 0) result += month + ' M ';
-		if (day > 0) result += day + ' D ';
-		result += hours.toString().padStart(2, '0') + ':' +
-					minutes.toString().padStart(2, '0') + ':' +
-					seconds.toString().padStart(2, '0');
-		return result;
-	}
+	const formatSecondsFull = n => {
+	  const d = new Date(n * 1000),
+			Y = d.getFullYear() - 1970,
+			M = d.getMonth(),
+			D = d.getDate() - 1,
+			time = [d.getHours(), d.getMinutes(), d.getSeconds()]
+					.map(v => String(v).padStart(2, '0'))
+					.join(':');
+	  return `${Y ? Y + ' Y ' : ''}${M ? M + ' M ' : ''}${D ? D + ' D ' : ''}${time}`;
+	};
 
 	function perc2color(perc) {
 		var r, g, b = 0;
