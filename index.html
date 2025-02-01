@@ -418,13 +418,15 @@
 	}
 	
 	const formatSecondsFull = n => {
-	  const d = new Date(n * 1000),
-			Y = d.getFullYear() - 1970,
-			M = d.getMonth(),
-			D = d.getDate() - 1,
-			time = [d.getHours(), d.getMinutes(), d.getSeconds()]
-					.map(v => String(v).padStart(2, '0'))
-					.join(':');
+	  const d = new Date(1970, 0, 1);
+	  d.setSeconds(n);
+	  const pad = num => String(num).padStart(2, '0');
+	  const Y = d.getFullYear() - 1970;
+	  const M = d.getMonth();
+	  const D = d.getDate() - 1;
+	  const time = [d.getHours(), d.getMinutes(), d.getSeconds()]
+		.map(pad)
+		.join(':');
 	  return `${Y ? Y + ' Y ' : ''}${M ? M + ' M ' : ''}${D ? D + ' D ' : ''}${time}`;
 	};
 
