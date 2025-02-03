@@ -607,18 +607,22 @@
 	
 	const getWarHeroEnd = (date) => {
 		const targetTime = new Date(date);
-		targetTime.setHours(targetTime.getDay() === 6 || targetTime.getDay() === 0 ? 0 : 21, 10, 0, 0);
+		const initialDay = targetTime.getDay();
+		const isWeekend = initialDay === 6 || initialDay === 0;
+		targetTime.setHours(isWeekend ? 0 : 21, 10, 0, 0);
+
 		if (targetTime <= date) {
 			targetTime.setDate(targetTime.getDate() + 1);
-			if (targetTime.getDay() === 6 || targetTime.getDay() === 0) {
+			const nextDay = targetTime.getDay();
+			if (nextDay === 6 || nextDay === 0) {
 				targetTime.setHours(0, 10, 0, 0);
 			} else {
-				if (targetTime >= date) targetTime.setDate(targetTime.getDate() - 1);
 				targetTime.setHours(21, 10, 0, 0);
 			}
 		}
+
 		return targetTime;
-	}
+	};
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
 		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
