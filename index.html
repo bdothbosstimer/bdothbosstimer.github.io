@@ -417,42 +417,87 @@
 		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	}
 	
-	const formatSecondsFull = n => {
-	  const d = new Date(1970, 0, 1);
-	  d.setSeconds(n);
-	  const pad = num => String(num).padStart(2, '0');
-	  const Y = d.getFullYear() - 1970;
-	  const M = d.getMonth();
-	  const D = d.getDate() - 1;
-	  const time = [d.getHours(), d.getMinutes(), d.getSeconds()]
-		.map(pad)
-		.join(':');
-	  return `${Y ? Y + ' Y ' : ''}${M ? M + ' M ' : ''}${D ? D + ' D ' : ''}${time}`;
-	};
+	function formatSecondsFull(n) {
+		const date = new Date(1970, 0, 1);
+		date.setSeconds(n);
 
-	function perc2color(perc) {
-		var r, g, b = 0;
-		if(perc < 50) {
-			r = 255;
-			g = Math.round(5.1 * perc);
-		}
-		else {
-			g = 255;
-			r = Math.round(510 - 5.10 * perc);
-		}
-		var h = r * 0x10000 + g * 0x100 + b * 0x1;
-		return '#' + ('000000' + h.toString(16)).slice(-6);
+		const [
+			year,
+			month,
+			day,
+			hours,
+			minutes,
+			seconds
+		] = [
+			date.getFullYear() - 1970,
+			date.getMonth(),
+			date.getDate() - 1,
+			date.getHours(),
+			date.getMinutes(),
+			date.getSeconds()
+		];
+
+		const dateParts = [];
+		if (year > 0) dateParts.push(`${year} Y`);
+		if (month > 0) dateParts.push(`${month} M`);
+		if (day > 0) dateParts.push(`${day} D`);
+
+		const timePart = [hours, minutes, seconds]
+			.map(x => x.toString().padStart(2, '0'))
+			.join(':');
+
+		return (dateParts.length > 0 ? dateParts.join(' ') + ' ' : '') + timePart;
 	}
-	
-	function perc2color2(perc) {
-		const startColor = [255, 255, 255]; // White
-		const endColor = [0, 255, 0];       // Green
-		const r = Math.round(startColor[0] + (endColor[0] - startColor[0]) * (perc / 100));
-		const g = Math.round(startColor[1] + (endColor[1] - startColor[1]) * (perc / 100));
-		const b = Math.round(startColor[2] + (endColor[2] - startColor[2]) * (perc / 100));
-		var h = r * 0x10000 + g * 0x100 + b * 0x1;
-		return '#' + ('000000' + h.toString(16)).slice(-6);
-	}
+
+	const getFadeColor = (n, colorStops = [
+		{ color: '#FF0000', threshold: 0 },
+		{ color: '#FFFF00', threshold: 900 },
+		{ color: '#00FF00', threshold: 1800 },
+		{ color: '#FFFFFF', threshold: 3600 }
+	], reverse = false) => {
+
+		const sortedStops = [...colorStops].sort((a, b) => a.threshold - b.threshold);
+		const minThreshold = sortedStops[0].threshold;
+		const maxThreshold = sortedStops[sortedStops.length - 1].threshold;
+		
+		let effectiveN = reverse ? (maxThreshold - (n - minThreshold)) : n;
+
+		if (effectiveN <= sortedStops[0].threshold) return sortedStops[0].color;
+		if (effectiveN >= sortedStops[sortedStops.length - 1].threshold) return sortedStops[sortedStops.length - 1].color;
+
+		let startStop, endStop;
+		for (let i = 0; i < sortedStops.length - 1; i++) {
+			if (effectiveN >= sortedStops[i].threshold && effectiveN <= sortedStops[i + 1].threshold) {
+				startStop = sortedStops[i];
+				endStop = sortedStops[i + 1];
+				break;
+			}
+		}
+
+		const parseHex = hex => {
+			hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (_, r, g, b) => r + r + g + g + b + b);
+			const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : { r: 0, g: 0, b: 0 };
+		};
+
+		const startColor = parseHex(startStop.color);
+		const endColor = parseHex(endStop.color);
+		const range = endStop.threshold - startStop.threshold;
+		const position = effectiveN - startStop.threshold;
+		const percent = position / range;
+		
+		const r = Math.round(startColor.r + (endColor.r - startColor.r) * percent);
+		const g = Math.round(startColor.g + (endColor.g - startColor.g) * percent);
+		const b = Math.round(startColor.b + (endColor.b - startColor.b) * percent);
+
+		return '#' + [r, g, b].map(v => 
+			v.toString(16).padStart(2, '0')
+		).join('').toUpperCase();
+	};
 	
 	function playAlert(dateDiff, alertType) {
 		const play = (p) => {
@@ -626,15 +671,6 @@
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
 		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
-	
-	const getFadeColor = (n) => {
-		const fadedate = Math.abs(n);
-		return fadedate <= 1800 
-			? perc2color((fadedate / 1800) * 100) 
-			: fadedate <= 3600 
-				? perc2color2(100 - ((fadedate - 1800) / 1800) * 100) 
-				: "#FFFFFF";
-	};
 	
 	function createBossTable(data, columns, imgHeight, tableWidth, textTag, valign, align, timerId) {
 		let table = '<table valign="' + valign + '" align="' + align + '" style="table-layout: fixed; width: ' + tableWidth + 'pt; border-collapse: collapse;">';
