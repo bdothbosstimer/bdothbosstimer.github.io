@@ -658,8 +658,8 @@
 			return day === 6
 				? (now.setDate(now.getDate() + 1), now.setHours(0, 10, 0, 0), now)
 				: threshold;
-		now.setDate(now.getDate() + (day === 5 ? 2 : 1));
-		now.setHours([0, 5].includes(now.getDay()) ? 0 : 21, 10, 0, 0);
+		now.setDate(now.getDate() + (day ? (day === 5 ? 2 : 1) : 0));
+		now.setHours([1, 5].includes(now.getDay()) ? 0 : 21, 10, 0, 0);
 		return now;
 	};
 	
