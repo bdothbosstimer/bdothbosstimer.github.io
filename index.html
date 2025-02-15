@@ -659,7 +659,7 @@
 			if (now < fridayEnd) {
 				end = fridayEnd;
 			} else {
-				end.setDate(end.getDate() + 1);
+				end.setDate(end.getDate() + 2);
 				end.setHours(0, 10, 0, 0);
 			}
 		} else if (day === 6 || day === 0) {
@@ -928,7 +928,7 @@
 		var warroses = getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12], false);
 		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
 
-		//var warHero = getWarHeroEnd('2025/02/14 22:00:00');
+		//var warHero = getWarHeroEnd('2025/02/16 00:11:00');
 		var warHero = getWarHeroEnd(date);
 		setHTMLInner('warHeros', `${formatSecondsFull(getDateDiff(date, warHero))} (${warHero.getHours() === 21 ? '09:10' : '00:10'} PM)`);
 		//setHTMLInner('warHeros', warHero);
