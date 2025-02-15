@@ -649,41 +649,15 @@
 		return returnDateDiff ? Math.ceil((nextResetDate - date) / 1000) : nextResetDate;
 	};
 
-	const getWarHeroEnd = (date) => {
+	const getWarHeroEnd = date => {
 		const now = new Date(date);
-		let end = new Date(date);
 		const day = now.getDay();
-		if (day === 5) {
-			const fridayEnd = new Date(now);
-			fridayEnd.setHours(21, 10, 0, 0);
-			if (now < fridayEnd) {
-				end = fridayEnd;
-			} else {
-				end.setDate(end.getDate() + 2);
-				end.setHours(0, 10, 0, 0);
-			}
-		} else if (day === 6 || day === 0) {
-			const weekendEnd = new Date(now);
-			weekendEnd.setHours(0, 10, 0, 0);
-			if (now < weekendEnd) {
-				end = weekendEnd;
-			} else {
-				end.setDate(end.getDate() + 1);
-				const nextDay = end.getDay();
-				end.setHours(nextDay === 6 || nextDay === 0 ? 0 : 21, 10, 0, 0);
-			}
-		} else {
-			const weekdayEnd = new Date(now);
-			weekdayEnd.setHours(21, 10, 0, 0);
-			if (now < weekdayEnd) {
-				end = weekdayEnd;
-			} else {
-				end.setDate(end.getDate() + 1);
-				const nextDay = end.getDay();
-				end.setHours(nextDay === 6 || nextDay === 0 ? 0 : 21, 10, 0, 0);
-			}
-		}
-		return end;
+		const threshold = new Date(now);
+		threshold.setHours(day === 6 || day === 0 ? 0 : 21, 10, 0, 0);
+		if (now < threshold) return threshold;
+		now.setDate(now.getDate() + (day === 5 ? 2 : 1));
+		now.setHours([0, 5].includes(now.getDay()) ? 0 : 21, 10, 0, 0);
+		return now;
 	};
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
@@ -928,7 +902,7 @@
 		var warroses = getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12], false);
 		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
 
-		//var warHero = getWarHeroEnd('2025/02/16 00:11:00');
+		//var warHero = getWarHeroEnd('2025/02/15 10:05:00');
 		var warHero = getWarHeroEnd(date);
 		setHTMLInner('warHeros', `${formatSecondsFull(getDateDiff(date, warHero))} (${warHero.getHours() === 21 ? '09:10' : '00:10'} PM)`);
 		//setHTMLInner('warHeros', warHero);
