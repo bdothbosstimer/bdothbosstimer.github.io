@@ -653,8 +653,11 @@
 		const now = new Date(date);
 		const day = now.getDay();
 		const threshold = new Date(now);
-		threshold.setHours(day === 6 || day === 0 ? 0 : 21, 10, 0, 0);
-		if (now < threshold) return threshold;
+		threshold.setHours(day === 0 ? 0 : 21, 10, 0, 0);
+		if (now < threshold)
+			return day === 6
+				? (now.setDate(now.getDate() + 1), now.setHours(0, 10, 0, 0), now)
+				: threshold;
 		now.setDate(now.getDate() + (day === 5 ? 2 : 1));
 		now.setHours([0, 5].includes(now.getDay()) ? 0 : 21, 10, 0, 0);
 		return now;
@@ -902,10 +905,8 @@
 		var warroses = getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12], false);
 		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
 
-		//var warHero = getWarHeroEnd('2025/02/15 10:05:00');
 		var warHero = getWarHeroEnd(date);
 		setHTMLInner('warHeros', `${formatSecondsFull(getDateDiff(date, warHero))} (${warHero.getHours() === 21 ? '09:10' : '00:10'} PM)`);
-		//setHTMLInner('warHeros', warHero);
 		
 		setHTMLInner("ingame", timeString);
 		setHTMLInner("daynight", dayNightString);
