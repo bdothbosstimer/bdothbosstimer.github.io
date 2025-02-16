@@ -660,7 +660,9 @@
 				: threshold;
 		now.setDate(now.getDate() + (day ? (day === 5 ? 2 : 1) : 0));
 		now.setHours([1, 5].includes(now.getDay()) ? 0 : 21, 10, 0, 0);
-		return now;
+		return day === 0 && date > now
+				? (now.setDate(now.getDate() + 1), now)
+				: now;
 	};
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
