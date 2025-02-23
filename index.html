@@ -653,15 +653,22 @@
 		const target = new Date(date);
 		const day = target.getDay();
 		target.setHours(day === 0 ? 0 : 21, 10, 0, 0);
-		if (date < target)
-			return (day === 6)
-				? (target.setDate(target.getDate() + 1), target.setHours(0, 10, 0, 0), target)
-				: target;
+		if (date < target) {
+			if (day === 6) {
+				target.setHours(0, 10, 0, 0);
+				target.setDate(target.getDate() + 1);
+			}
+			return target;
+		}
 		target.setDate(target.getDate() + (day ? (day === 5 ? 2 : 1) : 0));
 		target.setHours([0, 5, 6].includes(target.getDay()) ? 0 : 21, 10, 0, 0);
-		return (day === 0 && date > target)
-				? (target.setHours(21, 10, 0, 0), target)
-				: target;
+		if (day === 0 && date > target) {
+			target.setHours(21, 10, 0, 0);
+			if (date > target) {
+				target.setDate(target.getDate() + 1);
+			}
+		}
+		return target;
 	};
 	
 	const getDateDiff = (date, targetTime, bRevert = false) => 
