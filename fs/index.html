@@ -1,0 +1,416 @@
+<!https://github.com/Hatoro/Failstack-Calculator>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failstack Optimizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #444;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto 20px auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fff;
+        }
+
+        td.green {
+            color: #fff;
+            background-color: #28a745;
+        }
+
+        td.blue {
+            color: #fff;
+            background-color: #007BFF;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 15px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 50%;
+        }
+
+        .green-color {
+            background-color: #28a745;
+        }
+
+        .blue-color {
+            background-color: #007BFF;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Failstack Optimizer</h1>
+    <form id="calculator">
+        <label for="startFailstack">Starting Failstack:</label>
+        <input type="number" id="startFailstack" min="100" max="300" required>
+
+        <label for="targetFailstack">Target Failstack:</label>
+        <input type="number" id="targetFailstack" min="100" max="300" required>
+
+        <label for="priceOrigin">Price for Origin of Dark Hunger (Silver):</label>
+        <input type="number" id="priceOrigin" value="1080000000" required>
+
+        <label for="priceFaintOrigin">Price for Faint Origin of Dark Hunger (Silver):</label>
+        <input type="number" id="priceFaintOrigin" value="500000000" required>
+
+        <button type="button" onclick="calculateOptimalPath()">Calculate</button>
+    </form>
+
+    <h2>Results</h2>
+    <table id="results">
+        <thead>
+            <tr>
+                <th>Step</th>
+                <th>Failstack Before</th>
+                <th>Item</th>
+                <th>Failstack After</th>
+                <th>Cost (Silver)</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color green-color"></div>
+            <span>Origin of Dark Hunger</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color blue-color"></div>
+            <span>Faint Origin of Dark Hunger</span>
+        </div>
+    </div>
+
+    <footer>
+        Created with ♥ for Black Desert Online players.
+    </footer>
+
+    <script>
+		async function getArshaOrder(id) {
+			const url = `https://api.arsha.io/v2/SEA/orders?id=${id}&sid=0`;
+			try {
+				const response = await fetch(url);
+				if (!response.ok) throw new Error("HTTP error " + response.status);
+				const data = await response.json();
+				return data;
+			} catch (error) {
+				console.error("Error fetching data:", error);
+				return null;
+			}
+		}
+		
+		async function getAverageOrderPrice(id) {
+			const data = await getArshaOrder(id);
+			if (!data || !data.orders || data.orders.length === 0) {
+				return null;
+			}
+
+			let totalPrice = 0n;
+			let count = 0n;
+
+			for (const order of data.orders) {
+				const price = BigInt(order.price);
+				totalPrice += price;
+				count += 1n;
+			}
+
+			const avgPrice = (totalPrice + count - 1n) / count;
+
+			return {
+				id: data.id,
+				name: data.name || "Unknown",
+				price: avgPrice.toString(),
+				sellers: data.orders.reduce((sum, o) => sum + (o.sellers || 0), 0),
+				buyers: data.orders.reduce((sum, o) => sum + (o.buyers || 0), 0)
+			};
+		}
+
+		function setHTMLInner(id, s) {
+			let e = document.getElementById(id);
+			if (e) {e.innerHTML = s;}
+		}
+		
+		function setHTMLValue(id, i) {
+			let e = document.getElementById(id);
+			if (e) {e.value = i;}
+		}
+		
+		getAverageOrderPrice(65319).then(data => {
+			setHTMLValue('priceOrigin', data.price);
+		});
+		getAverageOrderPrice(767102).then(data => {
+			setHTMLValue('priceFaintOrigin', data.price);
+		});
+	
+        const originSteps = [
+            { range: [100, 101], increase: 26 },
+            { range: [102, 105], increase: 25 },
+            { range: [106, 108], increase: 24 },
+            { range: [109, 111], increase: 23 },
+            { range: [112, 115], increase: 22 },
+            { range: [116, 119], increase: 21 },
+            { range: [120, 124], increase: 20 },
+            { range: [125, 129], increase: 19 },
+            { range: [130, 135], increase: 18 },
+            { range: [136, 141], increase: 17 },
+            { range: [142, 148], increase: 16 },
+            { range: [149, 156], increase: 15 },
+            { range: [157, 165], increase: 14 },
+            { range: [166, 175], increase: 13 },
+            { range: [176, 187], increase: 12 },
+            { range: [188, 196], increase: 11 },
+			{ range: [197, 206], increase: 10 },
+			{ range: [207, 217], increase: 9 },
+			{ range: [218, 235], increase: 8 },
+			{ range: [236, 254], increase: 7 },
+			{ range: [255, 269], increase: 6 },
+			{ range: [270, 291], increase: 5 },
+			{ range: [292, 296], increase: 4 },
+			{ range: [297, 297], increase: 3 },
+			{ range: [298, 298], increase: 2 },
+			{ range: [299, 299], increase: 1 }
+        ];
+
+        const faintSteps = [
+            { range: [100, 104], increase: 13 },
+            { range: [105, 109], increase: 12 },
+            { range: [110, 117], increase: 11 },
+            { range: [118, 124], increase: 10 },
+            { range: [125, 134], increase: 9 },
+            { range: [135, 146], increase: 8 },
+            { range: [147, 163], increase: 7 },
+            { range: [164, 179], increase: 6 },
+            { range: [180, 205], increase: 5 },
+            { range: [206, 228], increase: 4 },
+            { range: [229, 267], increase: 3 },
+            { range: [268, 298], increase: 2 },
+            { range: [299, 299], increase: 1 }
+        ];
+		
+        const dimSteps = [
+            { range: [100, 104], increase: 6 },
+            { range: [105, 116], increase: 5 },
+            { range: [117, 136], increase: 4 },
+            { range: [137, 167], increase: 3 },
+            { range: [168, 209], increase: 2 },
+            { range: [209, 299], increase: 1 }
+        ];
+
+        function getIncrease(stack, steps) {
+            for (let step of steps) {
+                if (stack >= step.range[0] && stack <= step.range[1]) {
+                    return step.increase;
+                }
+            }
+            return 0;
+        }
+
+        function calculateOptimalPath() {
+            const startFailstack = parseInt(document.getElementById('startFailstack').value);
+            const targetFailstack = parseInt(document.getElementById('targetFailstack').value);
+            const priceOrigin = parseInt(document.getElementById('priceOrigin').value);
+            const priceFaintOrigin = parseInt(document.getElementById('priceFaintOrigin').value);
+
+            let dp = Array(301).fill(Infinity);
+            let path = Array(301).fill(null);
+            dp[startFailstack] = 0;
+			
+			let itemCount = [0, 0];
+
+            for (let current = startFailstack; current < 300; current++) {
+                const originIncrease = getIncrease(current, originSteps);
+                const faintIncrease = getIncrease(current, faintSteps);
+				const dimIncrease = getIncrease(current, dimSteps);
+				
+                if (originIncrease > 0) {
+                    const next = Math.min(current + originIncrease, 300);
+                    const cost = priceOrigin;
+                    if (dp[next] > dp[current] + cost) {
+                        dp[next] = dp[current] + cost;
+                        path[next] = { from: current, item: 'Origin', cost };
+                    }
+                }
+
+                if (faintIncrease > 0) {
+                    const next = Math.min(current + faintIncrease, 300);
+                    const cost = priceFaintOrigin;
+                    if (dp[next] > dp[current] + cost) {
+                        dp[next] = dp[current] + cost;
+                        path[next] = { from: current, item: 'Faint Origin', cost };
+                    }
+                }
+				
+                /*if (dimIncrease > 0) {
+                    const next = Math.min(current + dimIncrease, 300);
+                    const cost = 0;
+                    if (dp[next] > dp[current] + cost) {
+                        dp[next] = dp[current] + cost;
+                        path[next] = { from: current, item: 'Dim Origin', cost };
+                    }
+                }*/
+            }
+
+            let bestTarget = targetFailstack;
+            if (dp[targetFailstack] === Infinity) {
+                for (let i = targetFailstack - 1; i <= 300; i++) {
+                    if (dp[i] < Infinity) {
+                        bestTarget = i;
+                        break;
+                    }
+                }
+            }
+
+            let steps = [];
+            let current = bestTarget;
+            while (path[current]) {
+				switch (path[current].item) {
+					case 'Origin': itemCount[0]+=1; break;
+					case 'Faint Origin': itemCount[1]+=1; break;
+				}
+                steps.push({ ...path[current], to: current });
+                current = path[current].from;
+            }
+
+            steps.reverse();
+            displayResults(steps, dp[bestTarget], itemCount);
+			
+
+        }
+
+        function displayResults(steps, totalCost, itemCount) {
+            const resultsTable = document.getElementById('results').querySelector('tbody');
+            resultsTable.innerHTML = '';
+
+            steps.forEach((step, index) => {
+                const row = document.createElement('tr');
+                const itemClass = step.item === 'Origin' ? 'green' : 'blue';
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${step.from}</td>
+                    <td class="${itemClass}">${step.item}</td>
+                    <td>${step.to}</td>
+                    <td>${step.cost.toLocaleString()}</td>
+                `;
+                resultsTable.appendChild(row);
+            });
+
+            const totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+                <td colspan="4"><strong>Total Cost:</strong></td>
+                <td><strong>${totalCost.toLocaleString()}</strong></td>
+            `;
+            resultsTable.appendChild(totalRow);
+			
+            const orirow = document.createElement('tr');
+            orirow.innerHTML = `
+                <td colspan="5">
+					<div class="legend">
+						<div class="legend-item">
+							<div class="legend-color green-color"></div>
+							<span><strong>Origin of Dark Hunger:</strong> ${itemCount[0]}</span>
+						</div>
+						<div class="legend-item">
+							<div class="legend-color blue-color"></div>
+							<span><strong>Faint Origin of Dark Hunger:</strong> ${itemCount[1]}</span>
+						</div>
+					</div>`;
+			resultsTable.appendChild(orirow);
+        }
+    </script>
+</body>
+</html>
