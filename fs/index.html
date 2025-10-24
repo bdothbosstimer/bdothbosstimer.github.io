@@ -447,7 +447,19 @@
 				saveBtn.textContent = '⏳ Saving...';
 				const canvas = await captureTable();
 				const link = document.createElement('a');
-				link.download = 'results_screenshot.png';
+				const generateTimestamp = () => {
+					const now = new Date();
+					const year = now.getFullYear();
+					const month = String(now.getMonth() + 1).padStart(2, '0');
+					const day = String(now.getDate()).padStart(2, '0');
+					const hour = String(now.getHours()).padStart(2, '0');
+					const minute = String(now.getMinutes()).padStart(2, '0');
+					const second = String(now.getSeconds()).padStart(2, '0');
+					const timestamp = `${year}${month}${day}_${hour}${minute}${second}`;
+					return timestamp;
+				};
+				
+				link.download = `FSOptimize_${generateTimestamp()}.png`;
 				link.href = canvas.toDataURL('image/png');
 				link.click();
 				saveBtn.disabled = false;
@@ -467,7 +479,7 @@
 						captureMsg.style.display = 'inline';
 						setTimeout(() => (captureMsg.style.display = 'none'), 2000);
 					} catch (err) {
-						alert('❌ Clipboard ไม่รองรับการคัดลอกภาพในเบราว์เซอร์นี้');
+						alert('❌ Clipboard API for images is not supported in this browser.');
 						console.error(err);
 					} finally {
 						clipboardBtn.disabled = false;
