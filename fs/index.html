@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Failstack Optimizer</title>
+	<script src="../js/html2canvas.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -352,12 +353,15 @@
                 }
             }
 			
-			const itemIndexMap = {
-				'Origin': 0,
-				'Faint Origin': 1,
-			};
+			const itemNames = [
+				'Origin',
+				'Faint Origin'
+			];
+			
+			const itemIndexMap = Object.fromEntries(itemNames.map((name, i) => [name, i]));
+			let itemCount = Array(itemNames.length).fill(0);
 
-            let steps = [], itemCount = Array(Object.keys(itemIndexMap).length).fill(0);
+            let steps = [];
             let current = bestTarget;
             while (path[current]) {
 				const item = path[current].item;
@@ -413,6 +417,64 @@
 						</div>
 					</div>`;
 			resultsTable.appendChild(orirow);
+			
+			const screenshotRow = document.createElement('tr');
+			screenshotRow.innerHTML = `
+				<td colspan="5" style="text-align:center;">
+					<button id="saveBtn" style="width:25%;">💾 Save as File</button>
+					<button id="clipboardBtn" style="width:25%;">📋 Copy to Clipboard</button>
+					<span id="captureMsg" style="margin-left:10px; color:green; display:none;">✅ คัดลอกแล้ว!</span>
+				</td>
+			`;
+			resultsTable.appendChild(screenshotRow);
+
+			const saveBtn = document.getElementById('saveBtn');
+			const clipboardBtn = document.getElementById('clipboardBtn');
+			const captureMsg = document.getElementById('captureMsg');
+
+			async function captureTable() {
+				const element = document.getElementById('results');
+				saveBtn.style.visibility = 'hidden';
+				clipboardBtn.style.visibility = 'hidden';
+				const canvas = await html2canvas(element);
+				saveBtn.style.visibility = 'visible';
+				clipboardBtn.style.visibility = 'visible';
+				return canvas;
+			}
+
+			saveBtn.addEventListener('click', async () => {
+				saveBtn.disabled = true;
+				saveBtn.textContent = '⏳ Saving...';
+				const canvas = await captureTable();
+				const link = document.createElement('a');
+				link.download = 'results_screenshot.png';
+				link.href = canvas.toDataURL('image/png');
+				link.click();
+				saveBtn.disabled = false;
+				saveBtn.textContent = '💾 Save as File';
+			});
+
+			clipboardBtn.addEventListener('click', async () => {
+				clipboardBtn.disabled = true;
+				clipboardBtn.textContent = '⏳ Copying...';
+				const canvas = await captureTable();
+
+				canvas.toBlob(async (blob) => {
+					try {
+						await navigator.clipboard.write([
+							new ClipboardItem({ 'image/png': blob })
+						]);
+						captureMsg.style.display = 'inline';
+						setTimeout(() => (captureMsg.style.display = 'none'), 2000);
+					} catch (err) {
+						alert('❌ Clipboard ไม่รองรับการคัดลอกภาพในเบราว์เซอร์นี้');
+						console.error(err);
+					} finally {
+						clipboardBtn.disabled = false;
+						clipboardBtn.textContent = '📋 Copy to Clipboard';
+					}
+				});
+			});
         }
     </script>
 </body>
