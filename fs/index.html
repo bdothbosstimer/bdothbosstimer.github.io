@@ -1,416 +1,945 @@
-<!https://github.com/Hatoro/Failstack-Calculator>
 <html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Failstack Optimizer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-            color: #333;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        h1, h2 {
-            text-align: center;
-            color: #444;
-        }
+<!-- Primary Meta Tags -->
+<title>[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer</title>
+<meta name="title" content="[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer">
+<meta name="description" content="ตารางเวลาและการแจ้งเตือนบอสโลก github: https://github.com/bdothbosstimer/">
 
-        form {
-            max-width: 500px;
-            margin: 0 auto 20px auto;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bdothbosstimer.github.io/">
+<meta property="og:title" content="[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer">
+<meta property="og:description" content="ตารางเวลาและการแจ้งเตือนบอสโลก github: https://github.com/bdothbosstimer/">
+<meta property="og:image" content="https://bdothbosstimer.github.io/imgs/bosstable.png">
 
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://bdothbosstimer.github.io/">
+<meta property="twitter:title" content="[BDO-TH] เวลาปรากฏตัวของบอสโลก - World Boss Timer">
+<meta property="twitter:description" content="ตารางเวลาและการแจ้งเตือนบอสโลก  github: https://github.com/bdothbosstimer/">
+<meta property="twitter:image" content="https://bdothbosstimer.github.io/imgs/bosstable.png">
 
-        input {
-            width: calc(100% - 20px);
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+<link rel="apple-touch-icon" sizes="180x180" href="imgs/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="imgs/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="imgs/favicon-16x16.png">
+<link rel="manifest" href="imgs/site.webmanifest">
+<style>
+	h1 {
+		font-size: 100px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	h2 {
+		font-size: 35px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	h3 {
+		font-size: 25px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	h4 {
+		font-size: 15px;
+		color: #FFFFFF;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+	}
+	a:link {
+	  text-decoration: none;
+	}
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
+	a:visited {
+	  text-decoration: none;
+	}
 
-        button:hover {
-            background-color: #0056b3;
-        }
+	a:hover {
+	  text-decoration: none;
+	}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+	a:active {
+	  text-decoration: none;
+	}
+	
+	#progress-container {
+		position: relative;
+		width: 100%;
+		background-color: #2B2F31;
+		height: 30px;
+		margin-top: 20px;
+	}
+	#progress-bar {
+		width: 0%;
+		height: 100%;
+		background-color: #3D8C40;
+		position: absolute;
+	}
+	.bubble {
+		position: absolute;
+		top: -30px;
+		left: 0;
+		transform: translateX(-50%);
+		background-color: #3D8C40;
+		font-size: 18px;
+		color: white;
+		font-weight: bold;
+		padding: 5px 10px;
+		border-radius: 15px;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+	.checkpoint {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		background-color: #C90101;
+	}
+	.checkpoint-label {
+		position: absolute;
+		top: 35px;
+		white-space: nowrap;
+		transform: translateX(-50%);
+		font-size: 18px;
+		color: white;
+		font-weight: bold;
+	}
 
-        th, td {
-            text-align: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+	table.bl {
+	  border-collapse: collapse;
+	  //width: 100%;
+	}
 
-        th {
-            background-color: #f4f4f4;
-            font-weight: bold;
-        }
+	table.bt {
+	  border-collapse: collapse;
+	  //width: 100%;
+	}
 
-        tbody tr:nth-child(odd) {
-            background-color: #f9f9f9;
-        }
+	td.bt {text-align: center;}
+	td.bc {color: #ffffff;}
+	th.bl, td.bl {
+	  //text-align: left;
+	  //padding: 5px;
+	}
+	th.bl{font-size: 24px; text-align: center;}
+	td.bl{font-size: 16px; text-align: center;}
+	tr.bl:nth-child(odd) {background-color: #222437;}
+	tr.bl:nth-child(even) {background-color: #222837;}
+	tr.bl:hover {background-color: #0c2333}
+	tr.bl{color: white;}
+	.hl {
+		/*background: #28a745;*/
+		color: #fff!important;
+		-moz-box-shadow: inset 0 0 10px #28a745;
+		-webkit-box-shadow: inset 0 0 10px #28a745;
+		box-shadow: inset 0 0 10px #28a745;
+	}
 
-        tbody tr:nth-child(even) {
-            background-color: #fff;
-        }
-
-        td.green {
-            color: #fff;
-            background-color: #28a745;
-        }
-
-        td.blue {
-            color: #fff;
-            background-color: #007BFF;
-        }
-
-        .legend {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 0 15px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            border-radius: 50%;
-        }
-
-        .green-color {
-            background-color: #28a745;
-        }
-
-        .blue-color {
-            background-color: #007BFF;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
+	body {
+		font-family: Arial, sans-serif;
+		background-color: #1a1c2a;
+		margin: -19px 0 0 0;
+		position: absolute; 
+		width: 100%;
+		height: 100%;
+	}
+</style>
 </head>
 <body>
-    <h1>Failstack Optimizer</h1>
-    <form id="calculator">
-        <label for="startFailstack">Starting Failstack:</label>
-        <input type="number" id="startFailstack" min="100" max="300" required>
+<p>&nbsp;</p>
+<table style="width: 1000pt;" border="0" cellspacing="0" cellpadding="0" align="center" class="table bt">
+  <tbody>
+	<tr>
+      <td colspan="3" class="td bc" id ="nowtime" valign="middle" align="center">&nbsp;</td>
+	</tr>
+    <tr>
+      <td id="prevboss" style="width: 250pt; height: 350pt; text-align: left; vertical-align: bottom;">&nbsp;</td>
+      <td id="currboss" style="width: 500pt; height: 350pt; text-align: center; vertical-align: top;">&nbsp;</td>
+      <td id="nextboss" style="width: 250pt; height: 350pt; text-align: right; vertical-align: bottom;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td >&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="ingame">&nbsp;</td>
+      <td>&nbsp;</td>
+	  <td class="td bc" valign="bottom" align="right" id="daynight">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="trading">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="center">- สงครามกุหลาบ -</td>
+	   <td class="td bc" valign="bottom" align="right" id="daily">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="imperial">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="center" id="warRoses">&nbsp;</td>
+	  <td class="td bc" valign="bottom" align="right" id="weekly">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="blackspirit">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="center">- วีรบุรุษสงคราม -</td>
+      <td class="td bc" valign="bottom" align="right" id="blackshrine">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="td bc" valign="bottom" align="left" id="bartering">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="center" id="warHeros">&nbsp;</td>
+      <td class="td bc" valign="bottom" align="right" id="maintenance">&nbsp;</td>
+    </tr>
+	<tr>
+      <td colspan="3"></br></br>
+		<div id="progress-container">
+			<div id="progress-bar"></div>
+			<div class="bubble" id="progress-bubble"></div>
+			<div class="checkpoint" style="left: 0%;">
+				<div class="checkpoint-label">🌅 Morning</div>
+			</div>
+			<div class="checkpoint" style="left: 27%;">
+				<div class="checkpoint-label">☀️ Afternoon</div>
+			</div>
+			<div class="checkpoint" style="left: 61%;">
+				<div class="checkpoint-label">🌆 Evening</div>
+			</div>
+			<div class="checkpoint" style="left: 83%;">
+				<div class="checkpoint-label">🌙 Night</div>
+			</div>
+			<div class="checkpoint" style="left: 100%;">
+				<div class="checkpoint-label">🌅 Morning</div>
+			</div>
+		</div>
+		</br>
+	</tr>
+  </tbody>
+</table>
 
-        <label for="targetFailstack">Target Failstack:</label>
-        <input type="number" id="targetFailstack" min="100" max="300" required>
+</br></br>
 
-        <label for="priceOrigin">Price for Origin of Dark Hunger (Silver):</label>
-        <input type="number" id="priceOrigin" value="1080000000" required>
+<table style="width: 1000pt;" border="0" cellspacing="0" cellpadding="15" align="center" class="table bl">
+    <tr class="tr bl">
+	<th class="td bl">เวลา</th>
+	<th class="td bl">จันทร์</th>
+	<th class="td bl">อังคาร</th>
+	<th class="td bl">พุธ</th>
+	<th class="td bl">พฤหัสบดี</th>
+	<th class="td bl">ศุกร์</th>
+	<th class="td bl">เสาร์</th>
+	<th class="td bl">อาทิตย์</th>
+    </tr>
+    <tr class="tr bl">
+	<th class="th bl">00:30</th>
+	<td class="td bl" id="1-00:30:00">คูทุม</br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="2-00:30:00">นูเวอร์</br><font color="#92D050">ซันกุน</font></td>
+	<td class="td bl" id="3-00:30:00">คจาคาร์</br>โอฟิน</br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+	<td class="td bl" id="4-00:30:00">คูทุม</br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="5-00:30:00">นูเวอร์</br><font color="#92D050">ซันกุน</font></td>
+	<td class="td bl" id="6-00:30:00">คารานด้า</br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="0-00:30:00">คจาคาร์</br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">10:00</th>
+	<td class="td bl" id="1-10:00:00">คจาคาร์</br>นูเวอร์</br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="2-10:00:00">คูทุม</br>คารานด้า</br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+	<td class="td bl" id="3-10:00:00">นูเวอร์</br>คูทุม</td>
+	<td class="td bl" id="4-10:00:00">คจาคาร์</br>คารานด้า</br><font color="#92D050">ซันกุน</font></td>
+	<td class="td bl" id="5-10:00:00">คูทุม</br>คจาคาร์</br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="6-10:00:00">คูทุม</br>คจาคาร์</br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+	<td class="td bl" id="0-10:00:00">นูเวอร์</br>คารานด้า</br><font color="#92D050">ซันกุน</font></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">13:00</th>
+	<td class="td bl" id="1-13:00:00">กามอส</td>
+	<td class="td bl" id="2-13:00:00">กามอส</td>
+	<td class="td bl" id="3-13:00:00">กามอส</td>
+	<td class="td bl" id="4-13:00:00">กามอส</td>
+	<td class="td bl" id="5-13:00:00">กามอส</td>
+	<td class="td bl" id="6-13:00:00">กามอส</td>
+	<td class="td bl" id="0-13:00:00">กามอส</td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">14:00</th>
+	<td class="td bl" id="1-14:00:00">นูเวอร์</br>คูทุม</br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+	<td class="td bl" id="2-14:00:00">คูทุม</br>คจาคาร์</br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="3-14:00:00">คารานด้า</br>คจาคาร์</br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="4-14:00:00">คูทุม</br>นูเวอร์</br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="5-14:00:00">คจาคาร์</br>คารานด้า</br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="6-14:00:00">คารานด้า</br>นูเวอร์</br><font color="#92D050">ซันกุน</font></td>
+	<td class="td bl" id="0-14:00:00">คูทุม</br>คารานด้า</br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">15:00</th>
+	<td class="td bl" id="1-15:00:00"></td>
+	<td class="td bl" id="2-15:00:00"></td>
+	<td class="td bl" id="3-15:00:00"></td>
+	<td class="td bl" id="4-15:00:00"></td>
+	<td class="td bl" id="5-15:00:00"></td>
+	<td class="td bl" id="6-15:00:00"></td>
+	<td class="td bl" id="0-15:00:00">เบลล์</td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">16:00</th>
+	<td class="td bl" id="1-16:00:00"></td>
+	<td class="td bl" id="2-16:00:00"></td>
+	<td class="td bl" id="3-16:00:00"></td>
+	<td class="td bl" id="4-16:00:00"></td>
+	<td class="td bl" id="5-16:00:00"></td>
+	<td class="td bl" id="6-16:00:00">เงาดำ</td>
+	<td class="td bl" id="0-16:00:00"></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">17:00</th>
+	<td class="td bl" id="1-17:00:00"></td>
+	<td class="td bl" id="2-17:00:00"></td>
+	<td class="td bl" id="3-17:00:00"></td>
+	<td class="td bl" id="4-17:00:00"></td>
+	<td class="td bl" id="5-17:00:00"></td>
+	<td class="td bl" id="6-17:00:00">กามอส</td>
+	<td class="td bl" id="war-roses">สงคราม</br>กุหลาบ</td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">19:00</th>
+	<td class="td bl" id="1-19:00:00">คจาคาร์</br>คารานด้า</br><font color="#92D050">ซันกุน</font></br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="2-19:00:00">กวินท์</br>มูลัคคา</br><font color="#FFC000">ราชาหมูทองคำ</font></br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="3-19:00:00">คูทุม</br>นูเวอร์<br><font color="#0070C0">อูทูรี</font></br><font color="#92D050">ซันกุน</font></td>
+	<td class="td bl" id="4-19:00:00">คารานด้า</br>นูเวอร์</br><font color="#92D050">ซันกุน</font></br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+	<td class="td bl" id="5-19:00:00">นูเวอร์</br>คูทุม</br><font color="#FFC000">ราชาหมูทองคำ</font></br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="6-19:00:00">กวินท์</br>มูลัคคา</br><font color="#F2547A">บุลกาซัล</font></br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="0-19:00:00"></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">19:15</th>
+	<td class="td bl" id="1-19:15:00"></td>
+	<td class="td bl" id="2-19:15:00"></td>
+	<td class="td bl" id="3-19:15:00"></td>
+	<td class="td bl" id="4-19:15:00"></td>
+	<td class="td bl" id="5-19:15:00"></td>
+	<td class="td bl" id="6-19:15:00"></td>
+	<td class="td bl" id="0-19:15:00">คจาคาร์</br>คารานด้า</br><font color="#F2547A">บุลกาซัล</font></br><font color="#0070C0">อูทูรี</font></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">20:00</th>
+		<td class="td bl" id="war-node-1" colspan="5">สงคราม</br>ฐาน</td>
+	<td class="td bl" id="war-castle">สงคราม</br>ปราสาท</td>
+	<td class="td bl" id="war-node-2">สงคราม</br>ฐาน</td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">22:15</th>
+	<td class="td bl" id="1-22:15:00">กามอส</td>
+	<td class="td bl" id="2-22:15:00">กามอส</td>
+	<td class="td bl" id="3-22:15:00">กามอส</br><font color="#FFC000">ราชาหมูทองคำ</font></br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="4-22:15:00">กามอส</td>
+	<td class="td bl" id="5-22:15:00">กามอส</td>
+	<td class="td bl" id="6-22:15:00"></td>
+	<td class="td bl" id="0-22:15:00">กามอส</td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">22:45</th>
+	<td class="td bl" id="1-22:45:00"></td>
+	<td class="td bl" id="2-22:45:00"><font color="#92D050">ซันกุน</font></br><font color="#F2547A">บุลกาซัล</font></td>
+	<td class="td bl" id="3-22:45:00"></td>
+	<td class="td bl" id="4-22:45:00"><font color="#F2547A">บุลกาซัล</font></br><font color="#0070C0">อูทูรี</font></td>
+	<td class="td bl" id="5-22:45:00"></td>
+	<td class="td bl" id="6-22:45:00"></td>
+	<td class="td bl" id="0-22:45:00"></td>
+    </tr>
+    <tr class="tr bl">
+	<th class="td bl">23:00</th>
+	<td class="td bl" id="1-23:00:00">โอฟิน</br><font color="#0070C0">อูทูรี</font></br><font color="#FFC000">ราชาหมูทองคำ</font></td>
+	<td class="td bl" id="2-23:00:00"></td>
+	<td class="td bl" id="3-23:00:00">เบลล์</td>
+	<td class="td bl" id="4-23:00:00"></td>
+	<td class="td bl" id="5-23:00:00">โอฟิน</br><font color="#0070C0">อูทูรี</font></br><font color="#92D050">ซันกุน</font></td>
+	<td class="td bl" id="6-23:00:00"></td>
+	<td class="td bl" id="0-23:00:00">คูทุม</br>นูเวอร์</br><font color="#FFC000">ราชาหมูทองคำ</font></br><font color="#92D050">ซันกุน</font></</td>
+    </tr>
+</table>
+</body>
+</html>
 
-        <label for="priceFaintOrigin">Price for Faint Origin of Dark Hunger (Silver):</label>
-        <input type="number" id="priceFaintOrigin" value="500000000" required>
+</br>
+</br>
+<center><a href="https://github.com/bdothbosstimer/" target="_blank"><strong><font color="#ffffff">By Fam丶Fan丶Fan</color></strong></br><img src="imgs/github.png"/></a></center></br>
+<script src="js/boss.js"></script>
+<script>	
+	let wakeLock, noSleepVideo;
 
-        <button type="button" onclick="calculateOptimalPath()">Calculate</button>
-    </form>
+	async function requestWakeLock() {
+	  if ('wakeLock' in navigator) {
+		try {
+		  wakeLock = await navigator.wakeLock.request('screen');
+		  wakeLock.addEventListener('release', () => (wakeLock = null));
+		} catch {}
+	  } else {
+		enableNoSleep();
+	  }
+	}
 
-    <h2>Results</h2>
-    <table id="results">
-        <thead>
-            <tr>
-                <th>Step</th>
-                <th>Failstack Before</th>
-                <th>Item</th>
-                <th>Failstack After</th>
-                <th>Cost (Silver)</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+	function releaseWakeLock() {
+	  if (wakeLock) wakeLock.release().catch(() => {});
+	  if (noSleepVideo) disableNoSleep();
+	}
 
-    <div class="legend">
-        <div class="legend-item">
-            <div class="legend-color green-color"></div>
-            <span>Origin of Dark Hunger</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color blue-color"></div>
-            <span>Faint Origin of Dark Hunger</span>
-        </div>
-    </div>
+	function enableNoSleep() {
+	  noSleepVideo = document.createElement('video');
+	  noSleepVideo.src = "data:video/mp4;base64,AAAAHGZ0eXBtcDQyAAAAAG1wNDFtcDQyaXNvbWF2YzEAAACmbW9vdgAAAGxtdmhkAAAAANrVgY9tANrVgY9tAAABAAEAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAwAAQAAAAEAAAAGAAAAAAAAGP//AAAALXBzYyAAAAAAAAAABAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABzdHRzAAAAAAAAAAEAAAAMAAAAAQAAABxzdHNjAAAAAAAAAAEAAAABAAAAHHN0c2QAAAAAAAAAAQAAAAEAAAAUc3RzegAAAAAAAAAAAAEAAAAZAAAACQAAAAEAAAAkc3R6bwg=";
+	  noSleepVideo.loop = true;
+	  noSleepVideo.muted = true;
+	  noSleepVideo.playsInline = true;
+	  noSleepVideo.play().catch(() => {});
+	}
 
-    <footer>
-        Created with ♥ for Black Desert Online players.
-    </footer>
+	function disableNoSleep() {
+	  noSleepVideo.pause();
+	  noSleepVideo = null;
+	}
 
-    <script>
-		async function getArshaOrder(id) {
-			const url = `https://api.arsha.io/v2/SEA/orders?id=${id}&sid=0`;
-			try {
-				const response = await fetch(url);
-				if (!response.ok) throw new Error("HTTP error " + response.status);
-				const data = await response.json();
-				return data;
-			} catch (error) {
-				console.error("Error fetching data:", error);
-				return null;
-			}
-		}
-		
-		async function getAverageOrderPrice(id) {
-			const data = await getArshaOrder(id);
-			if (!data || !data.orders || data.orders.length === 0) {
-				return null;
-			}
+	document.addEventListener('visibilitychange', () => 
+	  document.visibilityState === 'visible' ? requestWakeLock() : releaseWakeLock()
+	);
 
-			let totalPrice = 0n;
-			let count = 0n;
+	if (document.visibilityState === 'visible') requestWakeLock();
 
-			for (const order of data.orders) {
-				const price = BigInt(order.price);
-				totalPrice += price;
-				count += 1n;
-			}
-
-			const avgPrice = (totalPrice + count - 1n) / count;
-
-			return {
-				id: data.id,
-				name: data.name || "Unknown",
-				price: avgPrice.toString(),
-				sellers: data.orders.reduce((sum, o) => sum + (o.sellers || 0), 0),
-				buyers: data.orders.reduce((sum, o) => sum + (o.buyers || 0), 0)
-			};
-		}
-
-		function setHTMLInner(id, s) {
-			let e = document.getElementById(id);
-			if (e) {e.innerHTML = s;}
-		}
-		
-		function setHTMLValue(id, i) {
-			let e = document.getElementById(id);
-			if (e) {e.value = i;}
-		}
-		
-		getAverageOrderPrice(65319).then(data => {
-			setHTMLValue('priceOrigin', data.price);
-		});
-		getAverageOrderPrice(767102).then(data => {
-			setHTMLValue('priceFaintOrigin', data.price);
-		});
 	
-        const originSteps = [
-            { range: [100, 101], increase: 26 },
-            { range: [102, 105], increase: 25 },
-            { range: [106, 108], increase: 24 },
-            { range: [109, 111], increase: 23 },
-            { range: [112, 115], increase: 22 },
-            { range: [116, 119], increase: 21 },
-            { range: [120, 124], increase: 20 },
-            { range: [125, 129], increase: 19 },
-            { range: [130, 135], increase: 18 },
-            { range: [136, 141], increase: 17 },
-            { range: [142, 148], increase: 16 },
-            { range: [149, 156], increase: 15 },
-            { range: [157, 165], increase: 14 },
-            { range: [166, 175], increase: 13 },
-            { range: [176, 187], increase: 12 },
-            { range: [188, 196], increase: 11 },
-			{ range: [197, 206], increase: 10 },
-			{ range: [207, 217], increase: 9 },
-			{ range: [218, 235], increase: 8 },
-			{ range: [236, 254], increase: 7 },
-			{ range: [255, 269], increase: 6 },
-			{ range: [270, 291], increase: 5 },
-			{ range: [292, 296], increase: 4 },
-			{ range: [297, 297], increase: 3 },
-			{ range: [298, 298], increase: 2 },
-			{ range: [299, 299], increase: 1 }
-        ];
+	function formatSeconds(n) {
+		var date = new Date(1970, 0, 1);
+		date.setSeconds(n);
+		return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+	}
+	
+	function formatSecondsFull(n) {
+		const date = new Date(1970, 0, 1);
+		date.setSeconds(n);
 
-        const faintSteps = [
-            { range: [100, 104], increase: 13 },
-            { range: [105, 109], increase: 12 },
-            { range: [110, 117], increase: 11 },
-            { range: [118, 124], increase: 10 },
-            { range: [125, 134], increase: 9 },
-            { range: [135, 146], increase: 8 },
-            { range: [147, 163], increase: 7 },
-            { range: [164, 179], increase: 6 },
-            { range: [180, 205], increase: 5 },
-            { range: [206, 228], increase: 4 },
-            { range: [229, 267], increase: 3 },
-            { range: [268, 298], increase: 2 },
-            { range: [299, 299], increase: 1 }
-        ];
+		const [
+			year,
+			month,
+			day,
+			hours,
+			minutes,
+			seconds
+		] = [
+			date.getFullYear() - 1970,
+			date.getMonth(),
+			date.getDate() - 1,
+			date.getHours(),
+			date.getMinutes(),
+			date.getSeconds()
+		];
+
+		const dateParts = [];
+		if (year > 0) dateParts.push(`${year} Y`);
+		if (month > 0) dateParts.push(`${month} M`);
+		if (day > 0) dateParts.push(`${day} D`);
+
+		const timePart = [hours, minutes, seconds]
+			.map(x => x.toString().padStart(2, '0'))
+			.join(':');
+
+		return (dateParts.length > 0 ? dateParts.join(' ') + ' ' : '') + timePart;
+	}
+
+	const getFadeColor = (n, colorStops = [
+		{ color: '#FF0000', threshold: 0 },
+		{ color: '#FFFF00', threshold: 900 },
+		{ color: '#00FF00', threshold: 1800 },
+		{ color: '#FFFFFF', threshold: 3600 }
+	], reverse = false) => {
+
+		const sortedStops = [...colorStops].sort((a, b) => a.threshold - b.threshold);
+		const minThreshold = sortedStops[0].threshold;
+		const maxThreshold = sortedStops[sortedStops.length - 1].threshold;
 		
-        const dimSteps = [
-            { range: [100, 104], increase: 6 },
-            { range: [105, 116], increase: 5 },
-            { range: [117, 136], increase: 4 },
-            { range: [137, 167], increase: 3 },
-            { range: [168, 209], increase: 2 },
-            { range: [209, 299], increase: 1 }
-        ];
+		let effectiveN = reverse ? (maxThreshold - n) : n;
 
-        function getIncrease(stack, steps) {
-            for (let step of steps) {
-                if (stack >= step.range[0] && stack <= step.range[1]) {
-                    return step.increase;
-                }
-            }
-            return 0;
-        }
+		if (effectiveN <= sortedStops[0].threshold) return sortedStops[0].color;
+		if (effectiveN >= sortedStops[sortedStops.length - 1].threshold) return sortedStops[sortedStops.length - 1].color;
 
-        function calculateOptimalPath() {
-            const startFailstack = parseInt(document.getElementById('startFailstack').value);
-            const targetFailstack = parseInt(document.getElementById('targetFailstack').value);
-            const priceOrigin = parseInt(document.getElementById('priceOrigin').value);
-            const priceFaintOrigin = parseInt(document.getElementById('priceFaintOrigin').value);
+		let startStop, endStop;
+		for (let i = 0; i < sortedStops.length - 1; i++) {
+			if (effectiveN >= sortedStops[i].threshold && effectiveN <= sortedStops[i + 1].threshold) {
+				startStop = sortedStops[i];
+				endStop = sortedStops[i + 1];
+				break;
+			}
+		}
 
-            let dp = Array(301).fill(Infinity);
-            let path = Array(301).fill(null);
-            dp[startFailstack] = 0;
-			
-			let itemCount = [0, 0];
+		const parseHex = hex => {
+			hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (_, r, g, b) => r + r + g + g + b + b);
+			const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : { r: 0, g: 0, b: 0 };
+		};
 
-            for (let current = startFailstack; current < 300; current++) {
-                const originIncrease = getIncrease(current, originSteps);
-                const faintIncrease = getIncrease(current, faintSteps);
-				const dimIncrease = getIncrease(current, dimSteps);
-				
-                if (originIncrease > 0) {
-                    const next = Math.min(current + originIncrease, 300);
-                    const cost = priceOrigin;
-                    if (dp[next] > dp[current] + cost) {
-                        dp[next] = dp[current] + cost;
-                        path[next] = { from: current, item: 'Origin', cost };
-                    }
-                }
+		const startColor = parseHex(startStop.color);
+		const endColor = parseHex(endStop.color);
+		const range = endStop.threshold - startStop.threshold;
+		const position = effectiveN - startStop.threshold;
+		const percent = position / range;
+		
+		const r = Math.round(startColor.r + (endColor.r - startColor.r) * percent);
+		const g = Math.round(startColor.g + (endColor.g - startColor.g) * percent);
+		const b = Math.round(startColor.b + (endColor.b - startColor.b) * percent);
 
-                if (faintIncrease > 0) {
-                    const next = Math.min(current + faintIncrease, 300);
-                    const cost = priceFaintOrigin;
-                    if (dp[next] > dp[current] + cost) {
-                        dp[next] = dp[current] + cost;
-                        path[next] = { from: current, item: 'Faint Origin', cost };
-                    }
-                }
-				
-                /*if (dimIncrease > 0) {
-                    const next = Math.min(current + dimIncrease, 300);
-                    const cost = 0;
-                    if (dp[next] > dp[current] + cost) {
-                        dp[next] = dp[current] + cost;
-                        path[next] = { from: current, item: 'Dim Origin', cost };
-                    }
-                }*/
-            }
-
-            let bestTarget = targetFailstack;
-            if (dp[targetFailstack] === Infinity) {
-                for (let i = targetFailstack - 1; i <= 300; i++) {
-                    if (dp[i] < Infinity) {
-                        bestTarget = i;
-                        break;
-                    }
-                }
-            }
-
-            let steps = [];
-            let current = bestTarget;
-            while (path[current]) {
-				switch (path[current].item) {
-					case 'Origin': itemCount[0]+=1; break;
-					case 'Faint Origin': itemCount[1]+=1; break;
+		return '#' + [r, g, b].map(v => 
+			v.toString(16).padStart(2, '0')
+		).join('').toUpperCase();
+	};
+	
+	function playAlert(dateDiff, alertType) {
+		const play = (p) => {
+			audio = new Audio(p);
+			//audio.volume = 50/100 >> 0;
+			audio.volume = 1;
+			audio.play();
+		}
+		switch(dateDiff) {
+			case 1800:
+				switch(alertType) {
+					case "world-boss": play('audio/30minboss.mp3'); break;
+					case "war-node": play('audio/30minnode.mp3'); break;
+					case "war-castle": play('audio/30mincastle.mp3'); break;
 				}
-                steps.push({ ...path[current], to: current });
-                current = path[current].from;
-            }
+				break;
+			case 900:
+				switch(alertType) {
+					case "world-boss": play('audio/15minboss.mp3'); break;
+					case "war-node": play('audio/15minnode.mp3'); break;
+					case "war-castle": play('audio/15mincastle.mp3'); break;
+				}
+				break;
+			case 600:
+				switch(alertType) {
+					case "world-boss": play('audio/10minboss.mp3'); break;
+					case "war-node": play('audio/10minnode.mp3'); break;
+					case "war-castle": play('audio/10mincastle.mp3'); break;
+				}
+				break;
+			case 300:
+				switch(alertType) {
+					case "world-boss": play('audio/5minboss.mp3'); break;
+					case "war-node": play('audio/5minnode.mp3'); break;
+					case "war-castle": play('audio/5mincastle.mp3'); break;
+				}
+				break;
+			case 0:
+				switch(alertType) {
+					case "world-boss": play('audio/bossappear.mp3'); break;
+					case "war-node": play('audio/nodewar.mp3'); break;
+					case "war-castle": play('audio/castlewar.mp3'); break;
+				}
+				break;
+		}
+	}
+	
+	function getNightTime(secondsToAdd) {
+		var t = new Date();
+			t.setSeconds(t.getSeconds() + secondsToAdd);
+		var hours   = t.getHours();
+		var amPm    = (hours >= 12) ? "PM" : "AM";
+			hours       = (hours > 12) ? hours - 12 : hours;
+			hours       = (hours === 0) ? 12 : hours;
+			hours		= (hours < 10) ? "0" + hours : hours;
+		var minutes = t.getMinutes();
+			minutes     = (minutes < 10) ? "0" + minutes : minutes;
+			return hours + ":" + minutes + " " + amPm;
+	}
+	
+	function setHTMLInner(id, str) {
+		let e = document.getElementById(id);
+		if (e) {e.innerHTML = str;}
+	}
+	
+	function setHighlight(id, alertType, bool) {
+		const css = (id, cn) => {
+				let e = document.getElementById(id);
+				if (e) {e.className = cn;}
+			}
+		switch(alertType) {
+			case "world-boss":
+			case "field-boss":
+				css(id, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-node":
+				css(`war-node-1`, bool ? `tr bl hl` : `tr bl`);
+				css(`war-node-2`, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-castle":
+				css(`war-castle`, bool ? `tr bl hl` : `tr bl`);
+				break;
+			case "war-roses":
+				css(`war-roses`, bool ? `tr bl hl` : `tr bl`);
+				break;
+		}
+	}
 
-            steps.reverse();
-            displayResults(steps, dp[bestTarget], itemCount);
+	function formatDate(date) {
+		const day = date.getDate();
+		const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+		const month = months[date.getMonth()];
+		const year = date.getFullYear() + 543;
+		return `${day} ${month} ${year}`;
+	}
+
+	function toThaiDateString(date) {
+		let monthNames = [
+			"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
+			"พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม",
+			"กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+		];
+		
+		let dayNames = [
+			"อาทิตย์", "จันทร์", "อังคาร", "พุธ",
+			"พฤหัสบดี", "ศุกร์", "เสาร์"
+		];
+
+		let day = dayNames[date.getDay()];
+		let year = date.getFullYear() + 543;
+		let month = monthNames[date.getMonth()];
+		let numOfDay = date.getDate();
+
+		let hour = date.getHours().toString().padStart(2, "0");
+		let minutes = date.getMinutes().toString().padStart(2, "0");
+		let second = date.getSeconds().toString().padStart(2, "0");
+
+		return `วัน${day}ที่ ${numOfDay} ${month} ${year} ` +
+			`<br>เวลา ${hour}:${minutes}:${second} น.`;
+	}
+	
+	const updateProgressBar = (progressPercentage, progressBubbleText) => {
+		const progressBar = document.getElementById('progress-bar');
+		const progressBubble = document.getElementById('progress-bubble');
+		progressBar.style.width = progressPercentage + '%';
+		progressBubble.style.left = progressPercentage + '%';
+		progressBubble.textContent = progressBubbleText;
+	};
+	
+
+	const getTimebyOffset = (tzOffset, nowTime = new Date()) =>
+		new Date(nowTime.getTime() + (tzOffset * 3600000) + (nowTime.getTimezoneOffset() * 60000));
+
+	const getNextReset = (date, resetDay, daysInCycle, resetTime, initialCycleDate = null, returnDateDiff = true) => {
+		const cycleStart = initialCycleDate 
+			? new Date(initialCycleDate[0], initialCycleDate[1] - 1, initialCycleDate[2])
+			: new Date(date.getFullYear(), 0, 1);
+		const daysPassed = Math.floor((date - cycleStart) / (1000 * 60 * 60 * 24));
+		const cyclesPassed = Math.floor(daysPassed / daysInCycle);
+		const currentCycleStartDate = new Date(cycleStart.getTime() + cyclesPassed * daysInCycle * 24 * 60 * 60 * 1000);
+		let nextResetDate = new Date(currentCycleStartDate);
+		const currentDayOfWeek = nextResetDate.getDay();
+		const offsetDays = (resetDay - currentDayOfWeek + 7) % 7;
+		nextResetDate.setDate(nextResetDate.getDate() + offsetDays);
+		nextResetDate.setHours(resetTime[0], resetTime[1], resetTime[2], 0);
+		if (nextResetDate <= date) {
+			nextResetDate.setDate(nextResetDate.getDate() + daysInCycle);
+		}
+		return returnDateDiff ? Math.ceil((nextResetDate - date) / 1000) : nextResetDate;
+	};
+	
+	const getWarHeroEnd = date => {
+		const target = new Date(date);
+		const day = target.getDay();
+		target.setHours(day === 0 ? 0 : 21, 10, 0, 0);
+		if (date < target)
+			return day === 6
+				? (target.setHours(0, 10, 0, 0), target.setDate(target.getDate() + 1), target)
+				: target;
+		target.setDate(target.getDate() + (day ? (day === 5 ? 2 : 1) : 0));
+		target.setHours([0, 5, 6].includes(target.getDay()) ? 0 : 21, 10, 0, 0);
+		day === 0 && date > target && (target.setHours(21, 10), date > target && target.setDate(target.getDate() + 1));
+		return target;
+	};
+	
+	const getDateDiff = (date, targetTime, bRevert = false) => 
+		Math.ceil(((new Date(targetTime) - date) * (bRevert ? -1 : 1)) / 1000);
+	
+	function createBossTable(data, columns, imgHeight, tableWidth, textTag, valign, align, timerId) {
+		let table = '<table valign="' + valign + '" align="' + align + '" style="table-layout: fixed; width: ' + tableWidth + 'pt; border-collapse: collapse;">';
+		let totalItems = data.length;
+		let rows = Math.ceil(totalItems / columns);
+
+		for (let i = 0; i < rows; i++) {
+			table += '<tr>';
+			for (let j = 0; j < columns; j++) {
+				let index = i * columns + j;
+				if (index < totalItems - 1) {
+					let item = data[index];
+					table += '<td style="text-align: center; width: ' + ((tableWidth / columns) >> 0) + 'pt;">' +
+								'<img src="' + item.img + '" alt="' + item.name + '" height="' + imgHeight + '">' +
+							  '</td>';
+				} else if (index === totalItems - 1 && i === rows - 1) {
+					let lastItem = data[totalItems - 1];
+					table += '<td ' + (totalItems === 1 ? '' : 'colspan="' + (columns - j)+'" ') + 'style="text-align: center; ' + (totalItems === 1 ? 'width: ' + tableWidth + 'pt;' : '') + '">' +
+								'<img src="' + lastItem.img + '" alt="' + lastItem.name + '" height="' + (totalItems === 1 ? imgHeight * 2 : imgHeight) + '">' +
+							  '</td>';
+					break;
+				} else {
+					table += '<td></td>';
+				}
+			}
+			table += '</tr>';
+
+			table += '<tr>';
+			for (let j = 0; j < columns; j++) {
+				let index = i * columns + j;
+				if (index < totalItems - 1) {
+					let item = data[index];
+					table += '<td style="text-align: center;"><' + textTag + '>' + item.name + '</' + textTag + '></td>';
+				} else if (index === totalItems - 1 && i === rows - 1) {
+					let lastItem = data[totalItems - 1];
+					table += '<td '+ (totalItems === 1 ? '' : 'colspan="' + (columns - j)+'" ') +'style="text-align: center;">' +
+								'<' + textTag + '>' + lastItem.name + '</' + textTag + '>' +
+							  '</td>';
+					break;
+				} else {
+					table += '<td></td>';
+				}
+			}
+			table += '</tr>';
+		}
+
+		table += '<tr><td colspan="' + columns + '" style="text-align: center;" id="' + timerId + '"></td></tr>';
+		table += '</table>';
+
+		return table;
+	}
+
+	function createBossTableWrapper(type, data, columns) {
+		switch (type) {
+			case 'current':
+				return createBossTable(data, columns, 128, 500, 'h3', 'top', 'center', 'currboss-timer');
+			case 'next':
+				return createBossTable(data, columns, 64, 250, 'h4', 'bottom', 'right', 'nextboss-timer');
+			case 'previous':
+				return createBossTable(data, columns, 64, 250, 'h4', 'bottom', 'left', 'prevboss-timer');
+			default:
+				return '';
+		}
+	}
+
+	var listTime_inDay, listTime_nextDay, listTime_previousDay, weekDay_tmp, bossPosition;
+	setInterval(function() {
+		const date = getTimebyOffset(7), weekDay = date.getDay();
+		const dateStr = `${date.getFullYear()}/${(date.getMonth()+1)}/${date.getDate()}`;
+		let previousBoss, nextBoss, alertType, dateDiff;
+		setHTMLInner("nowtime", '<h3>'+toThaiDateString(date)+'<br><br>');
+		
+		//Boss Table Setup
+		if (weekDay !== weekDay_tmp) {
+			const getBossTableForDay = (date, dayOffset = 0) => {
+				const d = new Date(date);
+				d.setDate(d.getDate() + dayOffset);
+				const day = d.getDay();
+				const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+				return Object.keys(bossTable[day])
+					.filter(k => bossTable[day][k].length > 0)
+					.map(k => ({
+						spawnTime: k,
+						bossTable: bossTable[day][k],
+						highLight: `${day}-${k}`,
+						dateFormat: `${dateStr} ${k}`,
+						update: 0
+					}));
+			};
+			const sortByTimeKey = (list, timeKey) => {
+				return list.sort((a, b) => new Date(`1970/01/01 ${a[timeKey]}`).getTime() - new Date(`1970/01/01 ${b[timeKey]}`).getTime());
+			};
+			listTime_inDay = getBossTableForDay(date);
+			listTime_nextDay = getBossTableForDay(date, 1);
+			listTime_previousDay = getBossTableForDay(date, -1);
+			if (weekDay === 0 && getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12]) <= 84000) {
+				listTime_inDay.push({
+					spawnTime: '17:00:00',
+					bossTable: [
+						{
+							"type": "war-roses",
+							"name": "สงครามกุหลาบ",
+							"img": "imgs/warroses.png"
+						}
+					],
+					highLight: `${weekDay}-17:00:00`,
+					dateFormat: `${dateStr} 17:00:00`,
+					update: 0
+				});
+			}
+			[listTime_inDay, listTime_nextDay, listTime_previousDay].forEach(list => sortByTimeKey(list, 'spawnTime'));
+			listTime_previousDay.reverse();
+			weekDay_tmp = weekDay;
+			bossPosition = 0;
+		}
+		
+		//current boss will spawn
+		for(let i = bossPosition; i <= listTime_inDay.length-1; i++) {
+			dateDiff = getDateDiff(date, listTime_inDay[i].dateFormat);
+			if (dateDiff >= 0) {
+				for(let b in listTime_inDay[i].bossTable) {
+					alertType = listTime_inDay[i].bossTable[b]["type"];
+					break;
+				}
+				if (listTime_inDay[i].update !== 1) {
+					setHTMLInner('currboss', createBossTableWrapper('current', listTime_inDay[i].bossTable, 2));
+					setHighlight(`${listTime_inDay[i].highLight}`, alertType, true);
+					listTime_inDay[i].update = 1;
+				}
+				setHTMLInner("currboss-timer", '<font color="'+getFadeColor(dateDiff)+'"><br><h3>- [ '+listTime_inDay[i]["spawnTime"]+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font>');
+				
+				previousBoss = (i === 0) ? listTime_previousDay[0] : listTime_inDay[i-1];
+				nextBoss = (i === listTime_inDay.length-1) ? listTime_nextDay[0] : listTime_inDay[i+1];
+				break;
+			} else {
+				bossPosition++;
+			}
+		}
+		
+		//Fix next day boss (current boss spawn)
+		if (bossPosition > (listTime_inDay.length-1)) {
+			n = listTime_nextDay[0].bossTable.length;
+			tmp = '<table width="100%" valign="top" align="center"><tbody>';
+			dateDiff = getDateDiff(date, listTime_nextDay[0].dateFormat);
+			for(let b in listTime_nextDay[0].bossTable) {
+				alertType = listTime_nextDay[0].bossTable[b]["type"];
+				break;
+			}
+			if (listTime_nextDay[0].update !== 2) {
+				setHTMLInner('currboss', createBossTableWrapper('current', listTime_nextDay[0].bossTable, 2));
+				setHighlight(listTime_nextDay[0].highLight, alertType, true);
+				listTime_nextDay[0].update = 2;
+			}
+			setHTMLInner("currboss-timer", '<font color="'+getFadeColor(dateDiff)+'"><br><h3>- [ '+listTime_nextDay[0]['spawnTime']+' ] -</h3><h1>'+formatSeconds(dateDiff)+'</font>');
 			
+			previousBoss = listTime_inDay[listTime_inDay.length-1];
+			nextBoss = listTime_nextDay[1];
+		}
+		
+		//next boss or followed boss
+		dateDiff = getDateDiff(date, nextBoss.dateFormat);
+		for(let b in nextBoss.bossTable) {
+			alertType = nextBoss.bossTable[b]["type"];
+			break;
+		}
+		if (nextBoss.update !== 3) {
+			setHTMLInner("nextboss", createBossTableWrapper('next', nextBoss.bossTable, 2));
+			nextBoss.update = 3;
+		}
+		setHTMLInner("nextboss-timer", '<font color="'+getFadeColor(dateDiff)+'"></br><h4>- [ '+nextBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font>');
+		
+		//previous boss
+		dateDiff = getDateDiff(date, previousBoss.dateFormat, true);
+		for(let b in previousBoss.bossTable) {
+			alertType = previousBoss.bossTable[b]["type"];
+			break;
+		}
+		if (previousBoss.update !== 4) {
+			setHTMLInner("prevboss", createBossTableWrapper('previous' ,previousBoss.bossTable, 2));
+			setHighlight(previousBoss.highLight, alertType, false);
+			previousBoss.update = 4;
+		}
+		setHTMLInner("prevboss-timer", '<font color="#ff0000"></br><h4>- [ '+previousBoss['spawnTime']+' ] -</h4><h2>'+formatSeconds(dateDiff)+'</font>');
+		
+		//code from http://bdocalc.com/
+		var startHour = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0, 0);
+		var rlDayElapsedS = (date - startHour) / 1000;
+		var secsIntoGameDay = (rlDayElapsedS + 200 * 60 + 20 * 60) % (240 * 60);
+		
+		
+		// Trading reset
+		var secsUntilTradingReset = Math.ceil(60 * 60 * 4 - (rlDayElapsedS - 2 * 60 * 60) % (60 * 60 * 4));
+		if (secsUntilTradingReset > (60 * 60 * 4) ) secsUntilTradingReset -= Math.ceil(60 * 60 * 4);
+		//var secsSinceTradingReset = rlDayElapsedS - (rlDayElapsedS % (60 * 60 * 3));
+		//var lastTradingReset = new Date(startHour + secsSinceTradingReset * 1000);
+		var nextTradingResetTime = new Date(date.getTime() + secsUntilTradingReset * 1000);
+		var tradingString = `𖥞 Trading in: ${formatSeconds(secsUntilTradingReset)} (${(h => h > 12 ? h - 12 : h)(nextTradingResetTime.getHours()).toString().padStart(2, '0')}:${nextTradingResetTime.getMinutes().toString().padStart(2, '0')} ${nextTradingResetTime.getHours() > 12 ? "PM" : "AM"})`;
 
-        }
+		// Imperial delievery reset
+		var secsUntilImperialReset = Math.ceil(3 * 60 * 60 - rlDayElapsedS % (60 * 60 * 3));
+		//var secsSinceImperialReset = rlDayElapsedS - (rlDayElapsedS % (60 * 60 * 3));
+		//var lastImperialReset = new Date(startHour + secsSinceImperialReset * 1000);
+		var nextImperialResetTime = new Date(date.getTime() + secsUntilImperialReset * 1000);
+		var imperialString = `♕ Imperial in: ${formatSeconds(secsUntilImperialReset)} (${(h => h > 12 ? h - 12 : h)(nextImperialResetTime.getHours()).toString().padStart(2, '0')}:${nextImperialResetTime.getMinutes().toString().padStart(2, '0')} ${nextImperialResetTime.getHours() > 12 ? "PM" : "AM"})`;
 
-        function displayResults(steps, totalCost, itemCount) {
-            const resultsTable = document.getElementById('results').querySelector('tbody');
-            resultsTable.innerHTML = '';
+		//Ingame Time (1 day = 14400 sec)
+		var isNight = secsIntoGameDay >= 12000; // 0 = day 1 = night
+		if (isNight) {
+			var secsIntoGameNight = secsIntoGameDay - 12000;
+			var pctOfNightDone = secsIntoGameNight / (40 * 60);
+			var secsUntilNightEnd = 40 * 60 - secsIntoGameNight;
+			var gameHour = 9 * pctOfNightDone;
+			gameHour = gameHour < 2 ? 22 + gameHour : gameHour - 2;
+		} else {
+			var secsIntoGameDaytime = secsIntoGameDay;
+			var pctOfDayDone = secsIntoGameDay / (200 * 60);
+			var secsUntilNightStart = 12000 - secsIntoGameDaytime;
+			var gameHour = 7 + (22 - 7) * pctOfDayDone;
+		}
+		var finalGameHour = gameHour / 1 >> 0;
+		var finalGameMinute = gameHour % 1 * 60 >> 0;
+		var finalGameSecond = gameHour % 1 * 3600 % 60 >> 0;
+		var afternoon = finalGameHour >= 12;
+		finalGameHour = finalGameHour % 12 || 12;
 
-            steps.forEach((step, index) => {
-                const row = document.createElement('tr');
-                const itemClass = step.item === 'Origin' ? 'green' : 'blue';
+		var timeString = `⌨ Ingame Time: ${isNight ? `☾` : `☼`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`;
+		var dayNighttime = Math.ceil(isNight ? secsUntilNightEnd : secsUntilNightStart);
+		var dayNightString = `${isNight ? `☼ Day in: ` : `☾ Night in: `} ${formatSeconds(dayNighttime)} (${getNightTime(dayNighttime)})`;
 
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${step.from}</td>
-                    <td class="${itemClass}">${step.item}</td>
-                    <td>${step.to}</td>
-                    <td>${step.cost.toLocaleString()}</td>
-                `;
-                resultsTable.appendChild(row);
-            });
+		var weeklyString = `🗓 Weekly in: ${formatSecondsFull(getNextReset(date, 3, 7, [23, 0, 0]))}`;
+		var maintenanceString = `⚒ Server Maintenance in: ${formatSecondsFull(getNextReset(date, 4, 7, [5, 0, 0]))}`;
+		var blackShrineString =  `𓉱 Black Shrine in: ${formatSecondsFull(getNextReset(date, 6, 7, [23, 0, 0]))}`;
 
-            const totalRow = document.createElement('tr');
-            totalRow.innerHTML = `
-                <td colspan="4"><strong>Total Cost:</strong></td>
-                <td><strong>${totalCost.toLocaleString()}</strong></td>
-            `;
-            resultsTable.appendChild(totalRow);
-			
-            const orirow = document.createElement('tr');
-            orirow.innerHTML = `
-                <td colspan="5">
-					<div class="legend">
-						<div class="legend-item">
-							<div class="legend-color green-color"></div>
-							<span><strong>Origin of Dark Hunger:</strong> ${itemCount[0]}</span>
-						</div>
-						<div class="legend-item">
-							<div class="legend-color blue-color"></div>
-							<span><strong>Faint Origin of Dark Hunger:</strong> ${itemCount[1]}</span>
-						</div>
-					</div>`;
-			resultsTable.appendChild(orirow);
-        }
-    </script>
+		var dailyString = `❀ Daily in: ${formatSeconds(getDateDiff(date, `${dateStr} 23:00:00`))}`;
+		var blackspiritString = `${['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)]} Black Spirit's Adventure in: ${formatSeconds(getDateDiff(date, `${dateStr} 04:00:00`))}`;
+		var barteringString = `♨ Agris and ⚓︎ Bartering in: ${formatSeconds(getDateDiff(date, `${dateStr} 05:00:00`))}`;
+		
+		var warroses = getNextReset(date, 0, 14, [17, 0, 0], [2025, 1, 12], false);
+		setHTMLInner("warRoses", `${formatSecondsFull(getDateDiff(date, warroses))} (${formatDate(warroses)})`);
+
+		var warHero = getWarHeroEnd(date);
+		setHTMLInner('warHeros', `${formatSecondsFull(getDateDiff(date, warHero))} (${warHero.getHours() === 21 ? '09:10' : '00:10'} PM)`);
+		
+		setHTMLInner("ingame", timeString);
+		setHTMLInner("daynight", dayNightString);
+		setHTMLInner("maintenance", maintenanceString);
+		setHTMLInner("blackspirit", blackspiritString);
+		setHTMLInner("daily", dailyString);
+		setHTMLInner("bartering", barteringString);
+		setHTMLInner("weekly", weeklyString);
+		setHTMLInner("blackshrine", blackShrineString);
+		setHTMLInner("imperial", imperialString);
+		setHTMLInner("trading", tradingString);
+		
+		//var dayProgress = (secsIntoGameDay/14400)*100 >> 0;
+		//4000 = 12PM, 8800 = 6PM, 12000 = 10PM
+		updateProgressBar((secsIntoGameDay/14400)*100 >> 0, `${secsIntoGameDay >= 12000 ? `🌙` : secsIntoGameDay >= 8800 ? `🌆` : secsIntoGameDay >= 4000 ? `☀️` : `🌅`} ${finalGameHour.toString().padStart(2, '0')}:${finalGameMinute.toString().padStart(2, '0')}:${finalGameSecond.toString().padStart(2, '0')} ${afternoon ? "PM" : "AM"}`);
+	}, 1000);
+
+	/*TEST Data
+	data position note
+	object	object		array		object
+	weekDay	spawnTime	bossArray	bossTable
+	for(var d in bossTable) {
+		for(var t in bossTable[d]) {
+			for(var b in bossTable[d][t]) {
+				for(var p in bossTable[d][t][b]) {
+					console.log(`${d} ${t} ${bossTable[d][t][b]["img"]}`)
+					console.log(`${d} ${t} ${bossTable[d][t][b]["name"]}`)
+					console.log(`${d} ${t} ${bossTable[d][t][b]["type"]}`)
+				}
+			}
+		}
+	
+	}*/
+  </script>
 </body>
 </html>
